@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/sand_brown"
+    tools:context=".HomeActivity">
+
+    <ImageView
+        android:id="@+id/imageView_appLogo_home"
+        android:layout_width="0dp"
+        android:layout_height="403dp"
+        android:scaleX="1.2"
+        android:scaleY="1.2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_big" />
+
+    <View
+        android:id="@+id/view_benvenuto_background"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:background="@drawable/top_rounded_shape_gradient"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_appLogo_home"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/text_benvenuto_titolo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/baloo_bhai"
+        android:text="Ciao, cosa cucini oggi?"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_benvenuto_background" />
+
+    <Button
+        android:id="@+id/button_home_prodotti"
+        android:layout_width="160dp"
+        android:layout_height="70dp"
+        android:backgroundTint="@color/caramel_brown"
+        android:fontFamily="@font/baloo_bhai"
+        android:text="Prodotti"
+        android:textSize="20sp"
+        app:cornerRadius="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_home_esplora"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_home_ricettario"
+        app:layout_constraintTop_toBottomOf="@+id/text_benvenuto_titolo"
+        tools:textAllCaps="true" />
+
+    <Button
+        android:id="@+id/button_home_ricettario"
+        android:layout_width="160dp"
+        android:layout_height="70dp"
+        android:backgroundTint="@color/caramel_brown"
+        android:fontFamily="@font/baloo_bhai"
+        android:text="Ricettario"
+        android:textSize="20sp"
+        app:cornerRadius="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_home_raccolte"
+        app:layout_constraintEnd_toStartOf="@+id/button_home_prodotti"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_benvenuto_titolo"
+        tools:textAllCaps="true" />
+
+    <Button
+        android:id="@+id/button_home_raccolte"
+        android:layout_width="160dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/caramel_brown"
+        android:fontFamily="@font/baloo_bhai"
+        android:text="Raccolte"
+        android:textSize="20sp"
+        app:cornerRadius="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_home_esplora"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_home_ricettario"
+        tools:textAllCaps="true" />
+
+    <Button
+        android:id="@+id/button_home_esplora"
+        android:layout_width="160dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/caramel_brown"
+        android:fontFamily="@font/baloo_bhai"
+        android:text="Esplora"
+        android:textSize="20sp"
+        app:cornerRadius="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_home_raccolte"
+        app:layout_constraintTop_toBottomOf="@+id/button_home_prodotti"
+        tools:textAllCaps="true" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

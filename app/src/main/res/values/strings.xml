@@ -1,0 +1,47 @@
+<resources>
+
+    <!-- Stringhe generiche -->
+    <string name="app_name">House of Tasty</string>
+
+    <string name="contentDescription_logo_big">logo dell\'applicazione, dimensione grande</string>
+    <string name="contentDescription_logo_medium">logo dell\'applicazione, dimensione media</string>
+
+    <string name="button_login">Accedi</string>
+    <string name="button_register">Registrati</string>
+
+    <!-- Stringhe specifiche di "activity_main" -->
+    <string name="button_next"><![CDATA[Prosegui >>]]></string>
+    <string name="welcome">Benvenuto!</string>
+    <string name="welcome_paragraph">Crea le tue ricette personalizzate, inserisci i tuoi prodotti, esplora le ricette di altri utenti con "House of Tasty"!</string>
+
+    <!-- Stringhe specifiche di "activity_access" -->
+    <string name="access_text">Accedi o crea un account</string>
+    <string name="access_bottomText">Continua in modalità offline</string>
+    <string name="contentDescription_access_background">immagine di sfondo</string>
+
+    <!-- Stringhe specifiche di "activity_login" -->
+    <string name="login_editTextPlaceholder_usernameEmail"><i>Username o Email</i></string>
+    <string name="login_editTextPlaceholder_password"><i>Password</i></string>
+    <string name="login_bottomText">Non hai un account? Registrati</string>
+
+    <!-- Stringhe specifiche di "activity_register" -->
+    <string name="register_editTextPlaceholder_username"><i>Username</i></string>
+    <string name="register_editTextPlaceholder_email"><i>Email</i></string>
+    <string name="register_editTextPlaceholder_name"><i>Nome</i></string>
+    <string name="register_editTextPlaceholder_surname"><i>Cognome</i></string>
+    <string name="register_editTextPlaceholder_password"><i>Password</i></string>
+    <string name="register_editTextPlaceholder_confirmPassword"><i>Conferma password</i></string>
+    <string name="register_bottomText">Hai già un account? Accedi</string>
+
+
+
+    <!-- Stringhe specifiche di "activity_home" -->
+
+    <!-- Generic Strings -->
+    <!-- Generic Strings -->
+    <!-- Generic Strings -->
+    <!-- Generic Strings -->
+    <!-- Generic Strings -->
+    <!-- Generic Strings -->
+
+</resources>
