@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameProfileDetails"
+    style="@style/groupStyledeep_orange_50"
+    android:layout_width="match_parent"
+    android:layout_height="737dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:context=".ProfileFragment"
+    tools:layout_editor_absoluteX="0dp">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:background="#45D19266">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearImageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10pxh"
+                android:layout_marginTop="@dimen/_5pxh"
+                android:layout_marginEnd="@dimen/_10pxh"
+                android:layout_marginBottom="@dimen/_5pxh"
+                android:gravity="start"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/_20pxh"
+                android:paddingEnd="@dimen/_50pxh">
+
+                <FrameLayout
+                    android:id="@+id/imageFrame"
+                    android:layout_width="@dimen/_170pxh"
+                    android:layout_height="@dimen/_171pxv">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_5pxh"
+                        android:layout_marginBottom="@dimen/_5pxh"
+                        android:background="@drawable/rectangle_bg_red_300_2b_radius_85"
+                        android:src="@drawable/img_peopleiconcol"
+                        tools:ignore="ContentDescription,ImageContrastCheck"
+                        tools:src="@drawable/img_peopleiconcol" />
+
+                </FrameLayout>
+
+                <ImageView
+                    android:id="@+id/editButton"
+                    android:layout_width="@dimen/_40pxh"
+                    android:layout_height="@dimen/_40pxh"
+                    android:layout_marginStart="@dimen/_10pxh"
+                    android:layout_marginBottom="@dimen/_131pxv"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_offer"
+                    tools:ignore="ContentDescription,ImageContrastCheck"
+                    tools:src="@drawable/img_offer" />
+
+            </LinearLayout> <!-- Layout immagine -->
+
+            <TextView
+                android:id="@+id/dettagli"
+                style="@style/txtSolid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3pxv"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:paddingStart="@dimen/_30pxh"
+                android:paddingTop="@dimen/_3pxv"
+                android:paddingEnd="@dimen/_30pxh"
+                android:paddingBottom="@dimen/_1pxv"
+                android:singleLine="true"
+                android:text="@string/dettagli"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                tools:ignore="RtlCompat,TextContrastCheck"
+                tools:text="@string/dettagli" /> <!-- Rettangolo "Dettagli profilo" -->
+
+            <TextView
+                android:id="@+id/txtUsername"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_15pxh"
+                android:layout_marginTop="@dimen/_8pxv"
+                android:layout_marginEnd="@dimen/_15pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/username"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/usernameData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_15pxh"
+                android:layout_marginTop="@dimen/_1pxv"
+                android:layout_marginEnd="@dimen/_15pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="michaelangelo77"
+                android:textSize="16sp" /> <!-- Informazioni Username-->
+
+            <TextView
+                android:id="@+id/txtEmail"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_15pxh"
+                android:layout_marginTop="@dimen/_13pxv"
+                android:layout_marginEnd="@dimen/_15pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/mail"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/mailData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_15pxh"
+                android:layout_marginTop="@dimen/_1pxv"
+                android:layout_marginEnd="@dimen/_15pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="michaelangelo@gmail.com"
+                android:textSize="16sp" /> <!-- Informazioni Email-->
+
+            <TextView
+                android:id="@+id/txtNome"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_14pxh"
+                android:layout_marginTop="@dimen/_13pxv"
+                android:layout_marginEnd="@dimen/_14pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/name"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/nameData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_15pxh"
+                android:layout_marginEnd="@dimen/_15pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="Michael"
+                android:textSize="16sp" /> <!-- Informazioni Nome -->
+
+            <TextView
+                android:id="@+id/txtCognome"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_14pxh"
+                android:layout_marginTop="@dimen/_13pxv"
+                android:layout_marginEnd="@dimen/_14pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/surname"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/surnameData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_15pxh"
+                android:layout_marginEnd="@dimen/_15pxh"
+                android:ellipsize="end"
+                android:paddingBottom="@dimen/_10pxh"
+                android:singleLine="true"
+                android:text="Angelo"
+                android:textSize="16sp" /> <!-- Informazioni Cognome -->
+
+            <TextView
+                android:id="@+id/statistiche"
+                style="@style/txtSolid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3pxv"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:paddingStart="@dimen/_30pxh"
+                android:paddingTop="@dimen/_3pxv"
+                android:paddingEnd="@dimen/_30pxh"
+                android:paddingBottom="@dimen/_1pxv"
+                android:singleLine="true"
+                android:text="@string/statistiche"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                tools:ignore="RtlCompat,TextContrastCheck" /> <!-- Informazioni Statistiche -->
+
+            <TextView
+                android:id="@+id/txtProfileVisual"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_14pxh"
+                android:layout_marginTop="@dimen/_12pxv"
+                android:layout_marginEnd="@dimen/_14pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/visualProfile"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/profileVisualData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_16pxh"
+                android:layout_marginEnd="@dimen/_16pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="123"
+                android:textSize="16sp" /> <!-- Informazioni Visualizzazioni -->
+
+            <TextView
+                android:id="@+id/txtPublishedRecipes"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_14pxh"
+                android:layout_marginTop="@dimen/_8pxv"
+                android:layout_marginEnd="@dimen/_14pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/publishedRecipes"
+                tools:ignore="TextContrastCheck,TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/publishedRecipesData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_16pxh"
+                android:layout_marginTop="@dimen/_1pxv"
+                android:layout_marginEnd="@dimen/_16pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="123"
+                android:textSize="16sp" /> <!-- Informazioni Ricette pubblicate -->
+
+            <TextView
+                android:id="@+id/txtTotalVisualRecipes"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_14pxh"
+                android:layout_marginTop="@dimen/_8pxv"
+                android:layout_marginEnd="@dimen/_14pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/totalRecipesView"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/totalVisualRecipesData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_16pxh"
+                android:layout_marginTop="@dimen/_1pxv"
+                android:layout_marginEnd="@dimen/_16pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="123"
+                android:textSize="@dimen/_18pxh" /> <!-- Informazioni totale ricette viste -->
+
+            <TextView
+                android:id="@+id/txtTotalLike"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_14pxh"
+                android:layout_marginTop="@dimen/_8pxv"
+                android:layout_marginEnd="@dimen/_14pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/totalLike"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/totalLikeData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_16pxh"
+                android:layout_marginTop="@dimen/_1pxv"
+                android:layout_marginEnd="@dimen/_16pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="123"
+                android:textSize="@dimen/_16sp" /> <!-- Informazioni totale Like -->
+
+            <TextView
+                android:id="@+id/txtTotalComment"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_14pxh"
+                android:layout_marginTop="@dimen/_8pxv"
+                android:layout_marginEnd="@dimen/_14pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/totalComment" />
+
+            <TextView
+                android:id="@+id/totalCommentData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_16pxh"
+                android:layout_marginTop="@dimen/_1pxv"
+                android:layout_marginEnd="@dimen/_16pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="123" /> <!-- Informazioni totale Commenti -->
+
+            <TextView
+                android:id="@+id/txtTotalDownload"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_14pxh"
+                android:layout_marginTop="@dimen/_8pxv"
+                android:layout_marginEnd="@dimen/_14pxh"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/totalDownload" />
+
+            <TextView
+                android:id="@+id/totalDownloadData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/_16pxh"
+                android:layout_marginTop="@dimen/_1pxv"
+                android:layout_marginEnd="@dimen/_16pxh"
+                android:ellipsize="end"
+                android:paddingBottom="@dimen/_15pxh"
+                android:singleLine="true"
+                android:text="123" /> <!-- Informazioni totale Download -->
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

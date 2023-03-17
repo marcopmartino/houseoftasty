@@ -33,9 +33,37 @@
     <string name="register_editTextPlaceholder_confirmPassword"><i>Conferma password</i></string>
     <string name="register_bottomText">Hai già un account? Accedi</string>
 
+    <!-- Stringhe specifiche di "activity_profile" -->
+
+    <string name="username">Username</string>
+    <string name="name">Nome</string>
+    <string name="surname">Cognome</string>
+    <string name="mail">Email</string>
+    <string name="dettagli">Dettagli profilo</string>
+    <string name="statistiche">Statistiche</string>
+    <string name="visualProfile">Visualizzazioni profilo</string>
+    <string name="publishedRecipes">Ricette pubblicate</string>
+    <string name="totalRecipesView">Totale visualizzazioni ricette</string>
+    <string name="totalLike">Totale "mi piace" ricette</string>
+    <string name="totalComment">Totale commenti ricette</string>
+    <string name="totalDownload">Totale download ricette</string>
+
+    <!-- Stringhe specifiche del Navigation Drawer -->
+
+    <string name="menu_home">Home</string>
+    <string name="menu_profile">Profilo</string>
+    <string name="openDrawer">Open</string>
+    <string name="closeDrawer">Close</string>
 
 
     <!-- Stringhe specifiche di "activity_home" -->
+    <string name="raccolte">Raccolte</string>
+    <string name="esplora">Esplora</string>
+    <string name="ricettario">Ricettario</string>
+    <string name="prodotti">Prodotti</string>
+    <string name="ciao_cosa_cucini_oggi">Ciao, cosa cucini oggi?</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
 
     <!-- Generic Strings -->
     <!-- Generic Strings -->
