@@ -1,10 +1,409 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".ProfileFragment">
 
-    <include layout="@layout/activity_profile"/>
+    <data>
+        <variable
+            name="userData"
+            type="it.project.houseoftasty.viewModel.UserViewModel"/>
+    </data>
 
-</FrameLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#45D19266" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_bg_deep_orange_50">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/img_peopleiconcol"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.103"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/editButton"
+                android:layout_width="57dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="16dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_offer"
+                app:layout_constraintBottom_toTopOf="@+id/dettagli"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.026"
+                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/dettagli"
+                style="@style/txtSolid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rectangle_bg_red_300"
+                android:singleLine="true"
+                android:text="@string/dettagli"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+            <TextView
+                android:id="@+id/txtUsername"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="89dp"
+                android:layout_height="27dp"
+                android:layout_gravity="start"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/username"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.049"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dettagli"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/usernameData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="12dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@{userData.username}"
+                android:textSize="@dimen/_16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.042"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtUsername" /> <!-- Informazioni Username-->
+
+            <TextView
+                android:id="@+id/txtEmail"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/mail"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.042"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/usernameData"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/mailData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="12dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@{userData.email}"
+                android:textSize="@dimen/_16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.042"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtEmail" /> <!-- Informazioni Email-->
+
+            <TextView
+                android:id="@+id/txtNome"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.043"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mailData"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/nameData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="12dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@{userData.nome}"
+                android:textSize="@dimen/_16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.042"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtNome" /> <!-- Informazioni Nome -->
+
+            <TextView
+                android:id="@+id/txtCognome"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/surname"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.046"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nameData"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/surnameData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="12dp"
+                android:ellipsize="end"
+                android:paddingBottom="@dimen/_10pxh"
+                android:singleLine="true"
+                android:text="@{userData.cognome}"
+                android:textSize="@dimen/_16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.042"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtCognome" /> <!-- Informazioni Cognome -->
+
+            <TextView
+                android:id="@+id/statistiche"
+                style="@style/txtSolid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:paddingStart="@dimen/_30pxh"
+                android:paddingTop="@dimen/_3pxv"
+                android:paddingEnd="@dimen/_30pxh"
+                android:paddingBottom="@dimen/_1pxv"
+                android:singleLine="true"
+                android:text="@string/statistiche"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/surnameData"
+                tools:ignore="RtlCompat,TextContrastCheck" /> <!-- Informazioni Statistiche -->
+
+            <TextView
+                android:id="@+id/txtProfileVisual"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/visualProfile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.061"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/statistiche"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/profileVisualData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="12dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="123"
+                android:textSize="@dimen/_16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.04"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtProfileVisual" /> <!-- Informazioni Visualizzazioni -->
+
+            <TextView
+                android:id="@+id/txtPublishedRecipes"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/publishedRecipes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.06"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profileVisualData"
+                tools:ignore="TextContrastCheck,TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/publishedRecipesData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="12dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="123"
+                android:textSize="@dimen/_16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.04"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtPublishedRecipes" /> <!-- Informazioni Ricette pubblicate -->
+
+            <TextView
+                android:id="@+id/txtTotalVisualRecipes"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/totalRecipesView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.06"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/publishedRecipesData"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/totalVisualRecipesData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="12dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="123"
+                android:textSize="@dimen/_16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.04"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtTotalVisualRecipes" /> <!-- Informazioni totale ricette viste -->
+
+            <TextView
+                android:id="@+id/txtTotalLike"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/totalLike"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.06"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/totalVisualRecipesData"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/totalLikeData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="12dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="123"
+                android:textSize="@dimen/_16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.04"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtTotalLike" /> <!-- Informazioni totale Like -->
+
+            <TextView
+                android:id="@+id/txtTotalComment"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/totalComment"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.06"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/totalLikeData" />
+
+            <TextView
+                android:id="@+id/totalCommentData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="12sp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="123"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.04"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtTotalComment" /> <!-- Informazioni totale Commenti -->
+
+            <TextView
+                android:id="@+id/txtTotalDownload"
+                style="@style/txtBaloo2semibold16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/totalDownload"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.06"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/totalCommentData" />
+
+            <TextView
+                android:id="@+id/totalDownloadData"
+                style="@style/txtBaloo2medium14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="12sp"
+                android:ellipsize="end"
+                android:paddingBottom="@dimen/_15pxh"
+                android:singleLine="true"
+                android:text="123"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.04"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtTotalDownload" /> <!-- Informazioni totale Download -->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+</layout>

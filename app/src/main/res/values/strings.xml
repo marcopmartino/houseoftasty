@@ -54,6 +54,10 @@
     <string name="menu_profile">Profilo</string>
     <string name="openDrawer">Open</string>
     <string name="closeDrawer">Close</string>
+    <string name="home">Home</string>
+    <string name="accedi">Accedi</string>
+    <string name="registrati">Registrati</string>
+    <string name="logout">Logout</string>
 
 
     <!-- Stringhe specifiche di "activity_home" -->
@@ -63,7 +67,6 @@
     <string name="prodotti">Prodotti</string>
     <string name="ciao_cosa_cucini_oggi">Ciao, cosa cucini oggi?</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="home">Home</string>
 
     <!-- Generic Strings -->
     <!-- Generic Strings -->

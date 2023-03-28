@@ -8,11 +8,11 @@
         android:icon="@drawable/img_home"
         android:title="@string/menu_home"/>
     <item
-        android:id="@+id/nav_login"
-        android:icon="@drawable/img_login"
-        android:title="@string/accedi"/>
-    <item
-        android:id="@+id/nav_registrer"
+        android:id="@+id/nav_profile"
         android:icon="@drawable/img_profile"
-        android:title="@string/registrati"/>
+        android:title="@string/menu_profile"/>
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/img_logout"
+        android:title="@string/logout"/>
 </menu>

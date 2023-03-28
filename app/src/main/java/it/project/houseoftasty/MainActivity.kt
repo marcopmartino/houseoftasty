@@ -4,22 +4,28 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var menu: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        firebaseAuth = FirebaseAuth.getInstance()
+        var firebaseUser = firebaseAuth.currentUser
 
 
         var toolbar = findViewById<Toolbar>(R.id.my_toolbar)
@@ -27,6 +33,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.navView)
+
+        if(firebaseUser!=null){
+            Toast.makeText(this, "Loggato", Toast.LENGTH_SHORT).show()
+            navView.menu.clear()
+            navView.inflateMenu(R.menu.after_login)
+        }
 
         //Inizializzo la toolbar da utilizzare per aprire il drawer
         var toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer,R.string.closeDrawer)
@@ -46,9 +58,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean{
         drawerLayout.closeDrawers()
         when(item.itemId){
+            R.id.nav_login -> {
+                setToolbarTitle("Accedi")
+                changeFragment(LoginFragment())
+            }
+            R.id.nav_registrer -> {
+                setToolbarTitle("Registrati")
+                changeFragment(RegisterFragment())
+            }
             R.id.nav_profile -> {
                 setToolbarTitle("Profilo")
                 changeFragment(ProfileFragment())
+            }
+            R.id.nav_logout -> {
+                setToolbarTitle("Logout")
+                changeFragment(LogoutFragment())
             }
             else -> {
                 setToolbarTitle("House of Tasty")

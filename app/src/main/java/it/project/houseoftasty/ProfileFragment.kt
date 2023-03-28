@@ -1,19 +1,47 @@
 package it.project.houseoftasty
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
+import it.project.houseoftasty.databinding.FragmentProfileBinding
+import it.project.houseoftasty.viewModel.UserViewModel
 
 class ProfileFragment : Fragment() {
+
+    private lateinit var binding: FragmentProfileBinding
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firebaseDb: DocumentReference
+
+    private val userModel: UserViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+    ): View {
+
+        binding = FragmentProfileBinding.inflate(inflater)
+        val view: View = binding.root
+
+        firebaseAuth = FirebaseAuth.getInstance()
+        firebaseDb = FirebaseFirestore.getInstance().collection("users").document(firebaseAuth.currentUser!!.email.toString())
+
+        firebaseDb.get().addOnCompleteListener{
+            binding.usernameData.text = it.result?.data?.get("username").toString()
+            binding.nameData.text = it.result?.data?.get("nome").toString()
+            binding.surnameData.text = it.result?.data?.get("cognome").toString()
+            binding.mailData.text = it.result?.data?.get("email").toString()
+        }
+
+        Log.d("BID", userModel.getUsername())
+        return view
     }
 
 }
