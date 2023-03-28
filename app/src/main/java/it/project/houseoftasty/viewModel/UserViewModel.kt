@@ -3,7 +3,7 @@ package it.project.houseoftasty.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 
-class UserViewModel: ViewModel() {
+class UserViewModel() : ViewModel() {
     var username: String = ""
     var nome: String = ""
     var cognome: String = ""

@@ -1,11 +1,11 @@
 package it.project.houseoftasty
 
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -43,8 +43,7 @@ class LoginFragment : Fragment() {
                         var navView = activity?.findViewById<NavigationView>(R.id.navView)
                         navView!!.menu.clear()
                         navView.inflateMenu(R.menu.after_login)
-
-
+                        (activity as AppCompatActivity).supportActionBar?.title ="Profilo"
 
                         val fragment = parentFragmentManager.beginTransaction()
                         fragment.replace(R.id.fragment_container, ProfileFragment()).commit()

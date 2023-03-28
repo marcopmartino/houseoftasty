@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
@@ -23,6 +24,9 @@ class LogoutFragment : Fragment() {
         var navView = activity?.findViewById<NavigationView>(R.id.navView)
         navView!!.menu.clear()
         navView.inflateMenu(R.menu.nav_item)
+        (activity as AppCompatActivity).supportActionBar?.title ="Login"
+        val fragment = activity?.supportFragmentManager?.beginTransaction()
+        fragment?.replace(R.id.fragment_container, LoginFragment())?.commit()
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 }
