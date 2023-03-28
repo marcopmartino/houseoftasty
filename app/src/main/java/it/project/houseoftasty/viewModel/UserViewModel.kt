@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 
 class UserViewModel: ViewModel() {
-    private var username: String = ""
+    var username: String = ""
     var nome: String = ""
     var cognome: String = ""
     var email: String = ""
@@ -13,12 +13,19 @@ class UserViewModel: ViewModel() {
         Log.d("MODEL", "UserModel Creato!!")
     }
 
-    fun setUsername(temp: String){
+    fun loadData(username: String, nome: String, cognome: String, email: String){
+        this.username = username
+        this.nome = nome
+        this.cognome = cognome
+        this.email = email
+    }
+
+    /*fun setUsername(temp: String){
         username = temp
     }
 
     fun getUsername(): String {
         return username
-    }
+    }*/
 
 }

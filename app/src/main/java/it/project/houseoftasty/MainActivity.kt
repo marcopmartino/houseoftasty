@@ -29,13 +29,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         var toolbar = findViewById<Toolbar>(R.id.my_toolbar)
-        setSupportActionBar(findViewById<Toolbar>(R.id.my_toolbar))
+        setSupportActionBar(toolbar)
 
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.navView)
 
         if(firebaseUser!=null){
-            Toast.makeText(this, "Loggato", Toast.LENGTH_SHORT).show()
             navView.menu.clear()
             navView.inflateMenu(R.menu.after_login)
         }

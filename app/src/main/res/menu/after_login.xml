@@ -15,4 +15,5 @@
         android:id="@+id/nav_logout"
         android:icon="@drawable/img_logout"
         android:title="@string/logout"/>
+
 </menu>

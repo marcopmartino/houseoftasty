@@ -34,13 +34,11 @@ class ProfileFragment : Fragment() {
         firebaseDb = FirebaseFirestore.getInstance().collection("users").document(firebaseAuth.currentUser!!.email.toString())
 
         firebaseDb.get().addOnCompleteListener{
-            binding.usernameData.text = it.result?.data?.get("username").toString()
-            binding.nameData.text = it.result?.data?.get("nome").toString()
-            binding.surnameData.text = it.result?.data?.get("cognome").toString()
-            binding.mailData.text = it.result?.data?.get("email").toString()
+            userModel.loadData(it.result?.data?.get("username").toString(),it.result?.data?.get("nome").toString(),
+                               it.result?.data?.get("cognome").toString(), it.result?.data?.get("email").toString())
+            binding.userData = userModel
         }
 
-        Log.d("BID", userModel.getUsername())
         return view
     }
 

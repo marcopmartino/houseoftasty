@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.FrameLayout
+import androidx.fragment.app.FragmentActivity
 
 class AccessActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,8 +13,8 @@ class AccessActivity : AppCompatActivity() {
         setContentView(R.layout.activity_access)
 
         findViewById<Button>(R.id.button_login).setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            val fragment = this.supportFragmentManager.beginTransaction()
+             fragment.add(R.id.fragment_container, LoginFragment()).commit()
         }
 
         findViewById<Button>(R.id.button_register).setOnClickListener {

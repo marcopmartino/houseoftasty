@@ -25,7 +25,7 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".LoginFragment"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"

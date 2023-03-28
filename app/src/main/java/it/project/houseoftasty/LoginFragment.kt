@@ -35,9 +35,9 @@ class LoginFragment : Fragment() {
         view.findViewById<Button>(R.id.button_accedi).setOnClickListener{
             val email = view.findViewById<EditText>(R.id.email_login).text.toString()
             val password = view.findViewById<EditText>(R.id.password_login).text.toString()
-            firebaseDb = FirebaseFirestore.getInstance().collection("users").document(email)
 
             if(email.isNotEmpty() && password.isNotEmpty()){
+                firebaseDb = FirebaseFirestore.getInstance().collection("users").document(email)
                 firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener{
                     if(it.isSuccessful){
                         var navView = activity?.findViewById<NavigationView>(R.id.navView)
