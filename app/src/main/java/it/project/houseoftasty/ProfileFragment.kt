@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
@@ -26,18 +27,26 @@ class ProfileFragment : Fragment() {
     ): View {
 
         binding = FragmentProfileBinding.inflate(inflater)
-        val view: View = binding.root
+        return binding.root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseDb = FirebaseFirestore.getInstance().collection("users").document(firebaseAuth.currentUser!!.email.toString())
 
         firebaseDb.get().addOnCompleteListener{
             userModel.loadData(it.result?.data?.get("username").toString(),it.result?.data?.get("nome").toString(),
-                               it.result?.data?.get("cognome").toString(), it.result?.data?.get("email").toString())
+                it.result?.data?.get("cognome").toString(), it.result?.data?.get("email").toString())
             binding.userData = userModel
         }
 
-        return view
+        view.findViewById<TextView>(R.id.btnEditProfile).setOnClickListener {
+            val fragment = parentFragmentManager.beginTransaction()
+            fragment.replace(R.id.fragment_container, EditProfileFragment()).commit()
+        }
     }
 
 }

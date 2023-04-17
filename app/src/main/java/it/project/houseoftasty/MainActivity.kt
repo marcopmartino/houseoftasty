@@ -2,7 +2,6 @@ package it.project.houseoftasty
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
@@ -17,17 +16,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
     private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var menu: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         firebaseAuth = FirebaseAuth.getInstance()
-        var firebaseUser = firebaseAuth.currentUser
+        val firebaseUser = firebaseAuth.currentUser
 
 
-        var toolbar = findViewById<Toolbar>(R.id.my_toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.my_toolbar)
         setSupportActionBar(toolbar)
 
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -39,7 +37,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         //Inizializzo la toolbar da utilizzare per aprire il drawer
-        var toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer,R.string.closeDrawer)
+        val toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer,R.string.closeDrawer)
         toggle.isDrawerIndicatorEnabled = true
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -71,6 +69,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_logout -> {
                 setToolbarTitle("Logout")
                 changeFragment(LogoutFragment())
+            }
+            R.id.nav_product -> {
+                setToolbarTitle("I miei prodotti")
+                changeFragment(MyProductFragment())
             }
             else -> {
                 setToolbarTitle("House of Tasty")

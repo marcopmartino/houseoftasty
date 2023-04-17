@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="start"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemFrame"
+        style="@style/groupStylered_300_38cornerRadius"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_90sp"
+        android:padding="@dimen/_8pxh"
+        app:layout_constraintVertical_bias="0.039">
+
+        <TextView
+            android:id="@+id/nomeData"
+            style="@style/txtBalooBhairegular20_1"
+            android:layout_width="126dp"
+            android:layout_height="26dp"
+            android:layout_weight="0.61"
+            android:ellipsize="end"
+            android:singleLine="true"
+            app:layout_constraintBottom_toBottomOf="@+id/itemFrame"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.051"
+            app:layout_constraintStart_toStartOf="@+id/itemFrame"
+            app:layout_constraintTop_toTopOf="@+id/itemFrame"
+            app:layout_constraintVertical_bias="0.326" />
+
+        <TextView
+            android:id="@+id/quantitaLabel"
+            android:layout_width="62dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:gravity="start"
+            android:orientation="horizontal"
+            android:text="@string/quantita"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nomeData"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/quantitaData"
+            style="@style/txtBaloo2regular16"
+            android:layout_width="31dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="148"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/quantitaLabel"
+            app:layout_constraintTop_toBottomOf="@+id/nomeData"
+            app:layout_constraintVertical_bias="0.416" />
+
+        <TextView
+            android:id="@+id/quantitaMisura"
+            style="@style/txtBaloo2regular16"
+            android:layout_width="31dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="148"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/quantitaData"
+            app:layout_constraintTop_toBottomOf="@+id/nomeData"
+            app:layout_constraintVertical_bias="0.416" />
+
+        <TextView
+            android:id="@+id/scadenzaLabel"
+            style="@style/Widget.AppCompat.TextView"
+            android:layout_width="70dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="148"
+            android:text="@string/scadenza"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/quantitaMisura"
+            app:layout_constraintTop_toBottomOf="@+id/nomeData"
+            app:layout_constraintVertical_bias="0.363" />
+
+        <TextView
+            android:id="@+id/scadenzaData"
+            style="@style/txtBaloo2regular16"
+            android:layout_width="74dp"
+            android:layout_height="23dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="148"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.442"
+            app:layout_constraintStart_toEndOf="@+id/scadenzaLabel"
+            app:layout_constraintTop_toBottomOf="@+id/nomeData"
+            app:layout_constraintVertical_bias="0.36" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

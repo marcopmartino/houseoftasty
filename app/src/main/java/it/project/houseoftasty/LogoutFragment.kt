@@ -3,7 +3,6 @@ package it.project.houseoftasty
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +20,7 @@ class LogoutFragment : Fragment() {
 
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseAuth.signOut()
-        var navView = activity?.findViewById<NavigationView>(R.id.navView)
+        val navView = activity?.findViewById<NavigationView>(R.id.navView)
         navView!!.menu.clear()
         navView.inflateMenu(R.menu.nav_item)
         (activity as AppCompatActivity).supportActionBar?.title ="Login"

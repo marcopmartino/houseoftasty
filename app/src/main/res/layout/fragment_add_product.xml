@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".AddProductFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/groupStyledeep_orange_50"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top|start"
+        android:layout_marginBottom="@dimen/_10pxv"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/labelNome"
+            style="@style/txtBaloo2baloo2semibold16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="60dp"
+            android:ellipsize="end"
+            android:lineSpacingExtra="@dimen/_10pxh"
+            android:singleLine="true"
+            android:text="@string/nome_prodotto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.145"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Dati nome -->
+
+        <!-- Dati quantità -->
+
+        <EditText
+            android:id="@+id/dataNome"
+            style="@style/etSolidRoundedOutline"
+            android:layout_width="310dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+            android:ellipsize="end"
+            android:hint="@string/productNameHint"
+            android:inputType="text"
+            android:lineSpacingExtra="@dimen/_10pxh"
+            android:paddingStart="@dimen/_15pxh"
+            android:paddingTop="@dimen/_13pxv"
+            android:paddingEnd="@dimen/_30pxh"
+            android:paddingBottom="@dimen/_12pxv"
+            android:singleLine="true"
+            android:textColorHint="@color/gray_400"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.445"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelNome"
+            android:autofillHints="no" />
+
+        <TextView
+            android:id="@+id/labelQuantita"
+            style="@style/txtBaloo2baloo2semibold16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/_9pxh"
+            android:ellipsize="end"
+            android:lineSpacingExtra="@dimen/_10pxh"
+            android:singleLine="true"
+            android:text="@string/amountUnit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.203"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dataNome" />
+
+        <EditText
+            android:id="@+id/dataQuantita"
+            style="@style/etSolidRoundedOutline"
+            android:layout_width="148dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+            android:ellipsize="end"
+            android:hint="@string/quantitaHint"
+            android:inputType="number"
+            android:lineSpacingExtra="@dimen/_10pxh"
+            android:paddingStart="@dimen/_15pxh"
+            android:paddingTop="@dimen/_13pxv"
+            android:paddingEnd="@dimen/_30pxh"
+            android:paddingBottom="@dimen/_12pxv"
+            android:singleLine="true"
+            android:textColorHint="@color/gray_400"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.167"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelQuantita"
+            android:autofillHints="no" />
+
+        <Spinner
+            android:id="@+id/quantitaMisura"
+            android:layout_width="82dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            style="@style/etSolidRoundedOutline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.205"
+            app:layout_constraintStart_toEndOf="@+id/dataQuantita"
+            app:layout_constraintTop_toBottomOf="@+id/labelQuantita" />
+
+        <TextView
+            android:id="@+id/labelScadenza"
+            style="@style/txtBaloo2baloo2semibold16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:lineSpacingExtra="@dimen/_10pxh"
+            android:singleLine="true"
+            android:text="@string/scadenza"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.127"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dataQuantita" />
+
+        <TextView
+            android:id="@+id/dataScadenza"
+            style="@style/txtBaloo2baloo2semibold16"
+            android:layout_width="149dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/dataPlaceholder"
+            android:textAlignment="center"
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelScadenza"/>
+
+        <ImageButton
+            android:id="@+id/dataButton"
+            android:layout_width="55dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/setExpire"
+            android:src="@drawable/img_calendar"
+            android:textAlignment="textEnd"
+            app:layout_constraintStart_toEndOf="@+id/dataScadenza"
+            app:layout_constraintTop_toBottomOf="@+id/labelScadenza" />
+
+        <CheckBox
+            android:id="@+id/checkBoxSenzascadenza"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="8dp"
+            android:buttonTint="@color/red_300"
+            android:ellipsize="end"
+            android:fontFamily="@font/baloo_2"
+            android:lineSpacingExtra="@dimen/_10pxh"
+            android:singleLine="true"
+            android:text="@string/noExpire"
+            android:textColor="@color/red_300"
+            android:textStyle="bold"
+            android:textSize="@dimen/_14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.152"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dataScadenza" />
+
+        <Button
+            android:id="@+id/button_addProduct"
+            android:layout_width="248dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/tawny_brown"
+            android:fontFamily="@font/baloo_bhai"
+            android:text="@string/addProduct"
+            android:textSize="16sp"
+            app:cornerRadius="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxSenzascadenza"
+            app:layout_constraintVertical_bias="0.0"
+            tools:textAllCaps="true" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

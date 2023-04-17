@@ -33,7 +33,7 @@
     <string name="register_editTextPlaceholder_confirmPassword"><i>Conferma password</i></string>
     <string name="register_bottomText">Hai già un account? Accedi</string>
 
-    <!-- Stringhe specifiche di "activity_profile" -->
+    <!-- Stringhe specifiche di "fragment_profile" -->
 
     <string name="username">Username</string>
     <string name="name">Nome</string>
@@ -48,6 +48,16 @@
     <string name="totalComment">Totale commenti ricette</string>
     <string name="totalDownload">Totale download ricette</string>
 
+    <!-- Stringhe specifiche di "fragment_editProfile" -->
+
+    <string name="txtEditProfile">Modifica Profilo</string>
+    <string name="txtEditImage">Modifica immagine</string>
+    <string name="txtRemoveImage">Rimuovi immagine</string>
+    <string name="txtNewPassword">Nuova password</string>
+    <string name="txtEmptyNotEdit">Lascia vuoto per non modificare</string>
+    <string name="txtConfermaPassword">Conferma password</string>
+    <string name="txtSaveEdit">Salva modifiche</string>
+
     <!-- Stringhe specifiche del Navigation Drawer -->
 
     <string name="menu_home">Home</string>
@@ -58,6 +68,7 @@
     <string name="accedi">Accedi</string>
     <string name="registrati">Registrati</string>
     <string name="logout">Logout</string>
+    <string name="products">I miei prodotti</string>
 
 
     <!-- Stringhe specifiche di "activity_home" -->
@@ -66,13 +77,32 @@
     <string name="ricettario">Ricettario</string>
     <string name="prodotti">Prodotti</string>
     <string name="ciao_cosa_cucini_oggi">Ciao, cosa cucini oggi?</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="currentPasswordHint">Inserire password corrente</string>
+    <string name="quantita">Quantità:</string>
+    <string name="scadenza">Scadenza:</string>
 
-    <!-- Generic Strings -->
-    <!-- Generic Strings -->
-    <!-- Generic Strings -->
-    <!-- Generic Strings -->
-    <!-- Generic Strings -->
-    <!-- Generic Strings -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nome_prodotto">Nome prodotto:</string>
+    <string name="quantit">Quantità:</string>
+    <string name="amountUnit">Quantita e unità di misura</string>
+    <string name="dataPlaceholder">--/--/----</string>
+    <string name="setExpire">Seleziona data di scadenza</string>
+    <string name="noExpire">Senza scadenza</string>
+    <string name="addProduct">Aggiungi prodotto</string>
+    <string name="productNameHint">Inserire nome prodotto/ingrediente</string>
+    <string name="quantitaHint">Inserire quantita</string>
+    <string name="aggiungi_prodotto">Aggiungi prodotto</string>
+    <string name="txt_deleteProduct">Elimina prodotto</string>
+    <string name="bottone_aggiunta_prodotto">Bottone aggiunta prodotto</string>
+
+    <!-- String Spinner unità di misura quantita prodotto -->
+    <string-array name="array_misure">
+        <item>-</item>
+        <item>g</item>
+        <item>Kg</item>
+        <item>cl</item>
+        <item>L</item>
+    </string-array>
+
 
 </resources>

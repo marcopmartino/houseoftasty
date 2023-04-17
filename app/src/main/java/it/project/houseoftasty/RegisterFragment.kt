@@ -24,7 +24,11 @@ class RegisterFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         binding = FragmentRegisterBinding.inflate(inflater)
-        val view: View = binding.root
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseDb = FirebaseFirestore.getInstance().collection("users")
@@ -47,7 +51,7 @@ class RegisterFragment : Fragment() {
                                 val fragment = parentFragmentManager.beginTransaction()
                                 fragment.replace(R.id.fragment_container, LoginFragment()).commit()
                             }.addOnFailureListener {
-                                exception: java.lang.Exception -> Toast.makeText(activity, exception.toString(), Toast.LENGTH_LONG).show()
+                                    exception: java.lang.Exception -> Toast.makeText(activity, exception.toString(), Toast.LENGTH_LONG).show()
                             }
                     } else {
                         Toast.makeText(activity, "Le password non corrispondono!",Toast.LENGTH_SHORT).show()
@@ -65,7 +69,6 @@ class RegisterFragment : Fragment() {
             val fragment = parentFragmentManager.beginTransaction()
             fragment.replace(R.id.fragment_container, LoginFragment()).commit()
         }
-        return view
     }
 
     private fun isValidEmail(mail: String): Boolean {
@@ -80,7 +83,7 @@ class RegisterFragment : Fragment() {
             user.put("nome", nome)
             user.put("cognome", cognome)
             firebaseDb.document(email).set(user).addOnSuccessListener {
-                Toast.makeText(activity, "Account creato", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Account creato!!", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
                 exception: java.lang.Exception -> Toast.makeText(activity, exception.toString(), Toast.LENGTH_LONG).show()
             }

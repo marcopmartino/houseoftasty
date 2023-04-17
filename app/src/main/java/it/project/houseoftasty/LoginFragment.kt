@@ -5,12 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Lifecycle
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
@@ -27,7 +22,11 @@ class LoginFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         binding = FragmentLoginBinding.inflate(inflater)
-        val view: View = binding.root
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         firebaseAuth = FirebaseAuth.getInstance()
 
@@ -40,7 +39,7 @@ class LoginFragment : Fragment() {
                 firebaseDb = FirebaseFirestore.getInstance().collection("users").document(email)
                 firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener{
                     if(it.isSuccessful){
-                        var navView = activity?.findViewById<NavigationView>(R.id.navView)
+                        val navView = activity?.findViewById<NavigationView>(R.id.navView)
                         navView!!.menu.clear()
                         navView.inflateMenu(R.menu.after_login)
                         (activity as AppCompatActivity).supportActionBar?.title ="Profilo"
@@ -60,7 +59,6 @@ class LoginFragment : Fragment() {
             val fragment = parentFragmentManager.beginTransaction()
             fragment.replace(R.id.fragment_container, RegisterFragment()).commit()
         }
-        return view
     }
 }
 

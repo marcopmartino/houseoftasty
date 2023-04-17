@@ -21,11 +21,13 @@
     <color name="deep_orange_50">#faeade</color>
     <color name="deep_orange_100">#f1d7c3</color>
     <color name="black_900">#000000</color>
+    <color name="gray_400">#c7c7c7</color>
     <color name="red_300_b2">#b2d19266</color>
     <color name="red_300_2b">#2bd19166</color>
     <color name="red_300">#d19266</color>
     <color name="red_300_38">#b2d19266</color>
     <color name="red_301">#d68b57</color>
     <color name="white_A700">#ffffff</color>
+    <color name="red_A700">#b40000</color>
 
 </resources>

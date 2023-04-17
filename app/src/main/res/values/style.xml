@@ -61,6 +61,65 @@
         <item name="android:fontFamily">@font/baloo_bhai</item>
         <item name="android:textFontWeight" tools:targetApi="p">400</item>
     </style>
+    <style name="btnSolidRounded">
+        <item name="android:textSize">@dimen/_16pxh</item>
+        <item name="android:textColor">@color/white_A700</item>
+        <item name="android:fontFamily">@font/baloo_bhai</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+        <item name="android:background">@drawable/rectangle_bg_red_300_radius_20</item>
+    </style>
+    <style name="etSolidRoundedOutline_1">
+        <item name="android:textSize">@dimen/_16pxh</item>
+        <item name="android:textColor">@color/gray_400</item>
+        <item name="android:fontFamily">@font/baloo_2</item>
+        <item name="android:textFontWeight" tools:targetApi="p">500</item>
+        <item name="android:background">@drawable/rectangle_bg_white_a700_border_red_300_radius_5</item>
+    </style>
+    <style name="btnSolidRoundedOutline">
+        <item name="android:textSize">@dimen/_16pxh</item>
+        <item name="android:textColor">@color/white_A700</item>
+        <item name="android:fontFamily">@font/baloo_2</item>
+        <item name="android:textFontWeight" tools:targetApi="p">600</item>
+        <item name="android:background">@drawable/rectangle_bg_red_300_border_red_300_radius_5</item>
+    </style>
+    <style name="txtBaloo2baloo2semibold16">
+        <item name="android:textSize">@dimen/_16pxh</item>
+        <item name="android:textColor">@color/red_300</item>
+        <item name="android:fontFamily">@font/baloo_2</item>
+        <item name="android:textFontWeight" tools:targetApi="p">600</item>
+    </style>
+    <style name="etSolidRoundedOutline">
+        <item name="android:textSize">@dimen/_16pxh</item>
+        <item name="android:textColor">@color/black_900</item>
+        <item name="android:fontFamily">@font/baloo_2</item>
+        <item name="android:textFontWeight" tools:targetApi="p">500</item>
+        <item name="android:background">@drawable/rectangle_bg_white_a700_border_red_300_radius_5</item>
+    </style>
+    <style name="btnSolidRounded_1">
+        <item name="android:textSize">@dimen/_16pxh</item>
+        <item name="android:textColor">@color/white_A700</item>
+        <item name="android:fontFamily">@font/baloo_bhai</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+        <item name="android:background">@drawable/rectangle_bg_red_a700_radius_20</item>
+    </style>
+    <style name="groupStylecornerRadius">
+        <item name="android:background">@drawable/rectangle_radius_20</item>
+    </style>
+    <style name="groupStylered_300_38cornerRadius">
+        <item name="android:background">@drawable/rectangle_bg_red_300_38_radius_20</item>
+    </style>
+    <style name="txtBaloo2regular16">
+        <item name="android:textSize">@dimen/_14pxh</item>
+        <item name="android:textColor">@color/black_900</item>
+        <item name="android:fontFamily">@font/baloo_2</item>
+
+    </style>
+    <style name="txtBalooBhairegular20_1">
+        <item name="android:textSize">@dimen/_20pxh</item>
+        <item name="android:textColor">@color/red_300</item>
+        <item name="android:fontFamily">@font/baloo_bhai</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
 
 
 
