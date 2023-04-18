@@ -40,7 +40,7 @@ class EditProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         (activity as AppCompatActivity).supportActionBar?.title ="Modifica profilo"
         binding = FragmentEditProfileBinding.inflate(inflater)
@@ -52,7 +52,7 @@ class EditProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         firebaseAuth = FirebaseAuth.getInstance()
-        firebaseDb = FirebaseFirestore.getInstance().collection("users").document(firebaseAuth.currentUser!!.email.toString())
+        firebaseDb = FirebaseFirestore.getInstance().collection("users").document(firebaseAuth.currentUser!!.uid)
 
         firebaseDb.get().addOnCompleteListener{
             userModel.loadData(it.result?.data?.get("username").toString(),it.result?.data?.get("nome").toString(),

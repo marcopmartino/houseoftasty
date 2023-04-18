@@ -28,7 +28,7 @@ class AddProductFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAddProductBinding.inflate(inflater)
         return binding.root
     }
@@ -39,7 +39,7 @@ class AddProductFragment : Fragment() {
 
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseDb = FirebaseFirestore.getInstance().collection("users")
-            .document(firebaseAuth.currentUser!!.email.toString()).collection("products")
+            .document(firebaseAuth.currentUser!!.uid).collection("products")
 
         val spinner: Spinner = view.findViewById(R.id.quantitaMisura)
         val cal = Calendar.getInstance()
@@ -132,7 +132,7 @@ class AddProductFragment : Fragment() {
                 product.put("scadenza", scadenza)
             }
 
-            firebaseDb.document(nome).set(product).addOnSuccessListener {
+            firebaseDb.add(product).addOnSuccessListener {
                 Toast.makeText(activity, "Prodotto aggiunto!!", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener { exception: java.lang.Exception ->
                 Toast.makeText(activity, exception.toString(), Toast.LENGTH_LONG).show()

@@ -52,7 +52,7 @@ class ProductAdapter(
         override fun onClick(v: View?) {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                listener.passData(mList[adapterPosition].nome)
+                listener.passData(mList[adapterPosition].id)
             }
         }
     }

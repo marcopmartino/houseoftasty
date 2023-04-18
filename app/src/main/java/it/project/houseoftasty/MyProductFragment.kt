@@ -39,7 +39,7 @@ class MyProductFragment : Fragment(), Communicator {
 
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseDb = FirebaseFirestore.getInstance().collection("users")
-            .document(firebaseAuth.currentUser!!.email.toString()).collection("products")
+            .document(firebaseAuth.currentUser!!.uid).collection("products")
 
         val recyclerview = view.findViewById<RecyclerView>(R.id.productList)
         recyclerview.layoutManager = LinearLayoutManager(activity)
@@ -49,7 +49,7 @@ class MyProductFragment : Fragment(), Communicator {
         firebaseDb.get().addOnSuccessListener { documents ->
             for(document in documents){
                 val productModel = ProductViewModel()
-                productModel.setData(document.get("nome").toString(),document.get("quantita").toString(),
+                productModel.setData(document.id,document.get("nome").toString(),document.get("quantita").toString(),
                     document.get("misura").toString(), document.get("scadenza").toString())
                 data.add(productModel)
             }
@@ -80,9 +80,9 @@ class MyProductFragment : Fragment(), Communicator {
         }
     }
 
-    override fun passData(nome: String) {
+    override fun passData(id: String) {
         val bundle = Bundle()
-        bundle.putString("nome",nome)
+        bundle.putString("id",id)
 
         val fragment = parentFragmentManager.beginTransaction()
         val frag = EditProductFragment()

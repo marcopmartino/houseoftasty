@@ -37,7 +37,7 @@ class EditProductFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentEditProductBinding.inflate(inflater)
         return binding.root
@@ -47,11 +47,11 @@ class EditProductFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val product = arguments?.getString("nome")
+        val product = arguments?.getString("id")
 
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseDb = FirebaseFirestore.getInstance().collection("users")
-            .document(firebaseAuth.currentUser!!.email.toString()).collection("products").document(product.toString())
+            .document(firebaseAuth.currentUser!!.uid).collection("products").document(product.toString())
 
         val spinner: Spinner = view.findViewById(R.id.quantitaMisura)
         val cal = Calendar.getInstance()

@@ -20,8 +20,9 @@ class RegisterFragment : Fragment() {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var firebaseDb: CollectionReference
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View {
 
         binding = FragmentRegisterBinding.inflate(inflater)
         return binding.root
@@ -82,7 +83,7 @@ class RegisterFragment : Fragment() {
             user.put("email", email)
             user.put("nome", nome)
             user.put("cognome", cognome)
-            firebaseDb.document(email).set(user).addOnSuccessListener {
+            firebaseDb.document(firebaseAuth.currentUser!!.uid).set(user).addOnSuccessListener {
                 Toast.makeText(activity, "Account creato!!", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
                 exception: java.lang.Exception -> Toast.makeText(activity, exception.toString(), Toast.LENGTH_LONG).show()
