@@ -10,7 +10,6 @@
             type="it.project.houseoftasty.viewModel.ProductViewModel"/>
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/groupStyledeep_orange_50"
         android:layout_width="match_parent"
@@ -208,6 +207,15 @@
             app:layout_constraintVertical_bias="0.113"
             tools:textAllCaps="true" />
 
+        <ProgressBar
+            android:id="@+id/waitingBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="124dp"
+            android:layout_height="121dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

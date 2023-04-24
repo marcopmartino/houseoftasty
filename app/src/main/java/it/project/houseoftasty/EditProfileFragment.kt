@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
@@ -18,6 +19,8 @@ import it.project.houseoftasty.databinding.FragmentEditProfileBinding
 import it.project.houseoftasty.viewModel.UserViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class EditProfileFragment : Fragment() {
 
@@ -54,11 +57,10 @@ class EditProfileFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseDb = FirebaseFirestore.getInstance().collection("users").document(firebaseAuth.currentUser!!.uid)
 
-        firebaseDb.get().addOnCompleteListener{
-            userModel.loadData(it.result?.data?.get("username").toString(),it.result?.data?.get("nome").toString(),
-                it.result?.data?.get("cognome").toString(), it.result?.data?.get("email").toString())
-            binding.userData = userModel
+        runBlocking {
+            writeDataSuspend()
         }
+
 
         view.findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.btnSalvaModificheOne).setOnClickListener {
             username = view.findViewById<EditText>(R.id.newUsername).text.toString()
@@ -70,8 +72,7 @@ class EditProfileFragment : Fragment() {
             chkNewPsw = view.findViewById<EditText>(R.id.checkNewPassword).text.toString()
 
             runBlocking {
-                updateProfile()
-                delay(2000)
+                updateProfileSuspend()
             }
 
 
@@ -84,29 +85,51 @@ class EditProfileFragment : Fragment() {
 
     }
 
-    private fun updateProfile() {
-        if(username.isNotEmpty() && nome.isNotEmpty() && cognome.isNotEmpty() && email.isNotEmpty()){
-            val currEmail = firebaseAuth.currentUser!!.email.toString()
-            val credential: AuthCredential = EmailAuthProvider.getCredential(currEmail, currentPsw)
-            firebaseAuth.currentUser!!.reauthenticate(credential).addOnSuccessListener {
-                if(newPsw.isNotEmpty() && chkNewPsw.isNotEmpty()){
-                    if(newPsw == chkNewPsw) {
-                        firebaseAuth.currentUser!!.updatePassword(newPsw)
-                        updateDb()
-                        check = true
-                    }else{
-                        Toast.makeText(activity, "Le password non coincidono!!", Toast.LENGTH_SHORT).show()
-                    }
-                }else{
-                    updateDb()
-                    check = true
-                }
-            }.addOnFailureListener{
-                Toast.makeText(activity, "La password corrente non coincide!!", Toast.LENGTH_SHORT).show()
+    private suspend fun writeDataSuspend() = suspendCoroutine {cont->
+        cont.resume(writeData())
+    }
+
+    private fun writeData(){
+        return runBlocking {
+            firebaseDb.get().addOnCompleteListener{
+                userModel.loadData(it.result?.data?.get("username").toString(),it.result?.data?.get("nome").toString(),
+                    it.result?.data?.get("cognome").toString(), it.result?.data?.get("email").toString())
+                binding.userData = userModel
+            }.addOnCompleteListener{
+                requireView().findViewById<ProgressBar>(R.id.waitingBar).visibility = View.GONE
             }
-        }else{
-            Toast.makeText(activity, "I campi non possono essere vuoti!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private suspend fun updateProfileSuspend() = suspendCoroutine { cont ->
+        cont.resume(updateProfile())
+    }
+
+    private fun updateProfile() {
+       return runBlocking {
+           if(username.isNotEmpty() && nome.isNotEmpty() && cognome.isNotEmpty() && email.isNotEmpty()){
+               val currEmail = firebaseAuth.currentUser!!.email.toString()
+               val credential: AuthCredential = EmailAuthProvider.getCredential(currEmail, currentPsw)
+               firebaseAuth.currentUser!!.reauthenticate(credential).addOnSuccessListener {
+                   if(newPsw.isNotEmpty() && chkNewPsw.isNotEmpty()){
+                       if(newPsw == chkNewPsw) {
+                           firebaseAuth.currentUser!!.updatePassword(newPsw)
+                           updateDb()
+                           check = true
+                       }else{
+                           Toast.makeText(activity, "Le password non coincidono!!", Toast.LENGTH_SHORT).show()
+                       }
+                   }else{
+                       updateDb()
+                       check = true
+                   }
+               }.addOnFailureListener{
+                   Toast.makeText(activity, "La password corrente non coincide!!", Toast.LENGTH_SHORT).show()
+               }
+           }else{
+               Toast.makeText(activity, "I campi non possono essere vuoti!", Toast.LENGTH_SHORT).show()
+           }
+       }
     }
 
     private fun updateDb() {

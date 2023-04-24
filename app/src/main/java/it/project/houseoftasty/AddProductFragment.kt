@@ -9,9 +9,13 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import it.project.houseoftasty.dataModel.Product
+import it.project.houseoftasty.database.ProductDatabase
+import it.project.houseoftasty.databaseInterface.ProductDao
 import it.project.houseoftasty.databinding.FragmentAddProductBinding
 import kotlinx.coroutines.*
 import java.util.*
@@ -22,7 +26,7 @@ class AddProductFragment : Fragment() {
     private lateinit var binding: FragmentAddProductBinding
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var firebaseDb: CollectionReference
-
+    private lateinit var productDao: ProductDao
 
     @SuppressLint("CutPasteId")
     override fun onCreateView(
@@ -40,6 +44,8 @@ class AddProductFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseDb = FirebaseFirestore.getInstance().collection("users")
             .document(firebaseAuth.currentUser!!.uid).collection("products")
+
+        productDao = ProductDatabase.getInstance(requireContext()).productDAO()
 
         val spinner: Spinner = view.findViewById(R.id.quantitaMisura)
         val cal = Calendar.getInstance()
@@ -89,7 +95,7 @@ class AddProductFragment : Fragment() {
             val nome = view.findViewById<EditText>(R.id.dataNome).text.toString()
             val quantita = view.findViewById<EditText>(R.id.dataQuantita).text.toString()
             var misura = view.findViewById<Spinner>(R.id.quantitaMisura).selectedItem.toString()
-            val scadenza = view.findViewById<TextView>(R.id.dataScadenza).text.toString()
+            var scadenza = view.findViewById<TextView>(R.id.dataScadenza).text.toString()
             val check = view.findViewById<CheckBox>(R.id.checkBoxSenzascadenza).isChecked
 
             if (nome.isNotEmpty() && quantita.isNotEmpty() && misura.isNotEmpty()) {
@@ -97,9 +103,10 @@ class AddProductFragment : Fragment() {
                     Toast.makeText(activity, "Inserire una data di scadenza!", Toast.LENGTH_SHORT).show()
                 } else {
                     if (misura == "-") misura = ""
+                    if (check) scadenza = "-"
 
                     runBlocking {
-                        addProductDb(nome, quantita, misura, scadenza, check)
+                        addProductDb(nome, quantita, misura, scadenza)
                         delay(1000)
                     }
 
@@ -120,19 +127,20 @@ class AddProductFragment : Fragment() {
     }
 
     //Funzione per aggiungere prodotti al db
-    private fun addProductDb(nome: String, quantita: String, misura: String, scadenza: String, check: Boolean) {
+    private fun addProductDb(nome: String, quantita: String, misura: String, scadenza: String) {
         try {
             val product = HashMap<String, Any>()
-            product.put("nome", nome)
-            product.put("quantita", quantita)
-            product.put("misura", misura)
-            if (check) {
-                product.put("scadenza", "-")
-            } else {
-                product.put("scadenza", scadenza)
-            }
+
+            product["nome"] = nome
+            product["quantita"] = quantita
+            product["misura"] = misura
+            product["scadenza"] = scadenza
 
             firebaseDb.add(product).addOnSuccessListener {
+                val temp = Product(it.id, nome, quantita, misura, scadenza)
+                lifecycleScope.launch(Dispatchers.IO){
+                    productDao.insert(temp)
+                }
                 Toast.makeText(activity, "Prodotto aggiunto!!", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener { exception: java.lang.Exception ->
                 Toast.makeText(activity, exception.toString(), Toast.LENGTH_LONG).show()

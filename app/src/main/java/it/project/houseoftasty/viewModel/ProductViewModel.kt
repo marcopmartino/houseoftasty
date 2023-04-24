@@ -2,7 +2,7 @@ package it.project.houseoftasty.viewModel
 
 import androidx.lifecycle.ViewModel
 
-class ProductViewModel(): ViewModel() {
+class ProductViewModel : ViewModel() {
     var id: String = ""
     var nome: String = ""
     var quantita: String = ""

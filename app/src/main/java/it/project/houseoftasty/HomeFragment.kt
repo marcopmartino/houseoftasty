@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import it.project.houseoftasty.databinding.FragmentHomeBinding
 
@@ -29,12 +30,13 @@ class HomeFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
         val firebaseUser = firebaseAuth.currentUser
 
+
         //Bottone in home per andare ai prodotti
-        view.findViewById<Button>(R.id.button_home_prodotti).setOnClickListener{
+        view.findViewById<Button>(R.id.button_home_prodotti).setOnClickListener {
             val fragment = parentFragmentManager.beginTransaction()
-            if(firebaseUser!=null){
+            if (firebaseUser != null) {
                 fragment.replace(R.id.fragment_container, MyProductFragment()).commit()
-            }else{
+            } else {
                 fragment.replace(R.id.fragment_container, LoginFragment()).commit()
             }
         }

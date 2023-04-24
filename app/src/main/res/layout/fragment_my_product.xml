@@ -25,14 +25,22 @@
                 android:id="@+id/productList"
                 android:layout_width="349dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:layout_marginTop="@dimen/_15sp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/product_item" />
 
         </LinearLayout>
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/waitingBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addProduct"

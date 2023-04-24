@@ -4,22 +4,31 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import it.project.houseoftasty.dataModel.Product
+import it.project.houseoftasty.dataModel.ProductId
+import it.project.houseoftasty.database.ProductDatabase
+import it.project.houseoftasty.databaseInterface.ProductDao
 import it.project.houseoftasty.databinding.FragmentEditProductBinding
 import it.project.houseoftasty.viewModel.ProductViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.HashMap
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class EditProductFragment : Fragment() {
 
@@ -33,6 +42,7 @@ class EditProductFragment : Fragment() {
     private lateinit var quantita: String
     private lateinit var misura: String
     private lateinit var scadenza: String
+    private lateinit var productDao: ProductDao
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,16 +63,18 @@ class EditProductFragment : Fragment() {
         firebaseDb = FirebaseFirestore.getInstance().collection("users")
             .document(firebaseAuth.currentUser!!.uid).collection("products").document(product.toString())
 
+        productDao = ProductDatabase.getInstance(requireContext()).productDAO()
+
         val spinner: Spinner = view.findViewById(R.id.quantitaMisura)
         val cal = Calendar.getInstance()
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)
         val day = cal.get(Calendar.DAY_OF_MONTH)
 
-        firebaseDb.get().addOnCompleteListener{
-            productModel.loadData(it.result?.data?.get("nome").toString(), it.result?.data?.get("quantita").toString())
-            misura = it.result?.data?.get("misura").toString()
-            scadenza = it.result?.data?.get("scadenza").toString()
+        firebaseDb.get().addOnSuccessListener{ it ->
+            productModel.loadData(it.data?.get("nome").toString(), it.data?.get("quantita").toString())
+            misura = it.data?.get("misura").toString()
+            scadenza = it.data?.get("scadenza").toString()
 
             // Imposta data
             if(scadenza == "-"){
@@ -92,6 +104,23 @@ class EditProductFragment : Fragment() {
             }
 
             binding.productData = productModel
+        }.addOnFailureListener{
+            val data = productDao.getById(product.toString())
+
+            productModel.loadData(data[0].nome, data[0].quantita)
+            misura = data[0].unitaMisura
+            scadenza = data[0].scadenza
+
+            // Imposta data
+            if(scadenza == "-"){
+                view.findViewById<TextView>(R.id.dataScadenza).text = "--/--/----"
+                view.findViewById<CheckBox>(R.id.checkBoxSenzascadenza).isChecked = true
+            }else{
+                view.findViewById<TextView>(R.id.dataScadenza).text = scadenza
+                view.findViewById<CheckBox>(R.id.checkBoxSenzascadenza).isChecked = false
+            }
+        }.addOnCompleteListener {
+            view.findViewById<ProgressBar>(R.id.waitingBar).visibility = View.GONE
         }
 
         //Mostra la data di scadenza selezionata
@@ -111,19 +140,17 @@ class EditProductFragment : Fragment() {
             view.findViewById<TextView>(R.id.dataScadenza).text = "--/--/----"
         }
 
-
-        // Callback per tornare indietro, per funzionare il fragment deve essere caricato nella sua interezza.
-        requireActivity().onBackPressedDispatcher.addCallback(activity) {
-            val fragment = parentFragmentManager.beginTransaction()
-            fragment.replace(R.id.fragment_container, MyProductFragment()).commit()
-        }
-
         //Elimina i prodotti
         view.findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.button_deleteProduct).setOnClickListener{
             AlertDialog.Builder(activity)
                 .setCancelable(true)
                 .setMessage("Eliminare il prodotto?")
                 .setPositiveButton("Conferma"){ _, _ ->
+
+                    lifecycleScope.launch(Dispatchers.IO){
+                        productDao.deleteById(ProductId(product.toString()))
+                    }
+
                     firebaseDb.delete()
 
                     Toast.makeText(activity, "Prodotto eliminato!", Toast.LENGTH_SHORT).show()
@@ -146,26 +173,27 @@ class EditProductFragment : Fragment() {
 
             runBlocking {
                 updateProduct(check)
-                delay(500)
             }
 
             Toast.makeText(activity, "Modifiche applicate con successo!!", Toast.LENGTH_SHORT).show()
+
             val fragment = parentFragmentManager.beginTransaction()
             fragment.replace(R.id.fragment_container, MyProductFragment()).commit()
         }
 
     }
 
+
+
     private fun updateProduct(check: Boolean) {
-        if(nome.isNotEmpty() && quantita.isNotEmpty() && misura.isNotEmpty()){
+        if(this.nome.isNotEmpty() && quantita.isNotEmpty() && misura.isNotEmpty()){
             if(!check && scadenza == "--/--/----"){
                 Toast.makeText(activity, "Inserire una data di scadenza!", Toast.LENGTH_SHORT).show()
             }else{
                 if(misura == "-") misura=""
                 if(check) scadenza = "-"
-                runBlocking {
-                    updateDb()
-                    delay(2000)
+                lifecycleScope.launch(Dispatchers.Main){
+                    updateDbSuspend()
                 }
             }
         }else{
@@ -173,26 +201,52 @@ class EditProductFragment : Fragment() {
         }
     }
 
+    private suspend fun updateDbSuspend() = suspendCoroutine { cont ->
+        cont.resume(updateDb())
+    }
+
     private fun updateDb() {
-        firebaseDb.get().addOnCompleteListener {
-            if(it.result?.data?.get("nome").toString() != nome){
-                val tempDb = FirebaseFirestore.getInstance().collection("users")
-                    .document(firebaseAuth.currentUser!!.email.toString()).collection("products")
-                    .document(nome)
-                val product = HashMap<String, Any>()
-                product.put("quantita", quantita)
-                product.put("misura", misura)
-                product.put("scadenza", scadenza)
-                product.put("nome", nome)
-                tempDb.set(product)
-                firebaseDb.delete()
-            }else{
-                firebaseDb.update("quantita", quantita)
-                firebaseDb.update("misura", misura)
-                firebaseDb.update("scadenza", scadenza)
-                firebaseDb.update("nome", nome)
+        return runBlocking {
+            firebaseDb.get().addOnCompleteListener {
+                if(it.result?.data?.get("nome").toString() != nome){
+                    val tempDb = FirebaseFirestore.getInstance().collection("users")
+                        .document(firebaseAuth.currentUser!!.email.toString()).collection("products")
+                        .document(nome)
+                    val product = HashMap<String, Any>()
+                    product["quantita"] = quantita
+                    product["misura"] = misura
+                    product["scadenza"] = scadenza
+                    product["nome"] = nome
+                    tempDb.set(product)
+
+                    lifecycleScope.launch(Dispatchers.IO){
+                        val temp = Product(tempDb.id, nome, quantita, misura, scadenza)
+                        productDao.insert(temp)
+                        productDao.deleteById(ProductId(firebaseDb.id))
+                    }
+
+                    firebaseDb.delete()
+                }else{
+                    firebaseDb.update("quantita", quantita)
+                    firebaseDb.update("misura", misura)
+                    firebaseDb.update("scadenza", scadenza)
+                    firebaseDb.update("nome", nome)
+
+                    lifecycleScope.launch(Dispatchers.IO){
+                        val temp = Product(firebaseDb.id, nome, quantita, misura, scadenza)
+                        productDao.update(temp)
+                    }
+
+                }
             }
         }
     }
+
+    /*override fun onClick(view: View) {
+        val action =
+            SpecifyAmountFragmentDirections
+                .actionSpecifyAmountFragmentToConfirmationFragment()
+        view.findNavController().navigate(action)
+    }*/
 
 }

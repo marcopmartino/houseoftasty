@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".AddProductFragment">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/groupStyledeep_orange_50"
         android:layout_width="match_parent"
@@ -28,10 +27,6 @@
             app:layout_constraintHorizontal_bias="0.145"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Dati nome -->
-
-        <!-- Dati quantità -->
 
         <EditText
             android:id="@+id/dataNome"
@@ -167,21 +162,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dataScadenza" />
 
+
         <Button
             android:id="@+id/button_addProduct"
             android:layout_width="248dp"
             android:layout_height="70dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="56dp"
             android:backgroundTint="@color/tawny_brown"
             android:fontFamily="@font/baloo_bhai"
             android:text="@string/addProduct"
             android:textSize="16sp"
             app:cornerRadius="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/checkBoxSenzascadenza"
-            app:layout_constraintVertical_bias="0.0"
             tools:textAllCaps="true" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

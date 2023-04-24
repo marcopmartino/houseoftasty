@@ -408,6 +408,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtTotalDownload" /> <!-- Informazioni totale Download -->
 
+            <ProgressBar
+                android:id="@+id/waitingBar"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="124dp"
+                android:layout_height="121dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
