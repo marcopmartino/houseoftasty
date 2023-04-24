@@ -14,8 +14,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import it.project.houseoftasty.dataModel.Product
-import it.project.houseoftasty.database.ProductDatabase
-import it.project.houseoftasty.databaseInterface.ProductDao
+import it.project.houseoftasty.database.HouseTastyDb
+import it.project.houseoftasty.databaseInterface.HouseTastyDao
 import it.project.houseoftasty.databinding.FragmentAddProductBinding
 import kotlinx.coroutines.*
 import java.util.*
@@ -26,7 +26,7 @@ class AddProductFragment : Fragment() {
     private lateinit var binding: FragmentAddProductBinding
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var firebaseDb: CollectionReference
-    private lateinit var productDao: ProductDao
+    private lateinit var houseTastyDao: HouseTastyDao
 
     @SuppressLint("CutPasteId")
     override fun onCreateView(
@@ -45,7 +45,7 @@ class AddProductFragment : Fragment() {
         firebaseDb = FirebaseFirestore.getInstance().collection("users")
             .document(firebaseAuth.currentUser!!.uid).collection("products")
 
-        productDao = ProductDatabase.getInstance(requireContext()).productDAO()
+        houseTastyDao = HouseTastyDb.getInstance(requireContext()).houseTastyDAO()
 
         val spinner: Spinner = view.findViewById(R.id.quantitaMisura)
         val cal = Calendar.getInstance()
@@ -139,7 +139,7 @@ class AddProductFragment : Fragment() {
             firebaseDb.add(product).addOnSuccessListener {
                 val temp = Product(it.id, nome, quantita, misura, scadenza)
                 lifecycleScope.launch(Dispatchers.IO){
-                    productDao.insert(temp)
+                    houseTastyDao.insert(temp)
                 }
                 Toast.makeText(activity, "Prodotto aggiunto!!", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener { exception: java.lang.Exception ->

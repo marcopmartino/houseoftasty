@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,16 +11,13 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import it.project.houseoftasty.dataModel.Product
 import it.project.houseoftasty.dataModel.ProductId
-import it.project.houseoftasty.database.ProductDatabase
-import it.project.houseoftasty.databaseInterface.ProductDao
+import it.project.houseoftasty.database.HouseTastyDb
+import it.project.houseoftasty.databaseInterface.HouseTastyDao
 import it.project.houseoftasty.databinding.FragmentEditProductBinding
 import it.project.houseoftasty.viewModel.ProductViewModel
 import kotlinx.coroutines.*
@@ -42,7 +38,7 @@ class EditProductFragment : Fragment() {
     private lateinit var quantita: String
     private lateinit var misura: String
     private lateinit var scadenza: String
-    private lateinit var productDao: ProductDao
+    private lateinit var houseTastyDao: HouseTastyDao
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,7 +59,7 @@ class EditProductFragment : Fragment() {
         firebaseDb = FirebaseFirestore.getInstance().collection("users")
             .document(firebaseAuth.currentUser!!.uid).collection("products").document(product.toString())
 
-        productDao = ProductDatabase.getInstance(requireContext()).productDAO()
+        houseTastyDao = HouseTastyDb.getInstance(requireContext()).houseTastyDAO()
 
         val spinner: Spinner = view.findViewById(R.id.quantitaMisura)
         val cal = Calendar.getInstance()
@@ -105,7 +101,7 @@ class EditProductFragment : Fragment() {
 
             binding.productData = productModel
         }.addOnFailureListener{
-            val data = productDao.getById(product.toString())
+            val data = houseTastyDao.getById(product.toString())
 
             productModel.loadData(data[0].nome, data[0].quantita)
             misura = data[0].unitaMisura
@@ -148,7 +144,7 @@ class EditProductFragment : Fragment() {
                 .setPositiveButton("Conferma"){ _, _ ->
 
                     lifecycleScope.launch(Dispatchers.IO){
-                        productDao.deleteById(ProductId(product.toString()))
+                        houseTastyDao.deleteById(ProductId(product.toString()))
                     }
 
                     firebaseDb.delete()
@@ -221,8 +217,8 @@ class EditProductFragment : Fragment() {
 
                     lifecycleScope.launch(Dispatchers.IO){
                         val temp = Product(tempDb.id, nome, quantita, misura, scadenza)
-                        productDao.insert(temp)
-                        productDao.deleteById(ProductId(firebaseDb.id))
+                        houseTastyDao.insert(temp)
+                        houseTastyDao.deleteById(ProductId(firebaseDb.id))
                     }
 
                     firebaseDb.delete()
@@ -234,7 +230,7 @@ class EditProductFragment : Fragment() {
 
                     lifecycleScope.launch(Dispatchers.IO){
                         val temp = Product(firebaseDb.id, nome, quantita, misura, scadenza)
-                        productDao.update(temp)
+                        houseTastyDao.update(temp)
                     }
 
                 }

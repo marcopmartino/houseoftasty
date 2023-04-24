@@ -18,8 +18,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import it.project.houseoftasty.dataModel.Product
-import it.project.houseoftasty.database.ProductDatabase
-import it.project.houseoftasty.databaseInterface.ProductDao
+import it.project.houseoftasty.database.HouseTastyDb
+import it.project.houseoftasty.databaseInterface.HouseTastyDao
 import it.project.houseoftasty.databinding.FragmentMyProductBinding
 import it.project.houseoftasty.viewModel.ProductViewModel
 import kotlinx.coroutines.*
@@ -32,7 +32,7 @@ class MyProductFragment : Fragment(), Communicator {
     private lateinit var binding: FragmentMyProductBinding
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var firebaseDb: CollectionReference
-    private lateinit var productDao: ProductDao
+    private lateinit var houseTastyDao: HouseTastyDao
     private lateinit var vista: View
     private lateinit var localData: Deferred<Array<Product>>
 
@@ -57,7 +57,7 @@ class MyProductFragment : Fragment(), Communicator {
 
         val data = ArrayList<ProductViewModel>()
 
-        productDao = ProductDatabase.getInstance(requireContext()).productDAO()
+        houseTastyDao = HouseTastyDb.getInstance(requireContext()).houseTastyDAO()
 
         firebaseDb.get().addOnSuccessListener { documents ->
             runBlocking {
@@ -82,7 +82,7 @@ class MyProductFragment : Fragment(), Communicator {
                             productModel.scadenza
                         )
                         lifecycleScope.launch(Dispatchers.IO) {
-                            productDao.insert(product)
+                            houseTastyDao.insert(product)
                         }
                         data.add(productModel)
                     }
@@ -128,7 +128,7 @@ class MyProductFragment : Fragment(), Communicator {
                 }
             }
         }.addOnFailureListener{
-            val products = productDao.getAll()
+            val products = houseTastyDao.getAll()
             for(product in products){
                 val productModel = ProductViewModel()
                 productModel.setData(product.id, product.nome, product.quantita, product.unitaMisura, product.scadenza)
@@ -184,7 +184,7 @@ class MyProductFragment : Fragment(), Communicator {
     private fun readData(): Deferred<Array<Product>>{
 
          return lifecycleScope.async(Dispatchers.IO) {
-             localData = async { productDao.getAll() }
+             localData = async { houseTastyDao.getAll() }
              return@async localData.await()
          }
     }

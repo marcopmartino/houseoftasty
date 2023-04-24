@@ -3,10 +3,9 @@ package it.project.houseoftasty.databaseInterface
 import androidx.room.*
 import it.project.houseoftasty.dataModel.Product
 import it.project.houseoftasty.dataModel.ProductId
-import kotlinx.coroutines.Deferred
 
 @Dao
-interface ProductDao {
+interface HouseTastyDao {
 
     @Query ("SELECT * FROM product")
     fun getAll(): Array<Product>
