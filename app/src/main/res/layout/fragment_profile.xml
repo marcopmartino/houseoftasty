@@ -21,7 +21,7 @@
             android:background="@drawable/rectangle_bg_deep_orange_50">
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/profileImage"
                 android:layout_width="170dp"
                 android:layout_height="170dp"
                 android:layout_marginTop="16dp"
@@ -48,7 +48,7 @@
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.452"
-                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintStart_toEndOf="@+id/profileImage"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/txtEditProfile" />
 
@@ -66,7 +66,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+                app:layout_constraintTop_toBottomOf="@+id/profileImage" />
 
             <TextView
                 android:id="@+id/txtUsername"

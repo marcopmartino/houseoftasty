@@ -2,6 +2,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="start"
     android:orientation="vertical">
 
@@ -33,7 +34,7 @@
             android:layout_width="62dp"
             android:layout_height="22dp"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:gravity="start"
             android:orientation="horizontal"
             android:text="@string/quantita"
@@ -45,26 +46,14 @@
         <TextView
             android:id="@+id/quantitaData"
             style="@style/txtBaloo2regular16"
-            android:layout_width="31dp"
+            android:layout_width="30dp"
             android:layout_height="22dp"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="148"
+            android:textAlignment="viewStart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/quantitaLabel"
-            app:layout_constraintTop_toBottomOf="@+id/nomeData"
-            app:layout_constraintVertical_bias="0.416" />
-
-        <TextView
-            android:id="@+id/quantitaMisura"
-            style="@style/txtBaloo2regular16"
-            android:layout_width="31dp"
-            android:layout_height="22dp"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="148"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/quantitaData"
             app:layout_constraintTop_toBottomOf="@+id/nomeData"
             app:layout_constraintVertical_bias="0.416" />
 
@@ -72,31 +61,31 @@
             android:id="@+id/scadenzaLabel"
             style="@style/Widget.AppCompat.TextView"
             android:layout_width="70dp"
-            android:layout_height="22dp"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="23dp"
+            android:layout_marginStart="84dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="148"
             android:text="@string/scadenza"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/quantitaMisura"
+            app:layout_constraintStart_toEndOf="@+id/quantitaData"
             app:layout_constraintTop_toBottomOf="@+id/nomeData"
-            app:layout_constraintVertical_bias="0.363" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/scadenzaData"
             style="@style/txtBaloo2regular16"
             android:layout_width="74dp"
             android:layout_height="23dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="-25dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="148"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.442"
+            app:layout_constraintHorizontal_bias="0.428"
             app:layout_constraintStart_toEndOf="@+id/scadenzaLabel"
             app:layout_constraintTop_toBottomOf="@+id/nomeData"
-            app:layout_constraintVertical_bias="0.36" />
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

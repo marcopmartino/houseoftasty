@@ -34,11 +34,7 @@ class HomeFragment : Fragment() {
         //Bottone in home per andare ai prodotti
         view.findViewById<Button>(R.id.button_home_prodotti).setOnClickListener {
             val fragment = parentFragmentManager.beginTransaction()
-            if (firebaseUser != null) {
-                fragment.replace(R.id.fragment_container, MyProductFragment()).commit()
-            } else {
-                fragment.replace(R.id.fragment_container, LoginFragment()).commit()
-            }
+            fragment.replace(R.id.fragment_container, MyProductFragment()).commit()
         }
     }
 }

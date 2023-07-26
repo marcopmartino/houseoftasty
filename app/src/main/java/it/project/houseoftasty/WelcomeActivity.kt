@@ -5,12 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 
-//Schermata primo avvio
+
 class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var pref = getSharedPreferences("it.project.houseoftasty", MODE_PRIVATE)
+        val pref = getSharedPreferences("it.project.houseoftasty", MODE_PRIVATE)
 
         if(!pref.contains("firstRun")){
             pref.edit().putBoolean("firstRun", false).apply()

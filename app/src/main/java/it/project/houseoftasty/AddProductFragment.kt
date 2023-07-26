@@ -3,9 +3,11 @@ package it.project.houseoftasty
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.*
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
@@ -34,6 +36,8 @@ class AddProductFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAddProductBinding.inflate(inflater)
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
         return binding.root
     }
 
@@ -42,8 +46,10 @@ class AddProductFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         firebaseAuth = FirebaseAuth.getInstance()
-        firebaseDb = FirebaseFirestore.getInstance().collection("users")
-            .document(firebaseAuth.currentUser!!.uid).collection("products")
+        if(firebaseAuth.currentUser != null) {
+            firebaseDb = FirebaseFirestore.getInstance().collection("users")
+                .document(firebaseAuth.currentUser!!.uid).collection("products")
+        }
 
         houseTastyDao = HouseTastyDb.getInstance(requireContext()).houseTastyDAO()
 
@@ -136,17 +142,21 @@ class AddProductFragment : Fragment() {
             product["misura"] = misura
             product["scadenza"] = scadenza
 
-            firebaseDb.add(product).addOnSuccessListener {
-                val temp = Product(it.id, nome, quantita, misura, scadenza)
-                lifecycleScope.launch(Dispatchers.IO){
-                    houseTastyDao.insert(temp)
+            val id = ProductAdapter.createRandomId()
+            if(firebaseAuth.currentUser != null) {
+                firebaseDb.document(id).set(product).addOnSuccessListener {
+                    Toast.makeText(activity, "Prodotto aggiunto!!", Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener { exception: java.lang.Exception ->
+                    Toast.makeText(activity, exception.toString(), Toast.LENGTH_LONG).show()
                 }
-                Toast.makeText(activity, "Prodotto aggiunto!!", Toast.LENGTH_SHORT).show()
-            }.addOnFailureListener { exception: java.lang.Exception ->
-                Toast.makeText(activity, exception.toString(), Toast.LENGTH_LONG).show()
+            }
+            val temp = Product(id, nome, quantita, misura, scadenza)
+            lifecycleScope.launch(Dispatchers.IO) {
+                houseTastyDao.insert(temp)
             }
         } catch (e: Exception) {
             Toast.makeText(activity, e.toString(), Toast.LENGTH_LONG).show()
         }
     }
 }
+

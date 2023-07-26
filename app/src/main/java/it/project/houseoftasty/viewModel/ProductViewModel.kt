@@ -18,9 +18,11 @@ class ProductViewModel : ViewModel() {
         this.scadenza = scadenza
     }
 
-    fun loadData(nome: String, quantita: String){
+    fun loadData(nome: String, quantita: String, scadenza: String, unitaMisura: String){
         this.nome = nome
         this.quantita = quantita
+        this.scadenza = scadenza
+        this.unitaMisura = unitaMisura
     }
 
 

@@ -104,5 +104,8 @@
         <item>L</item>
     </string-array>
 
+    <!-- String relative alle notifiche -->
+    <string name="productExpireName">Scadenza prodotti</string>
+    <string name="productExpireDescription">Prodotti in scadenza</string>
 
 </resources>

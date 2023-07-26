@@ -9,30 +9,39 @@
     tools:context=".MyProductFragment"
     xsi:schemaLocation="http://schemas.android.com/apk/res/android">
 
-    <ScrollView
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/linearProduct"
-            style="@style/groupStyledeep_orange_50"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/productList"
-                android:layout_width="349dp"
+            <LinearLayout
+                android:id="@+id/linearProduct"
+                style="@style/groupStyledeep_orange_50"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sp"
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/product_item" />
+                android:orientation="vertical">
 
-        </LinearLayout>
-    </ScrollView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/productList"
+                        android:layout_width="349dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/product_item" />
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/waitingBar"
