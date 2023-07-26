@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "78782712918",
+    "project_id": "house-of-tasty-e7857",
+    "storage_bucket": "house-of-tasty-e7857.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78782712918:android:5b4c64c8ba2ec8305cfff7",
+        "android_client_info": {
+          "package_name": "it.project.houseoftasty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "78782712918-fnb269gmibv800fpbalij2iprkjcsrgo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0oaJcptCy_lXJaU1hpHNZJcQ3DbOHX74"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "78782712918-fnb269gmibv800fpbalij2iprkjcsrgo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

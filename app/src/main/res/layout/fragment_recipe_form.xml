@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.CookbookFragment">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="it.project.houseoftasty.viewModel.RecipeFormViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/sand_brown"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/scrollviewDescription"
+            android:visibility="@{viewModel.loadingCompleted ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="24dp">
+
+                <!-- Titolo ricetta -->
+                <Button
+                    android:id="@+id/button_submitRecipe"
+                    android:layout_width="@dimen/_300sp"
+                    android:layout_height="@dimen/_60sp"
+                    android:layout_marginTop='24dp'
+                    android:backgroundTint="@color/tawny_brown"
+                    android:contentDescription="@string/contentDescription_recipe_form_button"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text='@{viewModel.isRecipeNew ? @string/txtAddRecipe : @string/txtSaveEdit}'
+                    android:textSize="16sp"
+                    app:cornerRadius="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/switchPostPrivate"
+                    tools:textAllCaps="true" />
+
+                <Button
+                    android:id="@+id/button_deleteRecipe"
+                    android:layout_width="@dimen/_300sp"
+                    android:layout_height="@dimen/_60sp"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/red_A700"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/txtDeleteRecipe"
+                    android:textSize="16sp"
+                    android:visibility="@{viewModel.isRecipeNew ? View.GONE : View.VISIBLE}"
+                    app:cornerRadius="30dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button_submitRecipe"
+                    tools:textAllCaps="true" />
+
+                <TextView
+                    android:id="@+id/labelTitle"
+                    style="@style/txtBaloo2baloo2semibold16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="32dp"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:singleLine="true"
+                    android:text="@string/labelTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/dataTitle"
+                    style="@style/etSolidRoundedOutline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="48dp"
+                    android:autofillHints="no"
+                    android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+                    android:ellipsize="end"
+                    android:hint="@string/hintTitle"
+                    android:inputType="text"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:paddingStart="@dimen/_15pxh"
+                    android:paddingTop="@dimen/_13pxv"
+                    android:paddingEnd="@dimen/_15pxh"
+                    android:paddingBottom="@dimen/_12pxv"
+                    android:singleLine="true"
+                    android:tag="titolo"
+                    android:text='@{viewModel.isRecipeNew ? "" : viewModel.recipeLiveData.titolo}'
+                    android:textColorHint="@color/gray_400"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelTitle" />
+
+                <TextView
+                    android:id="@+id/errorTitle"
+                    style="@style/txtBaloo2medium14error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/errorMessagePlaceholder"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dataTitle" />
+
+                <TextView
+                    android:id="@+id/labelIngredients"
+                    style="@style/txtBaloo2baloo2semibold16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="16dp"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:singleLine="true"
+                    android:text="@string/labelIngredients"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/errorTitle" />
+
+                <EditText
+                    android:id="@+id/dataIngredients"
+                    style="@style/etSolidRoundedOutline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="48dp"
+                    android:autofillHints="no"
+                    android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+                    android:ellipsize="end"
+                    android:hint="@string/hintIngredients"
+                    android:inputType="text"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:paddingStart="@dimen/_15pxh"
+                    android:paddingTop="@dimen/_13pxv"
+                    android:paddingEnd="@dimen/_30pxh"
+                    android:paddingBottom="@dimen/_12pxv"
+                    android:singleLine="true"
+                    android:tag="ingredienti"
+                    android:text='@{viewModel.isRecipeNew ? "" : viewModel.recipeLiveData.ingredienti}'
+                    android:textColorHint="@color/gray_400"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelIngredients" />
+
+                <TextView
+                    android:id="@+id/errorIngredients"
+                    style="@style/txtBaloo2medium14error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/errorMessagePlaceholder"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dataIngredients" />
+
+                <TextView
+                    android:id="@+id/labelNumPeople"
+                    style="@style/txtBaloo2baloo2semibold16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="16dp"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:singleLine="true"
+                    android:text="@string/labelNumPeople"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/errorIngredients" />
+
+                <EditText
+                    android:id="@+id/dataNumPeople"
+                    style="@style/etSolidRoundedOutline"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:autofillHints="no"
+                    android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+                    android:ellipsize="end"
+                    android:hint="@string/hintNumPeople"
+                    android:inputType="number"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:paddingStart="@dimen/_15pxh"
+                    android:paddingTop="@dimen/_13pxv"
+                    android:paddingEnd="@dimen/_30pxh"
+                    android:paddingBottom="@dimen/_12pxv"
+                    android:singleLine="true"
+                    android:tag="numPersone"
+                    android:text='@{viewModel.isRecipeNew ? "" : viewModel.recipeLiveData.numPersone.toString()}'
+                    android:textColorHint="@color/gray_400"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelNumPeople" />
+
+                <TextView
+                    android:id="@+id/unitNumPeople"
+                    style="@style/txtBaloo2medium16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/unitNumPeople"
+                    app:layout_constraintBottom_toBottomOf="@+id/dataNumPeople"
+                    app:layout_constraintStart_toEndOf="@+id/dataNumPeople"
+                    app:layout_constraintTop_toTopOf="@+id/dataNumPeople" />
+
+                <TextView
+                    android:id="@+id/errorNumPeople"
+                    style="@style/txtBaloo2medium14error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/errorMessagePlaceholder"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dataNumPeople" />
+
+                <TextView
+                    android:id="@+id/labelPreparation"
+                    style="@style/txtBaloo2baloo2semibold16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="16dp"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:singleLine="true"
+                    android:text="@string/labelPreparation"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/errorNumPeople" />
+
+                <EditText
+                    android:id="@+id/dataPreparation"
+                    style="@style/etSolidRoundedOutline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="48dp"
+                    android:autofillHints="no"
+                    android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+                    android:ellipsize="end"
+                    android:hint="@string/hintPreparation"
+                    android:inputType="text"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:paddingStart="@dimen/_15pxh"
+                    android:paddingTop="@dimen/_13pxv"
+                    android:paddingEnd="@dimen/_30pxh"
+                    android:paddingBottom="@dimen/_12pxv"
+                    android:singleLine="true"
+                    android:tag="preparazione"
+                    android:text='@{viewModel.isRecipeNew ? "" : viewModel.recipeLiveData.preparazione}'
+                    android:textColorHint="@color/gray_400"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelPreparation" />
+
+                <TextView
+                    android:id="@+id/errorPreparation"
+                    style="@style/txtBaloo2medium14error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/errorMessagePlaceholder"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dataPreparation" />
+
+                <TextView
+                    android:id="@+id/labelPreparationTime"
+                    style="@style/txtBaloo2baloo2semibold16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="16dp"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:singleLine="true"
+                    android:text="@string/labelPreparationTime"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/errorPreparation" />
+
+                <EditText
+                    android:id="@+id/dataPreparationTime"
+                    style="@style/etSolidRoundedOutline"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:autofillHints="no"
+                    android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+                    android:ellipsize="end"
+                    android:hint="@string/hintPreparationTime"
+                    android:inputType="number"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:paddingStart="@dimen/_15pxh"
+                    android:paddingTop="@dimen/_13pxv"
+                    android:paddingEnd="@dimen/_30pxh"
+                    android:paddingBottom="@dimen/_12pxv"
+                    android:singleLine="true"
+                    android:tag="tempoPreparazione"
+                    android:text='@{viewModel.isRecipeNew ? "" : viewModel.recipeLiveData.tempoPreparazione.toString()}'
+                    android:textColorHint="@color/gray_400"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelPreparationTime" />
+
+                <TextView
+                    android:id="@+id/unitPreparationTime"
+                    style="@style/txtBaloo2medium16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/unitPreparationTime"
+                    app:layout_constraintBottom_toBottomOf="@+id/dataPreparationTime"
+                    app:layout_constraintStart_toEndOf="@+id/dataPreparationTime"
+                    app:layout_constraintTop_toTopOf="@+id/dataPreparationTime" />
+
+                <TextView
+                    android:id="@+id/errorPreparationTime"
+                    style="@style/txtBaloo2medium14error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/errorMessagePlaceholder"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dataPreparationTime" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchPublished"
+                    style="@style/Widget.App.Switch"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="16dp"
+                    android:checked="@{viewModel.isRecipeNew ? false : viewModel.recipeLiveData.boolPubblicata}"
+                    android:drawablePadding="16dp"
+                    android:tag="boolPubblicata"
+                    android:text="@string/labelIsPublished"
+                    app:layout_constraintEnd_toEndOf="@+id/switchPostPrivate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/errorPreparationTime" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchPostPrivate"
+                    style="@style/Widget.App.Switch"
+                    android:layout_width="210sp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:checked="@{viewModel.isRecipeNew ? false : viewModel.recipeLiveData.boolPostPrivato}"
+                    android:enabled="@{viewModel.isRecipeNew ? false : viewModel.recipeLiveData.boolPubblicata}"
+                    android:tag="boolPostPrivato"
+                    android:text="@string/labelIsPostPrivate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/switchPublished" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/caramel_brown"
+            android:visibility="@{viewModel.loadingCompleted ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

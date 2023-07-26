@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.CookbookFragment">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="it.project.houseoftasty.viewModel.RecipeDetailsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/sand_brown"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/scrollviewDescription"
+            android:visibility="@{viewModel.loadingCompleted ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    setImage="@{viewModel.recipeLiveData.imageReference}"
+                    android:id="@+id/recipeImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:contentDescription="@string/recipeImageDescription"
+                    android:src="@drawable/medium_logo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/recipeTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@{viewModel.recipeLiveData.titolo.toUpperCase()}"
+                    android:textColor="@color/caramel_brown"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recipeImage" />
+
+                <TextView
+                    android:id="@+id/recipeDate"
+                    setTextByCreationTimestamp="@{viewModel.recipeLiveData.timestampCreazione}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@string/recipeInfo"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recipeTitle" />
+
+                <TextView
+                    android:id="@+id/recipeStats"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@string/recipeStats"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recipeDate" />
+
+                <View
+                    android:id="@+id/firstDivider"
+                    style="@style/whiteDivider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/likeButton" />
+
+                <TextView
+                    android:id="@+id/recipeIngredientsTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/recipeIngredientsTitle"
+                    android:textColor="@color/caramel_brown"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/firstDivider" />
+
+                <TextView
+                    android:id="@+id/recipeIngredients"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text='@{viewModel.recipeLiveData.ingredienti.replace(", ","\n")}'
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recipeIngredientsTitle" />
+
+                <View
+                    android:id="@+id/secondDivider"
+                    style="@style/whiteDivider"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recipeIngredients" />
+
+                <TextView
+                    android:id="@+id/recipePreparationTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/recipePreparationTitle"
+                    android:textColor="@color/caramel_brown"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/secondDivider" />
+
+                <TextView
+                    android:id="@+id/recipePreparation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@{viewModel.recipeLiveData.preparazione}"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recipePreparationTitle" />
+
+                <View
+                    android:id="@+id/thirdDivider"
+                    style="@style/whiteDivider"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recipePreparation" />
+
+                <TextView
+                    android:id="@+id/recipeCommentsTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/recipeComments"
+                    android:textColor="@color/caramel_brown"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/thirdDivider" />
+
+                <EditText
+                    android:id="@+id/commentEditText"
+                    style="@style/btnSolidOutline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:autofillHints="no"
+                    android:ellipsize="none"
+                    android:hint="@string/recipeCommentEditTextPlaceholder"
+                    android:inputType="text"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:paddingStart="@dimen/_24pxh"
+                    android:paddingTop="@dimen/_13pxv"
+                    android:paddingEnd="@dimen/_24pxh"
+                    android:paddingBottom="@dimen/_12pxv"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray_400"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recipeCommentsTitle" />
+
+                <ImageView
+                    android:id="@+id/peopleImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/numPersoneImageDescription"
+                    android:src="@drawable/icon_people"
+                    app:layout_constraintEnd_toStartOf="@+id/recipeNumPeople"
+                    app:layout_constraintTop_toTopOf="@+id/recipeIngredientsTitle" />
+
+                <TextView
+                    android:id="@+id/recipeNumPeople"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@{viewModel.recipeLiveData.numPersone.toString()}"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/recipePreparationTime"
+                    app:layout_constraintTop_toTopOf="@+id/recipeIngredientsTitle" />
+
+                <TextView
+                    android:id="@+id/recipePreparationTime"
+                    setPreparationTime="@{viewModel.recipeLiveData.tempoPreparazione}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@string/recipePreparationTimePlaceholder"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/recipePreparationTitle" />
+
+                <ImageView
+                    android:id="@+id/timeImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/timeImageDescription"
+                    android:src="@drawable/icon_time"
+                    app:layout_constraintEnd_toStartOf="@+id/recipePreparationTime"
+                    app:layout_constraintTop_toTopOf="@+id/recipePreparationTitle" />
+
+                <Button
+                    android:id="@+id/likeButton"
+                    android:layout_width="160dp"
+                    android:layout_height="65dp"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@android:color/transparent"
+                    android:drawableLeft="@{viewModel.likeButtonPressed ? @drawable/icon_heart_red : @drawable/icon_heart_empty}"
+                    android:stateListAnimator="@null"
+                    android:text="@string/recipeLikes"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    app:cornerRadius="30dp"
+                    app:layout_constraintEnd_toStartOf="@+id/downloadButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recipeStats"
+                    app:strokeColor="@color/caramel_brown"
+                    app:strokeWidth="3dp" />
+
+                <Button
+                    android:id="@+id/downloadButton"
+                    android:layout_width="160dp"
+                    android:layout_height="65dp"
+                    android:backgroundTint="@android:color/transparent"
+                    android:drawableLeft="@drawable/icon_download_big"
+                    android:stateListAnimator="@null"
+                    android:text="@string/recipeDownloads"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    app:cornerRadius="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/likeButton"
+                    app:layout_constraintTop_toTopOf="@+id/likeButton"
+                    app:strokeColor="@color/caramel_brown"
+                    app:strokeWidth="3dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floating_action_button"
+                setFabVisibility="@{viewModel.loadingCompleted}"
+                style="@style/Widget.App.FloatingActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="16dp"
+                android:contentDescription="@string/fab_edit"
+                app:srcCompat="@drawable/action_edit" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/caramel_brown"
+            android:visibility="@{viewModel.loadingCompleted ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

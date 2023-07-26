@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -13,12 +15,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.HouseOfTasty"
+        android:usesCleartextTraffic="true"
         android:windowSoftInputMode="adjustResize"
         tools:targetApi="31">
 
         <activity
-            android:name=".WelcomeActivity"
-            android:exported="true">
+            android:name=".view.WelcomeActivity"
+            android:exported="true"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,23 +30,14 @@
         </activity>
 
         <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
+            android:name=".view.AccessActivity"
+            android:exported="false"
+            android:noHistory="true"/>
+
         <activity
-            android:name=".LoginFragment"
-            android:exported="false" />
-        <activity
-            android:name=".HomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AccessActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false">
+            android:name=".view.MainActivity"
+            android:exported="false"
+            android:noHistory="true">
         </activity>
 
         <meta-data

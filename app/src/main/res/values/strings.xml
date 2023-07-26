@@ -5,9 +5,20 @@
 
     <string name="contentDescription_logo_big">logo dell\'applicazione, dimensione grande</string>
     <string name="contentDescription_logo_medium">logo dell\'applicazione, dimensione media</string>
+    <string name="contentDescription_logo_header">logo dell\'applicazione, nell\'header del menù laterale</string>
+
+    <string name="contentDescription_recipe_preview">preview dell\'immagine della ricetta</string>
+    <string name="contentDescription_recipe_form_button">pulsante di submit della form della ricetta</string>
 
     <string name="button_login">Accedi</string>
     <string name="button_register">Registrati</string>
+
+    <!-- Stringhe di errore predefinite -->
+    <string name="loadingError">[ERROR_001: Errore di caricamento]</string>
+    <string name="dataLoadingError">[ERROR_002: Impossibile recuperare i dati]</string>
+    <string name="imageLoadingError">[ERROR_003: Impossibile caricare l\'immagine]</string>
+    <string name="unknownDataError">[ERROR_004: Informazione sconosciuta]</string>
+    <string name="connectionError">[ERROR_005: Connessione assente]</string>
 
     <!-- Stringhe specifiche di "activity_main" -->
     <string name="button_next"><![CDATA[Prosegui >>]]></string>
@@ -58,10 +69,53 @@
     <string name="txtConfermaPassword">Conferma password</string>
     <string name="txtSaveEdit">Salva modifiche</string>
 
+    <!-- Stringhe specifiche di "fragment_cookbook" e "fragment_recipe_detail" -->
+    <string name ="timestampTemplate">Creata in data %1$s alle %2$s</string>
+    <string name ="scrollviewDescription">Interfaccia scorrevole con i dettagli della ricetta</string>
+    <string name ="recipeImageDescription">Immagine di copertina della ricetta</string>
+    <string name ="recipeEditLogoDescription">Icona per la modifica della ricetta</string>
+    <string name ="numPersoneImageDescription">Immagine di copertina della ricetta</string>
+    <string name ="timeImageDescription">Immagine di copertina della ricetta</string>
+    <string name ="recipeTitle">Titolo della ricetta</string>
+    <string name ="recipeInfo">Creatore, data di creazione o di pubblicazione</string>
+    <string name ="recipeStats">Numero visualizzazioni </string>
+    <string name ="recipeLikes">Mi Piace</string>
+    <string name ="recipeDownloads">Salva</string>
+    <string name ="recipeIngredientsTitle">INGREDIENTI</string>
+    <string name ="recipeIngredients">Lista degli ingredienti</string>
+    <string name ="recipePreparationTitle">PREPARAZIONE</string>
+    <string name ="recipePreparation">Procedura per preparare la ricetta</string>
+    <string name ="recipeComments">COMMENTI</string>
+    <string name ="recipeCommentEditTextPlaceholder">Scrivi un commento</string>
+    <string name ="recipeNumPeoplePlaceholder">4</string>
+    <string name ="recipePreparationTimePlaceholder">1h 20min</string>
+    <string name="fab_add">Aggiungi una nuova ricetta</string>
+    <string name="fab_edit">Modifica i dati della ricetta</string>
+
+    <!-- Stringhe specifiche di "fragment_recipe_form" -->
+    <string name ="errorMessagePlaceholder">error_message </string>
+    <string name ="labelTitle">Titolo della ricetta:</string>
+    <string name ="hintTitle">Inserire il titolo della ricetta</string>
+    <string name ="labelIngredients">Lista degli ingredienti:</string>
+    <string name ="hintIngredients">Elencare ingredienti separati da virgola</string>
+    <string name ="labelPreparation">Preparazione:</string>
+    <string name ="hintPreparation">Spiegare la procedura di preparazione</string>
+    <string name ="labelNumPeople">Porzione:</string>
+    <string name ="hintNumPeople">es. 2</string>
+    <string name ="unitNumPeople">persone</string>
+    <string name ="labelPreparationTime">Tempo di preparazione:</string>
+    <string name ="hintPreparationTime">es. 45</string>
+    <string name ="unitPreparationTime">minuti</string>
+    <string name ="labelIsPublished">Ricetta pubblicata:</string>
+    <string name ="labelIsPostPrivate">Post ricetta privato:</string>
+    <string name ="txtDeleteRecipe">Elimina ricetta</string>
+    <string name ="txtAddRecipe">Aggiungi ricetta</string>
+
     <!-- Stringhe specifiche del Navigation Drawer -->
 
     <string name="menu_home">Home</string>
     <string name="menu_profile">Profilo</string>
+    <string name="menu_ricettario">Ricettario</string>
     <string name="openDrawer">Open</string>
     <string name="closeDrawer">Close</string>
     <string name="home">Home</string>
@@ -69,7 +123,6 @@
     <string name="registrati">Registrati</string>
     <string name="logout">Logout</string>
     <string name="products">I miei prodotti</string>
-
 
     <!-- Stringhe specifiche di "activity_home" -->
     <string name="raccolte">Raccolte</string>

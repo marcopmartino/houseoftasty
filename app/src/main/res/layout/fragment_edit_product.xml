@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".EditProductFragment">
+    tools:context=".view.EditProductFragment">
 
     <data>
         <variable
@@ -20,7 +20,7 @@
 
         <!--Dati nome-->
         <TextView
-            android:id="@+id/labelNome"
+            android:id="@+id/labelTitle"
             style="@style/txtBaloo2baloo2semibold16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/dataNome"
+            android:id="@+id/dataTitle"
             style="@style/etSolidRoundedOutline"
             android:layout_width="310dp"
             android:layout_height="49dp"
@@ -56,7 +56,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.445"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelNome"
+            app:layout_constraintTop_toBottomOf="@+id/labelTitle"
             android:autofillHints="no" />
 
         <!--Dati quantita-->
@@ -74,7 +74,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.203"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dataNome" />
+            app:layout_constraintTop_toBottomOf="@+id/dataTitle" />
 
         <EditText
             android:id="@+id/dataQuantita"
@@ -149,7 +149,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:contentDescription="@string/setExpire"
-            android:src="@drawable/img_calendar"
+            android:src="@drawable/icon_calendar"
             android:textAlignment="textEnd"
             app:layout_constraintStart_toEndOf="@+id/dataScadenza"
             app:layout_constraintTop_toBottomOf="@+id/labelScadenza" />
