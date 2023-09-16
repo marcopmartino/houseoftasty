@@ -1,6 +1,5 @@
 package it.project.houseoftasty.network
 
-import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import it.project.houseoftasty.model.Recipe
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +15,7 @@ class RecipeNetwork : FirebaseNetwork("recipes") {
 
         // Recupera i dati sulle ricette (richiede la connessione a Firestore)
         withContext(Dispatchers.IO) {
-            documents = recipesReference.whereEqualTo("idCreatore", currentUserId).get().await().documents
+            documents = firestoreReference.whereEqualTo("idCreatore", currentUserId).get().await().documents
         }
 
         // Converte gli snapshot dei documenti in oggetti Recipe e li aggiunge alla lista "recipeList"
@@ -47,7 +46,7 @@ class RecipeNetwork : FirebaseNetwork("recipes") {
 
         // Recupera i dati sulla ricetta (richiede la connessione a Firestore)
         withContext(Dispatchers.IO) {
-            document = recipesReference.document(recipeId).get().await()
+            document = firestoreReference.document(recipeId).get().await()
         }
 
         // Converte lo snapshot del documento in un oggetto Recipe
@@ -67,19 +66,19 @@ class RecipeNetwork : FirebaseNetwork("recipes") {
         recipe.idCreatore = currentUserId
 
         withContext(Dispatchers.IO) {
-            recipesReference.add(recipe).await()
+            firestoreReference.add(recipe).await()
         }
     }
 
     suspend fun updateRecipe(recipe: Recipe) {
         withContext(Dispatchers.IO) {
-            recipesReference.document(recipe.id.toString()).set(recipe).await()
+            firestoreReference.document(recipe.id.toString()).set(recipe).await()
         }
     }
 
     suspend fun deleteRecipeById(recipeId: String) {
         withContext(Dispatchers.IO) {
-            recipesReference.document(recipeId).delete().await()
+            firestoreReference.document(recipeId).delete().await()
         }
     }
 }

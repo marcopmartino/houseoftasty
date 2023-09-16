@@ -47,7 +47,7 @@
             android:id="@+id/quantitaData"
             style="@style/txtBaloo2regular16"
             android:layout_width="30dp"
-            android:layout_height="22dp"
+            android:layout_height="23dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:layout_weight="148"
@@ -55,15 +55,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/quantitaLabel"
             app:layout_constraintTop_toBottomOf="@+id/nomeData"
-            app:layout_constraintVertical_bias="0.416" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/scadenzaLabel"
             style="@style/Widget.AppCompat.TextView"
             android:layout_width="70dp"
             android:layout_height="23dp"
-            android:layout_marginStart="84dp"
+            android:layout_marginStart="80dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="-1dp"
             android:layout_weight="148"
             android:text="@string/scadenza"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -74,15 +75,15 @@
         <TextView
             android:id="@+id/scadenzaData"
             style="@style/txtBaloo2regular16"
-            android:layout_width="74dp"
+            android:layout_width="80dp"
             android:layout_height="23dp"
             android:layout_marginStart="-25dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="7dp"
             android:layout_weight="148"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.428"
+            app:layout_constraintHorizontal_bias="0.838"
             app:layout_constraintStart_toEndOf="@+id/scadenzaLabel"
             app:layout_constraintTop_toBottomOf="@+id/nomeData"
             app:layout_constraintVertical_bias="0.0" />

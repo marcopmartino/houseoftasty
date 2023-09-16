@@ -1,6 +1,7 @@
 package it.project.houseoftasty.viewModel
 
 import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import it.project.houseoftasty.utility.OperationType
 import it.project.houseoftasty.validation.FormValidator
@@ -21,6 +22,7 @@ abstract class FormManagerViewModel (initialStatus: Boolean = false) : LoadingMa
     * per il pulsante di eliminazione (se presente).
     * */
     fun generateValidatorBuilder(): FormValidator.Builder {
+        Log.d("update","ELO")
         return FormValidator.Builder().onValidationSuccess { formData, hasDataChanged ->
             startLoadingAndDo { onFormSubmit(formData, hasDataChanged) }
         }.onDeleteButtonClicked {

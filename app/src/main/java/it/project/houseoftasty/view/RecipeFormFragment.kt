@@ -11,7 +11,6 @@ import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import it.project.houseoftasty.databinding.FragmentRecipeFormBinding
-import it.project.houseoftasty.validation.FormValidator
 import it.project.houseoftasty.validation.ValidationRule
 import it.project.houseoftasty.validation.Validator
 import it.project.houseoftasty.viewModel.RecipeFormViewModel

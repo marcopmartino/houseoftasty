@@ -1,5 +1,6 @@
 package it.project.houseoftasty.validation
 
+import android.util.Log
 import android.view.View
 import android.widget.Button
 
@@ -54,6 +55,7 @@ open class FormValidator {
             dataMap[validator.getInputViewTag()] = validator.getInputData()
         for (field in unvalidatedFields)
             dataMap[field.getInputViewTag()] = field.getInputData()
+        Log.d("TAG",validators.toString())
         return dataMap
     }
 

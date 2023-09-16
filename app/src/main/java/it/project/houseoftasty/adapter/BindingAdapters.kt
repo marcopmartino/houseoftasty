@@ -2,13 +2,16 @@ package it.project.houseoftasty.adapter
 
 import android.os.Build
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.databinding.BindingAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import com.google.firebase.storage.StorageReference
+import it.project.houseoftasty.R
 import it.project.houseoftasty.utility.DateTimeFormatter
 import it.project.houseoftasty.utility.ImageLoader
 import java.util.*
@@ -69,6 +72,30 @@ class BindingAdapters {
             }
 
         }
+
+        @BindingAdapter("setSpinnerItem")
+        @JvmStatic
+        fun Spinner.setSpinnerItem(item: String?) {
+            this.context?.let {
+                ArrayAdapter.createFromResource(
+                    it,
+                    R.array.array_misure,
+                    android.R.layout.simple_spinner_item
+                ).also { adapter ->
+                    // Specify the layout to use when the list of choices appears
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    // Apply the adapter to the spinner
+                    this.adapter = adapter
+                    if(item != null) {
+                        val position = adapter.getPosition(item)
+                        this.setSelection(position)
+                    }
+                }
+            }
+
+
+        }
+
 
     }
 }

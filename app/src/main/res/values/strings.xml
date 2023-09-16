@@ -59,6 +59,9 @@
     <string name="totalComment">Totale commenti ricette</string>
     <string name="totalDownload">Totale download ricette</string>
 
+    <!-- Stringe specigiche di "fragment_product_form" -->
+    <string name="txtAddProduct">Aggiungi prodotto</string>
+
     <!-- Stringhe specifiche di "fragment_editProfile" -->
 
     <string name="txtEditProfile">Modifica Profilo</string>
@@ -131,8 +134,8 @@
     <string name="prodotti">Prodotti</string>
     <string name="ciao_cosa_cucini_oggi">Ciao, cosa cucini oggi?</string>
     <string name="currentPasswordHint">Inserire password corrente</string>
-    <string name="quantita">Quantità:</string>
-    <string name="scadenza">Scadenza:</string>
+    <string name="quantita">Quantità:  </string>
+    <string name="scadenza">Scadenza:  </string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="nome_prodotto">Nome prodotto:</string>

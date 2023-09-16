@@ -9,8 +9,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.work.*
-import it.project.houseoftasty.database.HouseTastyDb
-import it.project.houseoftasty.databaseInterface.HouseTastyDao
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,14 +20,14 @@ import java.util.*
 class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
     Worker(appContext, workerParams){
 
-    private lateinit var houseTastyDao: HouseTastyDao
-    private lateinit var currentDate: Date
+
+    /*private lateinit var currentDate: Date
     private val channelId = "checkExpire"
-    private lateinit var builder: NotificationCompat.Builder
+    private lateinit var builder: NotificationCompat.Builder*/
 
     override fun doWork(): Result {
 
-        checkDate()
+       // checkDate()
 
         return Result.success()
     }
@@ -37,10 +35,8 @@ class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
     /**
      * Questa funzione controlla le scadenze dei prodotti e, se necessario, invia una notifica
     **/
-    @SuppressLint("SimpleDateFormat", "MissingPermission")
+    /*@SuppressLint("SimpleDateFormat", "MissingPermission")
     private fun checkDate(){
-
-        houseTastyDao = HouseTastyDb.getInstance(applicationContext).houseTastyDAO()
 
         var counter = 0
         val sdf = SimpleDateFormat("dd/MM/yyyy")
@@ -58,22 +54,11 @@ class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
             }
         }
 
-        /*val intent = Intent(applicationContext, MyProductFragment::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }*/
-
-        /*val pendingIntent = NavDeepLinkBuilder(applicationContext)
-                            .setComponentName(MainActivity::class.java) //Solo se non è nel launcher activity
-                            .setGraph(R.navigation.nav_graph)
-                            .setDestination(R.id.myProductFragment)
-                            .createPendingIntent()*/
-
         if(counter!=0) {
 
             builder = NotificationCompat.Builder(applicationContext, channelId)
                 .setSmallIcon(R.drawable.medium_logo)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                //.setContentIntent(pendingIntent)
                 .setAutoCancel(true)
 
             if (counter == 1) {
@@ -90,6 +75,6 @@ class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
             }
 
         }
-    }
+    }*/
 
 }

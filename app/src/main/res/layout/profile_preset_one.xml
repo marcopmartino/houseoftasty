@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_bg_deep_orange_50"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Tag immagine -->
+    <FrameLayout
+        android:id="@+id/imageFrame"
+        android:layout_width="@dimen/_170pxh"
+        android:layout_height="@dimen/_171pxv"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/viewEllipseTwo"
+            android:layout_width="170dp"
+            android:layout_height="171dp"
+            android:layout_gravity="start"
+            android:background="@drawable/rectangle_bg_red_300_2b_radius_85" />
+
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="@dimen/_108pxh"
+            android:layout_height="@dimen/_151pxh"
+            android:layout_gravity="bottom|center"
+            android:scaleType="fitXY"
+            android:src="@drawable/img_peopleiconcol"
+            tools:ignore="ContentDescription" />
+
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnModificaImmagine"
+        android:layout_width="212dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_8pxh"
+        android:paddingTop="@dimen/_9pxv"
+        android:paddingEnd="@dimen/_7pxh"
+        android:paddingBottom="@dimen/_9pxv"
+        android:singleLine="true"
+        style="@style/btnSolidRounded"
+        android:text="@string/txtEditImage"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.588"
+        app:layout_constraintStart_toEndOf="@+id/imageFrame"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/txtEditImage" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnRimuoviImmagineOne"
+        style="@style/btnSolidRounded_1"
+        android:layout_width="212dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="28dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingStart="@dimen/_11pxh"
+        android:paddingTop="@dimen/_9pxv"
+        android:paddingEnd="@dimen/_9pxh"
+        android:paddingBottom="@dimen/_9pxv"
+        android:singleLine="true"
+        android:text="@string/txtRemoveImage"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.588"
+        app:layout_constraintStart_toEndOf="@+id/imageFrame"
+        app:layout_constraintTop_toBottomOf="@+id/btnModificaImmagine"
+        tools:text="@string/txtRemoveImage" />
+
+    <!-- Tag username-->
+    <TextView
+        android:id="@+id/usernameLabel"
+        style="@style/txtBaloo2baloo2semibold16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="24dp"
+        android:ellipsize="end"
+        android:lineSpacingExtra="@dimen/_10pxh"
+        android:singleLine="true"
+        android:text="@string/username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.035"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageFrame"
+        tools:text="@string/username" />
+
+    <EditText
+        android:id="@+id/dataUsername"
+        style="@style/etSolidRoundedOutline"
+        android:layout_width="212dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+        android:ellipsize="end"
+        android:inputType="text"
+        android:lineSpacingExtra="@dimen/_10pxh"
+        android:paddingStart="@dimen/_15pxh"
+        android:paddingTop="@dimen/_13pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_12pxv"
+        android:singleLine="true"
+        android:tag="username"
+        android:text="@{profileData.profileLiveData.username}"
+        android:textColorHint="@color/black_900"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameLabel"
+        tools:ignore="Autofill,LabelFor" />
+
+    <TextView
+        android:id="@+id/errorUsername"
+        style="@style/txtBaloo2medium14error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/errorMessagePlaceholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataUsername" />
+
+    <!-- Tag mail-->
+    <TextView
+        android:id="@+id/mailLabel"
+        style="@style/txtBaloo2baloo2semibold16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:lineSpacingExtra="@dimen/_10pxh"
+        android:singleLine="true"
+        android:text="@string/mail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.032"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/errorUsername"
+        tools:text="@string/mail" />
+
+    <EditText
+        android:id="@+id/dataEmail"
+        style="@style/etSolidRoundedOutline"
+        android:layout_width="212dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+        android:ellipsize="end"
+        android:inputType="textEmailAddress"
+        android:lineSpacingExtra="@dimen/_10pxh"
+        android:paddingStart="@dimen/_15pxh"
+        android:paddingTop="@dimen/_13pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_12pxv"
+        android:singleLine="true"
+        android:tag="email"
+        android:text="@{profileData.profileLiveData.mail}"
+        android:textColorHint="@color/black_900"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mailLabel"
+        tools:ignore="Autofill,LabelFor" />
+
+    <TextView
+        android:id="@+id/errorEmail"
+        style="@style/txtBaloo2medium14error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/errorMessagePlaceholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataEmail" />
+
+    <!-- Tag nome-->
+    <TextView
+        android:id="@+id/nameLabel"
+        style="@style/txtBaloo2baloo2semibold16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:lineSpacingExtra="@dimen/_10pxh"
+        android:singleLine="true"
+        android:text="@string/name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.032"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/errorEmail"
+        tools:text="@string/name" />
+
+    <EditText
+        android:id="@+id/dataNome"
+        style="@style/etSolidRoundedOutline"
+        android:layout_width="212dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+        android:ellipsize="end"
+        android:text="@{profileData.profileLiveData.nome}"
+        android:inputType="text"
+        android:tag="nome"
+        android:lineSpacingExtra="@dimen/_10pxh"
+        android:paddingStart="@dimen/_15pxh"
+        android:paddingTop="@dimen/_11pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_14pxv"
+        android:singleLine="true"
+        android:textColorHint="@color/black_900"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameLabel"
+        tools:ignore="Autofill,LabelFor" />
+
+    <TextView
+        android:id="@+id/errorNome"
+        style="@style/txtBaloo2medium14error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/errorMessagePlaceholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataNome" />
+
+    <!-- Tag cognome-->
+    <TextView
+        android:id="@+id/cognomeLabel"
+        style="@style/txtBaloo2baloo2semibold16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="12dp"
+        android:ellipsize="end"
+        android:lineSpacingExtra="@dimen/_10pxh"
+        android:singleLine="true"
+        android:text="@string/surname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.032"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/errorNome"
+        tools:text="@string/surname" />
+
+    <EditText
+        android:id="@+id/dataCognome"
+        style="@style/etSolidRoundedOutline"
+        android:layout_width="212dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+        android:ellipsize="end"
+        android:inputType="text"
+        android:lineSpacingExtra="@dimen/_10pxh"
+        android:paddingStart="@dimen/_15pxh"
+        android:paddingTop="@dimen/_13pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_12pxv"
+        android:singleLine="true"
+        android:tag="cognome"
+        android:text="@{profileData.profileLiveData.cognome}"
+        android:textColorHint="@color/black_900"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cognomeLabel"
+        tools:ignore="Autofill,LabelFor" />
+
+    <TextView
+        android:id="@+id/errorCognome"
+        style="@style/txtBaloo2medium14error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/errorMessagePlaceholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataCognome" />
+
+    <!-- Tag password corrente/nuova-->
+    <TextView
+        android:id="@+id/passwordLabel"
+        style="@style/txtBaloo2baloo2semibold16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:lineSpacingExtra="@dimen/_10pxh"
+        android:singleLine="true"
+        android:text="@string/register_editTextPlaceholder_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.032"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/errorCognome"
+        tools:text="@string/register_editTextPlaceholder_password" />
+
+    <EditText
+        android:id="@+id/dataPsw"
+        style="@style/etSolidRoundedOutline_1"
+        android:layout_width="212dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+        android:ellipsize="end"
+        android:hint="@string/txtNewPassword"
+        android:inputType="textPassword"
+        android:tag="psw"
+        android:lineSpacingExtra="@dimen/_10pxh"
+        android:paddingStart="@dimen/_15pxh"
+        android:paddingTop="@dimen/_13pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_12pxv"
+        android:singleLine="true"
+        android:textColorHint="@color/gray_400"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordLabel"
+        tools:ignore="Autofill" />
+
+    <!-- Tag conferma nuova password/nuova password-->
+    <TextView
+        android:id="@+id/newPasswordLabel"
+        style="@style/txtBaloo2baloo2semibold16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:lineSpacingExtra="@dimen/_10pxh"
+        android:singleLine="true"
+        android:text="@string/txtConfermaPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.032"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataPsw"
+        tools:text="@string/txtNewPassword" />
+
+    <EditText
+        android:id="@+id/dataNewPsw"
+        style="@style/etSolidRoundedOutline_1"
+        android:layout_width="212dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+        android:ellipsize="end"
+        android:hint="@string/txtConfermaPassword"
+        android:inputType="text"
+        android:tag="newPsw"
+        android:lineSpacingExtra="@dimen/_10pxh"
+        android:paddingStart="@dimen/_15pxh"
+        android:paddingTop="@dimen/_13pxv"
+        android:paddingEnd="@dimen/_30pxh"
+        android:paddingBottom="@dimen/_12pxv"
+        android:singleLine="true"
+        android:textColorHint="@color/gray_400"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newPasswordLabel"
+        tools:ignore="Autofill,TextFields" />
+
+    <TextView
+        android:id="@+id/errorNewPsw"
+        style="@style/txtBaloo2medium14error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/errorMessagePlaceholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataNewPsw" />
+
+    <!-- Tag submit-->
+    <Button
+        android:id="@+id/button_submitProfile"
+        style="@style/btnSolidRoundedOutline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lineSpacingExtra="@dimen/_10pxh"
+        android:paddingStart="@dimen/_16pxh"
+        android:paddingTop="@dimen/_13pxv"
+        android:paddingEnd="@dimen/_16pxh"
+        android:paddingBottom="@dimen/_13pxv"
+        android:singleLine="true"
+        android:text="@string/registrati"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/errorNewPsw"
+        tools:text="@string/registrati" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

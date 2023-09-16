@@ -1,69 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".view.MyProductFragment">
 
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="it.project.houseoftasty.viewModel.ProductViewModel" />
+    </data>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ScrollView
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/linearProduct"
-                style="@style/groupStyledeep_orange_50"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/productList"
-                        android:layout_width="349dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15sp"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/product_item" />
+                <LinearLayout
+                    android:id="@+id/linearProduct"
+                    style="@style/groupStyledeep_orange_50"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
-            </LinearLayout>
-        </ScrollView>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/productList"
+                            android:layout_width="349dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sp"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/product_item" />
+
+                </LinearLayout>
+            </ScrollView>
 
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <ProgressBar
-        android:id="@+id/waitingBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        <ProgressBar
+            android:id="@+id/waitingBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addProduct"
-        app:fabCustomSize="@dimen/_70sp"
-        android:backgroundTint="@color/red_300"
-        android:layout_width="@dimen/_90sp"
-        android:layout_height="@dimen/_90sp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="@dimen/_25sp"
-        android:layout_marginTop="@dimen/_25sp"
-        android:layout_marginEnd="@dimen/_25sp"
-        android:layout_marginBottom="@dimen/_25sp"
-        android:src="@drawable/action_add"
-        android:contentDescription="@string/bottone_aggiunta_prodotto" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addProduct"
+            app:fabCustomSize="@dimen/_70sp"
+            android:backgroundTint="@color/red_300"
+            android:layout_width="@dimen/_90sp"
+            android:layout_height="@dimen/_90sp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/_25sp"
+            android:layout_marginTop="@dimen/_25sp"
+            android:layout_marginEnd="@dimen/_25sp"
+            android:layout_marginBottom="@dimen/_25sp"
+            android:src="@drawable/action_add"
+            android:contentDescription="@string/bottone_aggiunta_prodotto" />
 
-</RelativeLayout>
+    </RelativeLayout>
+</layout>

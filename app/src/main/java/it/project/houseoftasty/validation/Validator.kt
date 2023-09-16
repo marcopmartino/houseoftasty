@@ -2,8 +2,12 @@ package it.project.houseoftasty.validation
 
 import android.renderscript.ScriptGroup.Input
 import android.util.Log
+import android.view.View
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.widget.doOnTextChanged
+import androidx.databinding.adapters.TextViewBindingAdapter.OnTextChanged
 import it.project.houseoftasty.utility.*
 
 /* Classe per validare un campo di input di tipo EditText. Ha come proprietà:
@@ -13,9 +17,12 @@ import it.project.houseoftasty.utility.*
 *
 * La classe viene costruita facendo uso del pattern Builder */
 class Validator {
+    //private var inputSpinner: InputField<Spinner>? = null
     private var inputField: InputField<EditText>? = null
+   // private var inputText: InputField<TextView>? = null
     private var errorView: TextView? = null
     private var rules: MutableList<ValidationRule> = mutableListOf()
+    //private var rulesDate: MutableList<ValidationRuleData> = mutableListOf()
 
     /* Esegue la validazione del testo contenuto in inputView. Ritorna TRUE se non sono stati
     * riscontrati errori, altrimenti FALSE. */
@@ -24,6 +31,7 @@ class Validator {
         if (inputField != null) {
             val inputText: String = inputField!!.getInputData() as String
 
+            Log.d("update", "<-"+inputText)
             // Con un ciclo controlla che ogni regola di validazione sia stata rispettata
             var counter = 0
             val rulesCounter = rules.size
@@ -38,6 +46,22 @@ class Validator {
             else
                 setErrorMessage(rules[counter - 1].getErrorMessage())
         }
+
+        /*f(inputText != null){
+            val input: String = inputText!!.getInputData() as String
+
+            var counter = 0
+            val rulesCounter = rulesDate.size
+            while(isValid && counter < rulesCounter){
+                isValid == rules[counter].validate(input)
+                counter++
+            }
+            if(isValid)
+                resetErrorMessage()
+            else
+                setErrorMessage(rules[counter-1].getErrorMessage())
+        }*/
+
         return isValid
     }
 
@@ -98,6 +122,18 @@ class Validator {
             return this
         }
 
+        /*fun setInputView(inputView: TextView): Builder{
+            validator.inputText = InputField(inputView)
+            return this
+        }
+
+        // Imposta un InputField di tipo Spinner su cui eseguire la validazione
+        fun setInputView(inputView: Spinner): Builder{
+            if(inputView.selectedItem!=null) Log.d("insert",inputView.selectedItem.toString())
+            validator.inputSpinner = InputField(inputView)
+            return this
+        }*/
+
         // Imposta una TextView dove mostrare eventuali errori
         fun setErrorView(errorView: TextView): Builder {
             validator.errorView = errorView
@@ -139,6 +175,7 @@ class Validator {
                 if (onFocusLostValidation)
                     inputView.onFocusLost { validator.validate() }
             }
+
             if (validator.errorView != null)
                 validator.resetErrorMessage()
             return validator

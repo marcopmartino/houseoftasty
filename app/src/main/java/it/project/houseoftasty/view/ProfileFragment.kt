@@ -13,6 +13,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavDirections
+import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
@@ -21,7 +23,9 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import it.project.houseoftasty.R
+import it.project.houseoftasty.adapter.BindingAdapters.Companion.setFabVisibility
 import it.project.houseoftasty.databinding.FragmentProfileBinding
+import it.project.houseoftasty.viewModel.ProfileViewModel
 import it.project.houseoftasty.viewModel.UserViewModel
 import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.resume
@@ -36,7 +40,7 @@ class ProfileFragment : Fragment() {
 
     private val maxImageSize: Long = 1024*1024
 
-    private val userModel: UserViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +48,7 @@ class ProfileFragment : Fragment() {
     ): View {
 
         binding = FragmentProfileBinding.inflate(inflater)
+        binding.profileData = profileViewModel
         return binding.root
 
     }
@@ -59,31 +64,11 @@ class ProfileFragment : Fragment() {
         // Modifico il titolo della Action Bar
         (activity as MainActivity).setActionBarTitle("Profilo")
 
-        firebaseAuth = FirebaseAuth.getInstance()
-        firebaseDb = FirebaseFirestore.getInstance().collection("users").document(firebaseAuth.currentUser!!.uid)
-        firebaseStorage = Firebase.storage.reference
-
-        firebaseDb.get().addOnSuccessListener{
-            userModel.loadData(it.data?.get("username").toString(),it.data?.get("nome").toString(),
-                it.data?.get("cognome").toString(), it.data?.get("email").toString())
-            firebaseStorage.child("immagini_profili/${firebaseAuth.currentUser!!.uid}").getBytes(maxImageSize).addOnSuccessListener{ img->
-                view.findViewById<ImageView>(R.id.profileImage).setImageURI(null)
-                view.findViewById<ImageView>(R.id.profileImage).setImageBitmap(BitmapFactory.decodeByteArray(img,0,img.size))
-            }.addOnFailureListener{
-                Log.d("TEST", "FALLIMENTO")
-            }
-            binding.userData = userModel
-        }.addOnFailureListener {
-            userModel.loadData("-", "-","-","-")
-            binding.userData = userModel
-            Toast.makeText(activity, "Impossibile recuperare i dati. Controllare la propria connessione di rete!!", Toast.LENGTH_SHORT).show()
-        }.addOnCompleteListener {
-            view.findViewById<ProgressBar>(R.id.waitingBar).visibility = View.GONE
-        }
-
-        binding.btnEditProfile.setOnClickListener {
-            val fragment = parentFragmentManager.beginTransaction()
-            fragment.replace(R.id.fragment_container, EditProfileFragment()).commit()
+        /* Imposta un clickListener sul F.A.B */
+        val fab = binding.floatingActionButton
+        fab.setOnClickListener {
+            fab.setFabVisibility(false)
+            requireView().findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToProfileFormFragment())
         }
     }
 

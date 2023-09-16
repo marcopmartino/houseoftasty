@@ -1,13 +1,19 @@
 package it.project.houseoftasty.viewModel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import it.project.houseoftasty.model.Product
+import it.project.houseoftasty.repository.ProductRepository
 
-class ProductViewModel : ViewModel() {
+class ProductViewModel : LoadingManagerViewModel(){
     var id: String = ""
     var nome: String = ""
     var quantita: String = ""
     var unitaMisura: String = ""
     var scadenza: String = ""
+
+    private val dataSource: ProductRepository = ProductRepository.getDataSource()
+    val productLiveData: MutableLiveData<MutableList<Product>> = MutableLiveData(mutableListOf())
 
 
     fun setData(id: String, nome:String, quantita: String, unitaMisura:String, scadenza:String){
@@ -23,6 +29,18 @@ class ProductViewModel : ViewModel() {
         this.quantita = quantita
         this.scadenza = scadenza
         this.unitaMisura = unitaMisura
+    }
+
+    // Inizializzazione
+    init {
+        initialize()
+    }
+
+    // Inizializza la variabile "recipesLiveData"
+    override suspend fun initAsync() {
+        // Ottiene dalla repository la lista delle ricette e aggiorna il LiveData
+        // Il metodo "postValue" imposta il nuovo valore e notifica eventuali osservatori
+        productLiveData.postValue(dataSource.getProductList())
     }
 
 

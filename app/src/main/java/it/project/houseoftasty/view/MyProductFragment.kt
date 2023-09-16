@@ -3,52 +3,41 @@ package it.project.houseoftasty.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
+import androidx.navigation.NavDirections
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import it.project.houseoftasty.R
-import it.project.houseoftasty.dataModel.Product
-import it.project.houseoftasty.database.HouseTastyDb
-import it.project.houseoftasty.databaseInterface.HouseTastyDao
+import it.project.houseoftasty.adapter.ProductAdapter
+import it.project.houseoftasty.model.Product
 import it.project.houseoftasty.databinding.FragmentMyProductBinding
 import it.project.houseoftasty.viewModel.ProductViewModel
 import kotlinx.coroutines.*
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 
-class MyProductFragment : Fragment(), Communicator {
+class MyProductFragment() : Fragment(){
+
+    private val productViewModel : ProductViewModel by viewModels()
 
     private lateinit var binding: FragmentMyProductBinding
-    private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var firebaseDb: CollectionReference
-    private lateinit var houseTastyDao: HouseTastyDao
     private lateinit var vista: View
-    private lateinit var localData: Deferred<Array<Product>>
-    private lateinit var products: Deferred<Array<Product>>
-    private lateinit var adapter: ProductAdapter
-    private lateinit var data: ArrayList<ProductViewModel>
-    private lateinit var recyclerview: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMyProductBinding.inflate(inflater)
+        binding.viewModel = productViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         vista = binding.root
         return binding.root
     }
@@ -69,37 +58,19 @@ class MyProductFragment : Fragment(), Communicator {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val swipeRefresh = view.findViewById<SwipeRefreshLayout>(R.id.swipeRefresh)
+        (activity as MainActivity).setActionBarTitle("I miei prodotti")
 
-        firebaseAuth = FirebaseAuth.getInstance()
-
-        data = ArrayList()
-
-        recyclerview = view.findViewById(R.id.productList)
+        val recyclerview: RecyclerView = binding.productList
+        val productAdapter =
+            ProductAdapter(requireContext(), resources) { product -> adapterOnClick(product) }
         recyclerview.layoutManager = LinearLayoutManager(activity)
+        recyclerview.adapter = productAdapter
 
-        houseTastyDao = HouseTastyDb.getInstance(requireContext()).houseTastyDAO()
+        productViewModel.productLiveData.observe(viewLifecycleOwner) {
+            it?.let {
 
-        if(firebaseAuth.currentUser != null){
-            firebaseDb = FirebaseFirestore.getInstance().collection("users")
-                .document(firebaseAuth.currentUser!!.uid).collection("products")
-            firebaseDb.get().addOnSuccessListener { documents ->
-
-                runBlocking {
-                    readDataAsync().await()
-                    loadInViewData(documents)
-                }
-
-            }.addOnFailureListener{
-                runBlocking {
-                    readLocalData()
-                }
-            }.addOnCompleteListener {
-                view.findViewById<ProgressBar>(R.id.waitingBar).visibility = View.GONE
-            }
-        }else{
-            runBlocking {
-                readLocalData()
+                /* Invia all'Adapter la lista di prodotti da mostrare */
+                productAdapter.submitList(it)
             }
         }
 
@@ -113,168 +84,25 @@ class MyProductFragment : Fragment(), Communicator {
         )
         recyclerview.addItemDecoration(dividerItemDecoration)
 
-        view.findViewById<FloatingActionButton>(R.id.addProduct).setOnClickListener{
+        view.findViewById<FloatingActionButton>(R.id.addProduct).setOnClickListener {
 
-            //Navigation.findNavController(view).navigate(R.id.action_myProductFragment_to_addProductFragment)
-
-            val fragment = parentFragmentManager.beginTransaction()
-            fragment.replace(R.id.fragment_container, AddProductFragment()).commit()
-        }
-
-        requireActivity().onBackPressedDispatcher.addCallback(activity) {
-            val fragment = parentFragmentManager.beginTransaction()
-            fragment.replace(R.id.fragment_container, HomeFragment()).commit()
-        }
-
-        swipeRefresh.setOnRefreshListener {
-            data.clear()
-            if(firebaseAuth.currentUser != null){
-                firebaseDb = FirebaseFirestore.getInstance().collection("users")
-                    .document(firebaseAuth.currentUser!!.uid).collection("products")
-                firebaseDb.get().addOnSuccessListener { documents ->
-
-                    runBlocking {
-                        readDataAsync().await()
-                        loadInViewData(documents)
-                    }
-
-                }.addOnFailureListener{
-                    runBlocking {
-                        readLocalData()
-                    }
-                }.addOnCompleteListener {
-                    view.findViewById<ProgressBar>(R.id.waitingBar).visibility = View.GONE
-                }
-            }else{
-                runBlocking {
-                    readLocalData()
-                }
-            }
-            recyclerview.adapter!!.notifyDataSetChanged()
-            swipeRefresh.isRefreshing = false
+            val action: NavDirections =
+                MyProductFragmentDirections.actionMyProductFragmentToProductFormFragment(null)
+            requireView().findNavController().navigate(action)
         }
     }
 
-    /**
-        * Sovrascrive il metodo per passare i dati
-        * @param id ID del prodotto selezionato
-     * */
-    override fun passData(id: String) {
-        val bundle = Bundle()
-        bundle.putString("id",id)
+    private fun adapterOnClick(product: Product) {
+        val productId = product.id
 
-        val fragment = parentFragmentManager.beginTransaction()
-        val frag = EditProductFragment()
-        frag.arguments = bundle
+        Log.d("TAG",product.id.toString())
 
-        fragment.replace(R.id.fragment_container, frag).addToBackStack(null).commit()
-
-    }
-
-    /**
-     * Metodo ausiliaro per sospendere il sistema durante la lettura dei dati dal database locale
-     */
-    private suspend fun readDataSuspendAsync() = suspendCoroutine {
-        it.resume(readDataAsync())
-    }
-
-    /**
-     * Legge i dati in modo asincrono dal database locale e restituisce un array di oggetti Product.
-     */
-    private fun readDataAsync(): Deferred<Array<Product>> {
-
-        return lifecycleScope.async(Dispatchers.IO) {
-            localData = async { houseTastyDao.getAll() }
-            return@async localData.await()
+        if (productId != null) {
+            Log.d("TAG",productId)
+            val action : NavDirections =
+                MyProductFragmentDirections.actionMyProductFragmentToProductFormFragment(productId)
+            requireView().findNavController().navigate(action)
         }
-    }
-
-    /**
-     * Questo metodo carica i dati nella recyclerView. Se non ci sono dati nel database locale,
-     * li recupera dal database Firebase e li inserisce sia nel database locale che nel modello di vista.
-     * Se invece ci sono dati nel database locale, li confronta con quelli presenti nel database Firebase e aggiorna il database Firebase
-     * con i dati locali (solo se ci sono differenze) e riempie la recyclerView.
-     * @param documents risultato della query al database remoto
-    */
-    private suspend fun loadInViewData(documents: QuerySnapshot){
-
-        if (localData.await().isEmpty()) {
-            for (document in documents) {
-                val productModel = ProductViewModel()
-                productModel.setData(
-                    document.id,
-                    document.get("nome").toString(),
-                    document.get("quantita").toString(),
-                    document.get("misura").toString(),
-                    document.get("scadenza").toString()
-                )
-                val product = Product(
-                    productModel.id,
-                    productModel.nome,
-                    productModel.quantita,
-                    productModel.unitaMisura,
-                    productModel.scadenza
-                )
-                lifecycleScope.launch(Dispatchers.IO) {
-                    houseTastyDao.insert(product)
-                }
-                data.add(productModel)
-            }
-        } else {
-            for (element in localData.await()) {
-                var check = true
-                for (document in documents) {
-                    if (element.id == document.id) {
-                        firebaseDb.document(document.id)
-                            .update("nome", element.nome)
-                        firebaseDb.document(document.id)
-                            .update("quantita", element.quantita)
-                        firebaseDb.document(document.id)
-                            .update("misura", element.unitaMisura)
-                        firebaseDb.document(document.id)
-                            .update("scadenza", element.scadenza)
-                        check = false
-                        break
-                    }
-                }
-                if (check) {
-                    val temp = HashMap<String, Any>()
-                    temp["nome"] = element.nome
-                    temp["quantita"] = element.quantita
-                    temp["misura"] = element.unitaMisura
-                    temp["scadenza"] = element.scadenza
-                    firebaseDb.document(element.id).set(temp)
-                }
-                val productModel = ProductViewModel()
-                productModel.setData(
-                    element.id,
-                    element.nome,
-                    element.quantita,
-                    element.unitaMisura,
-                    element.scadenza
-                )
-                data.add(productModel)
-            }
-        }
-
-        adapter = ProductAdapter(data, this@MyProductFragment)
-        recyclerview.adapter = adapter
-    }
-
-    /**
-    * Legge i dati locali salvati nel database locale,
-    * successivamente aggiunge i dati letti ad una lista di prodotti che verrà poi inserita nella recyclerView.
-    */
-    private suspend fun readLocalData(){
-        readDataSuspendAsync().await()
-        for(product in products.await()){
-            val productModel = ProductViewModel()
-            productModel.setData(product.id, product.nome, product.quantita, product.unitaMisura, product.scadenza)
-            data.add(productModel)
-        }
-        adapter = ProductAdapter(data, this@MyProductFragment)
-        recyclerview.adapter = adapter
-
     }
 
 }

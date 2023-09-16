@@ -3,8 +3,13 @@ package it.project.houseoftasty.validation
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatTextView
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.textview.MaterialTextView
 import it.project.houseoftasty.utility.tagToString
 import it.project.houseoftasty.utility.textToString
 
@@ -45,7 +50,9 @@ class InputField<T: View>(private val inputView: T) {
     private fun initGetInputData() = when (inputView::class) {
         SwitchMaterial::class -> initSwitch()
         AppCompatEditText::class -> initEditText()
-        else -> { }
+        AppCompatSpinner::class -> initSpinner().toString()
+        MaterialTextView::class -> initTextView().toString()
+        else -> {  }
     }
 
     // Inizializza la funzione getInputData() per Switch
@@ -57,7 +64,26 @@ class InputField<T: View>(private val inputView: T) {
     // Inizializza la funzione getInputData() per EditText
     private fun initEditText() {
         val editText = inputView as EditText
-        getInputData = { editText.textToString() }
+        getInputData = {
+            //Log.d("update",editText.textToString())
+            editText.textToString()
+
+        }
+    }
+
+    // Inizializza la funzione getInputData() per Spinner
+    private fun initSpinner() {
+        val spinner = inputView as AppCompatSpinner
+            getInputData = { spinner.selectedItem ?: "" }
+    }
+
+    // Inizializza la funzione getInputData() per TextView
+    private fun initTextView() {
+        val textView = inputView as TextView
+        getInputData = {
+            Log.d("update",textView.text.toString())
+            textView.text.toString()
+        }
     }
 
 }

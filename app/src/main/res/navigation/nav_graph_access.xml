@@ -32,6 +32,9 @@
             android:id="@+id/action_registerFragment_to_mainActivity"
             app:destination="@id/mainActivity"
             app:popUpTo="@id/accessFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_profileFragment"
+            app:destination="@+id/nav_profile"/>
     </fragment>
     <fragment
         android:id="@+id/loginFragment"

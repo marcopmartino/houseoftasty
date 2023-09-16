@@ -1,19 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.AddProductFragment">
+    tools:context=".view.ProductFormFragment">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="productData"
+            type="it.project.houseoftasty.viewModel.ProductFormViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/groupStyledeep_orange_50"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top|start"
-        android:layout_marginBottom="@dimen/_10pxv"
+        android:layout_marginBottom="@dimen/_10sp"
         android:orientation="vertical">
 
+        <!--Dati nome-->
         <TextView
-            android:id="@+id/labelTitle"
+            android:id="@+id/labelNome"
             style="@style/txtBaloo2baloo2semibold16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,7 +37,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/dataTitle"
+            android:id="@+id/dataNome"
             style="@style/etSolidRoundedOutline"
             android:layout_width="310dp"
             android:layout_height="49dp"
@@ -37,6 +45,7 @@
             android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
             android:ellipsize="end"
             android:hint="@string/productNameHint"
+            android:text="@{productData.productLiveData.nome}"
             android:inputType="text"
             android:lineSpacingExtra="@dimen/_10pxh"
             android:paddingStart="@dimen/_15pxh"
@@ -44,28 +53,42 @@
             android:paddingEnd="@dimen/_30pxh"
             android:paddingBottom="@dimen/_12pxv"
             android:singleLine="true"
+            android:tag="nome"
             android:textColorHint="@color/gray_400"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.445"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelTitle"
+            app:layout_constraintTop_toBottomOf="@+id/labelNome"
             android:autofillHints="no" />
+
+        <!--Dati quantita-->
+
+        <TextView
+            android:id="@+id/errorNome"
+            style="@style/txtBaloo2medium14error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/errorMessagePlaceholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dataNome" />
 
         <TextView
             android:id="@+id/labelQuantita"
             style="@style/txtBaloo2baloo2semibold16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="@dimen/_9pxh"
             android:ellipsize="end"
             android:lineSpacingExtra="@dimen/_10pxh"
             android:singleLine="true"
             android:text="@string/amountUnit"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.203"
+            app:layout_constraintHorizontal_bias="0.195"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dataTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/dataNome" />
 
         <EditText
             android:id="@+id/dataQuantita"
@@ -73,16 +96,18 @@
             android:layout_width="148dp"
             android:layout_height="48dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
             android:ellipsize="end"
             android:hint="@string/quantitaHint"
+            android:text="@{productData.productLiveData.quantita}"
             android:inputType="number"
+            android:tag="quantita"
             android:lineSpacingExtra="@dimen/_10pxh"
             android:paddingStart="@dimen/_15pxh"
             android:paddingTop="@dimen/_13pxv"
             android:paddingEnd="@dimen/_30pxh"
             android:paddingBottom="@dimen/_12pxv"
             android:singleLine="true"
+
             android:textColorHint="@color/gray_400"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.167"
@@ -90,16 +115,32 @@
             app:layout_constraintTop_toBottomOf="@+id/labelQuantita"
             android:autofillHints="no" />
 
-        <Spinner
+        <!--Dati misura-->
+        <TextView
+            android:id="@+id/errorQuantita"
+            style="@style/txtBaloo2medium14error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/errorMessagePlaceholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dataQuantita" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/quantitaMisura"
             android:layout_width="82dp"
             android:layout_height="48dp"
             android:layout_marginTop="8dp"
             style="@style/etSolidRoundedOutline"
+            setSpinnerItem="@{productData.productLiveData.misura}"
+            android:tag="misura"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.205"
             app:layout_constraintStart_toEndOf="@+id/dataQuantita"
             app:layout_constraintTop_toBottomOf="@+id/labelQuantita" />
+
+        <!--Dati scadenza-->
 
         <TextView
             android:id="@+id/labelScadenza"
@@ -107,13 +148,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="32dp"
             android:ellipsize="end"
             android:lineSpacingExtra="@dimen/_10pxh"
             android:singleLine="true"
             android:text="@string/scadenza"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.127"
+            app:layout_constraintHorizontal_bias="0.132"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dataQuantita" />
 
@@ -122,13 +163,16 @@
             style="@style/txtBaloo2baloo2semibold16"
             android:layout_width="149dp"
             android:layout_height="48dp"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="44dp"
             android:layout_marginTop="8dp"
-            android:text="@string/dataPlaceholder"
+            android:enabled="false"
+            android:text='@{productData.productLiveData.scadenza.equals("-") || productData.isProductNew ? @string/dataPlaceholder : productData.productLiveData.scadenza}'
+            android:tag="scadenza"
             android:textAlignment="center"
+            android:textAllCaps="false"
             android:textSize="28sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelScadenza"/>
+            app:layout_constraintTop_toBottomOf="@+id/labelScadenza" />
 
         <ImageButton
             android:id="@+id/dataButton"
@@ -142,39 +186,56 @@
             app:layout_constraintStart_toEndOf="@+id/dataScadenza"
             app:layout_constraintTop_toBottomOf="@+id/labelScadenza" />
 
+        <!--Bottone conferma-->
         <CheckBox
             android:id="@+id/checkBoxSenzascadenza"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="36dp"
             android:buttonTint="@color/red_300"
             android:ellipsize="end"
             android:fontFamily="@font/baloo_2"
             android:lineSpacingExtra="@dimen/_10pxh"
             android:singleLine="true"
             android:text="@string/noExpire"
+            android:checked='@{productData.productLiveData.scadenza.equals("-") || productData.isProductNew() ? true : false}'
             android:textColor="@color/red_300"
-            android:textStyle="bold"
             android:textSize="@dimen/_14sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.152"
+            app:layout_constraintHorizontal_bias="0.157"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dataScadenza" />
 
-
         <Button
-            android:id="@+id/button_addProduct"
-            android:layout_width="248dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="56dp"
+            android:id="@+id/button_submitProduct"
+            android:layout_width="@dimen/_300sp"
+            android:layout_height="@dimen/_60sp"
             android:backgroundTint="@color/tawny_brown"
             android:fontFamily="@font/baloo_bhai"
-            android:text="@string/addProduct"
+            android:text="@{productData.isProductNew ? @string/txtAddProduct : @string/txtSaveEdit}"
+            android:textSize="16sp"
+            app:cornerRadius="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_deleteProduct"
+            app:layout_constraintVertical_bias="0.113"
+            tools:textAllCaps="true" />
+
+        <!--Bottone elimina-->
+        <Button
+            android:id="@+id/button_deleteProduct"
+            android:layout_width="@dimen/_300sp"
+            android:layout_height="@dimen/_60sp"
+            android:layout_marginTop="28dp"
+            android:backgroundTint="@color/red_A700"
+            android:fontFamily="@font/baloo_bhai"
+            android:text='@string/txt_deleteProduct'
             android:textSize="16sp"
             app:cornerRadius="30dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/checkBoxSenzascadenza"
             tools:textAllCaps="true" />

@@ -1,5 +1,11 @@
 package it.project.houseoftasty.validation
 
+import android.util.Log
+import android.widget.EditText
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.*
+
 class ValidationRule(
     private val validationErrorMessage: String,
     private val validationFunction: (String?) -> Boolean
@@ -99,6 +105,50 @@ class ValidationRule(
                     inputText -> validationFunction(inputText)
             }
         }
+
+        @JvmStatic
+        fun isMail(customErrorMessage: String? = null): ValidationRule {
+            val defaultErrorMessage = StringBuilder()
+                .append("Inserire una mail valida!").toString()
+
+            fun validationFunction(inputText: String?): Boolean {
+                return if (!inputText.isNullOrEmpty()) android.util.Patterns.EMAIL_ADDRESS.matcher(inputText).matches()
+                    else false
+            }
+
+            return ValidationRule(customErrorMessage ?: defaultErrorMessage) {
+                    inputText -> validationFunction(inputText)
+            }
+        }
+
+        @JvmStatic
+        fun isEqualString(customErrorMessage: String? = null, retriveString: (String?) -> Boolean): ValidationRule {
+            val defaultErrorMessage = StringBuilder()
+                .append("Le password non coincidono!!").toString()
+
+            return ValidationRule(customErrorMessage ?: defaultErrorMessage) {
+                    inputText -> retriveString(inputText)
+            }
+        }
+
+        @JvmStatic
+        fun isCurrentPsw(customErrorMessage: String? = null, user: FirebaseAuth): ValidationRule {
+            val defaultErrorMessage = StringBuilder()
+                .append("Password corrente errata!").toString()
+
+
+            suspend fun validationFunction(inputText: String?): Boolean =
+                withContext(Dispatchers.IO){
+                    val credential = EmailAuthProvider.getCredential(user.currentUser!!.email.toString(), inputText.toString())
+                    return@withContext user.currentUser!!.reauthenticate(credential).isSuccessful
+                }
+
+            return ValidationRule(customErrorMessage ?: defaultErrorMessage) {
+                    inputText -> true
+            }
+        }
+
+
 
         @JvmStatic
         fun Custom(customErrorMessage: String? = null, validationFunction: (String?) -> Boolean): ValidationRule {

@@ -8,7 +8,7 @@ import com.google.firebase.storage.StorageReference
 
 open class FirebaseNetwork(initialCollectionPath: String) {
 
-    protected val recipesReference : CollectionReference = FirebaseFirestore.getInstance().collection(initialCollectionPath)
+    protected val firestoreReference : CollectionReference = FirebaseFirestore.getInstance().collection(initialCollectionPath)
     private val storageReference : StorageReference = FirebaseStorage.getInstance().reference
     protected val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
 
