@@ -1,10 +1,9 @@
 package it.project.houseoftasty.viewModel
 
-import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import it.project.houseoftasty.utility.OperationType
-import it.project.houseoftasty.validation.FormValidator
+import it.project.houseoftasty.utility.update
+import it.project.houseoftasty.validation.FormManager
 
 /* ViewModel pensato per facilitare l'utilizzo della validazione delle form. Il metodo
 * "generateValidatorBuilder" infatti consente di personalizzare il ValidatorBuilder (aggiungere
@@ -13,7 +12,7 @@ import it.project.houseoftasty.validation.FormValidator
 * definita nel ViewModel tramite override dei metodi "onFormSubmit" e "onFormDelete".
 * Tipicamente il ViewModel andrà ad aggiornare il database.
 * */
-abstract class FormManagerViewModel (initialStatus: Boolean = false) : LoadingManagerViewModel(initialStatus) {
+abstract class FormManagerViewModel(initialStatus: Boolean = false) : LoadingManagerViewModel(initialStatus) {
     val operationCompleted: MutableLiveData<OperationType> = MutableLiveData(OperationType.DEFAULT)
 
     /* Genera un ValidatorBuilder che gestisce in maniera predefinita l'interazione con la form:
@@ -21,13 +20,16 @@ abstract class FormManagerViewModel (initialStatus: Boolean = false) : LoadingMa
     * per aggiornare la schermata automaticamente) ed esegue il metodo onFormSubmit; analogamente
     * per il pulsante di eliminazione (se presente).
     * */
-    fun generateValidatorBuilder(): FormValidator.Builder {
-        Log.d("update","ELO")
-        return FormValidator.Builder().onValidationSuccess { formData, hasDataChanged ->
-            startLoadingAndDo { onFormSubmit(formData, hasDataChanged) }
-        }.onDeleteButtonClicked {
-            startLoadingAndDo { onFormDelete() }
-        }
+    fun generateFormManagerBuilder(customHasDataChangedFunction: Boolean = true): FormManager.Builder {
+
+        val builder: FormManager.Builder = FormManager.Builder()
+            .onValidationSuccess { formData, hasDataChanged ->
+                startLoadingAndDo { onFormSubmit(formData, hasDataChanged) } }
+            .onDeleteButtonClicked { startLoadingAndDo { onFormDelete() } }
+
+        if (customHasDataChangedFunction) builder.hasDataChanged { formData -> hasDataChanged(formData) }
+
+        return builder
     }
 
     // Funzione da eseguire alla pressione del pulsante di Submit
@@ -36,19 +38,18 @@ abstract class FormManagerViewModel (initialStatus: Boolean = false) : LoadingMa
     // Funzione da eseguire alla pressione del pulsante di eliminazione
     open fun onFormDelete() { }
 
+    // Controlla se i campi in input sono cambiati
+    open fun hasDataChanged(formData: MutableMap<String, Any>): Boolean {
+        return true
+    }
+
     /* Funzione che può essere usata per indicare quale tipo di operazione è stata completata (in
     * genere si tratta di operazioni sul database). Osservando "operationCompleted" dalla View è
     * possibile gestire il termine delle operazioni eseguite dal ViewModel, per esempio
-    * navigando verso un nuovo Fragment in seguito a un operazione sul database.
+    * navigando verso un nuovo Fragment in seguito a un'operazione sul database.
      */
     fun setOperationCompleted(operationType: OperationType = OperationType.UNKNOWN) {
-        /* Controlla se il thread attuale è quello principale; in caso affermativo, aggiorna
-        * operationCompleted usando setValue(), altrimenti usando postValue() */
-        if(Looper.myLooper() == Looper.getMainLooper()) {
-            operationCompleted.setValue(operationType)
-        } else {
-            operationCompleted.postValue(operationType)
-        }
+        operationCompleted.update(operationType)
     }
 
 }

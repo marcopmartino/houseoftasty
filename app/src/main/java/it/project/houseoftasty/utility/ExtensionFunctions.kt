@@ -1,11 +1,28 @@
 package it.project.houseoftasty.utility
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.lifecycle.MutableLiveData
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentSnapshot
+import it.project.houseoftasty.model.Recipe
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -72,6 +89,37 @@ fun View.tagToString(): String {
     return this.tag.toString()
 }
 
+fun View.showSnackbar(msgId: Int, length: Int) {
+    showSnackbar(context.getString(msgId), length)
+}
+
+fun View.showSnackbar(msg: String, length: Int) {
+    showSnackbar(msg, length, null, {})
+}
+
+fun View.showSnackbar(
+    msgId: Int,
+    length: Int,
+    actionMessageId: Int,
+    action: (View) -> Unit
+) {
+    showSnackbar(context.getString(msgId), length, context.getString(actionMessageId), action)
+}
+
+fun View.showSnackbar(
+    msg: String,
+    length: Int,
+    actionMessage: CharSequence?,
+    action: (View) -> Unit
+) {
+    val snackbar = Snackbar.make(this, msg, length)
+    if (actionMessage != null) {
+        snackbar.setAction(actionMessage) {
+            action(this)
+        }.show()
+    }
+}
+
 // Extension functions per EditText
 fun EditText.textToString(): String {
     return this.text.toString()
@@ -95,16 +143,82 @@ fun EditText.onTextChanged(onTextChanged: () -> Boolean) {
     })
 }
 
+fun EditText.onFocusGained(onFocusGained: () -> Boolean) {
+    this.setOnFocusChangeListener { _, hasFocus ->
+        if (hasFocus) onFocusGained.invoke()
+    }
+}
+
 fun EditText.onFocusLost(onFocusLost: () -> Boolean) {
     this.setOnFocusChangeListener { _, hasFocus ->
-        if (!hasFocus) {
-            onFocusLost.invoke()
-        }
+        if (!hasFocus) onFocusLost.invoke()
     }
+}
+
+fun EditText.onFocusChanged(onFocusGained: () -> Boolean, onFocusLost: () -> Boolean) {
+    this.setOnFocusChangeListener { _, hasFocus ->
+        if (hasFocus) onFocusGained.invoke() else onFocusLost.invoke()
+    }
+}
+
+// Extension functions per ByteArray
+fun ByteArray.toBitmap(): Bitmap {
+    return BitmapFactory.decodeByteArray(this, 0, this.size)
+}
+
+// Extension functions per Bitmap
+fun Bitmap.toByteArray(): ByteArray {
+    val stream = ByteArrayOutputStream()
+    this.compress(Bitmap.CompressFormat.PNG, 100, stream)
+    return stream.toByteArray()
+}
+
+// Extension functions per ImageView
+fun ImageView.imageToByteArray(): ByteArray {
+    return (this.drawable as BitmapDrawable).bitmap.toByteArray()
 }
 
 // Extension functions per MutableList
 fun <T> MutableList<T>.prepend(element: T) {
     add(0, element)
+}
+
+fun <T> MutableList<T>.removeElement(element: T): MutableList<T>  {
+    val iterator: MutableIterator<T> = this.iterator()
+    while (iterator.hasNext()) {
+        val nextElement = iterator.next()
+        if (nextElement == element)
+            iterator.remove()
+    }
+    return this
+}
+
+fun <T> MutableList<T>.removeIfContains(element: T): MutableList<T>  {
+    return if (this.contains(element))
+        this.removeElement(element)
+    else this
+}
+
+// Extension functions per MutableLiveData
+fun <T> MutableLiveData<T>.update(newValue: T) {
+    /* Controlla se il thread attuale è quello principale; in caso affermativo, aggiorna
+        * operationCompleted usando setValue(), altrimenti usando postValue() */
+    if(Looper.myLooper() == Looper.getMainLooper()) {
+        this.setValue(newValue)
+    } else {
+        this.postValue(newValue)
+    }
+}
+
+// Extension functions per AppCompatActivity
+fun AppCompatActivity.checkSelfPermissionCompat(permission: String) =
+    ActivityCompat.checkSelfPermission(this, permission)
+
+fun AppCompatActivity.shouldShowRequestPermissionRationaleCompat(permission: String) =
+    ActivityCompat.shouldShowRequestPermissionRationale(this, permission)
+
+fun AppCompatActivity.requestPermissionsCompat(permissionsArray: Array<String>,
+                                               requestCode: Int) {
+    ActivityCompat.requestPermissions(this, permissionsArray, requestCode)
 }
 

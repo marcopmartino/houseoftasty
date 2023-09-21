@@ -10,7 +10,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import it.project.houseoftasty.adapter.BindingAdapters.Companion.setFabVisibility
-import it.project.houseoftasty.databinding.FragmentRecipeDetailBinding
+import it.project.houseoftasty.databinding.FragmentRecipeDetailsBinding
 import it.project.houseoftasty.viewModel.RecipeDetailsViewModel
 import it.project.houseoftasty.viewModel.RecipeDetailsViewModelFactory
 
@@ -23,7 +23,8 @@ class RecipeDetailsFragment : Fragment() {
         // Factory class constructor
         RecipeDetailsViewModelFactory(args.recipeId)
     }
-    lateinit var binding: FragmentRecipeDetailBinding
+
+    lateinit var binding: FragmentRecipeDetailsBinding
 
     // Parametri passati al Fragment dalla navigazione
     private val args: RecipeDetailsFragmentArgs by navArgs()
@@ -33,7 +34,7 @@ class RecipeDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflating e View Binding
-        binding = FragmentRecipeDetailBinding.inflate(inflater, container, false)
+        binding = FragmentRecipeDetailsBinding.inflate(inflater, container, false)
 
         // Data Binding
         binding.viewModel = recipeDetailViewModel
@@ -85,7 +86,8 @@ class RecipeDetailsFragment : Fragment() {
 
     /* Naviga verso RecipeFormFragment al click sul F.A.B */
     private fun fabOnClick() {
-        val action : NavDirections = RecipeDetailsFragmentDirections.actionRecipeDetailFragmentToRecipeFormFragment(recipeDetailViewModel.recipeId)
+        val action : NavDirections = RecipeDetailsFragmentDirections
+                .actionRecipeDetailFragmentToRecipeFormFragment(args.recipeId)
         requireView().findNavController().navigate(action)
     }
 

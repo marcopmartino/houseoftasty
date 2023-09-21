@@ -2,10 +2,15 @@ package it.project.houseoftasty.utility
 
 enum class OperationType {
     DEFAULT,
-    NONE,
-    RETRIEVAL,
-    INSERTION,
-    UPDATE,
     DELETION,
-    UNKNOWN
+    INSERTION,
+    LOADING,
+    NONE,
+    REMOVAL,
+    RESET,
+    RETRIEVAL,
+    SELECTION,
+    SORTING,
+    UNKNOWN,
+    UPDATE
 }

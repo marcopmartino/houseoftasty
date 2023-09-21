@@ -16,6 +16,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import it.project.houseoftasty.R
 import it.project.houseoftasty.databinding.FragmentProductFormBinding
+import it.project.houseoftasty.utility.extendToTens
+import it.project.houseoftasty.validation.EditTextValidator
 import it.project.houseoftasty.validation.ValidationRule
 import it.project.houseoftasty.validation.Validator
 import it.project.houseoftasty.viewModel.ProductFormViewModel
@@ -69,25 +71,27 @@ class ProductFormFragment : Fragment() {
 
 
         // Costruisce un validatore per la form
-        productFormViewModel.generateValidatorBuilder()
-            .addValidators(
-                Validator.Builder()
+        productFormViewModel.generateFormManagerBuilder()
+            .addEditTextValidators(
+                EditTextValidator.Builder()
                     .setInputView(dataNomeView)
                     .setErrorView(binding.errorNome)
-                    .addRules(ValidationRule.MaxLength(50)),
-                Validator.Builder()
+                    .addRules(ValidationRule.MaxLength(30)),
+                EditTextValidator.Builder()
                     .setInputView(dataQuantitaView)
                     .setErrorView(binding.errorQuantita)
-                    .addRules(ValidationRule.MaxValue(100)))
+                    .addRules(ValidationRule.MaxValue(1000)))
             .addUnvalidatedFields(dataQuantitaMisuraView, dataScadenzaView)
             .setSubmitButton(binding.buttonSubmitProduct)
             .setDeleteButton(binding.buttonDeleteProduct)
+            .setDeleteConfirmationDialog(requireContext(),
+                "Sei sicuro di voler eliminare il prodotto?")
             .addCommonRules(ValidationRule.Required())
             .enableOnTextChangedValidation()
             .enableOnFocusLostValidation()
             .build()
 
-        if(productFormViewModel.isProductNew.value == true){
+        if (productFormViewModel.isProductNew.value == true){
             binding.buttonDeleteProduct.visibility = View.INVISIBLE
         }
 
@@ -111,8 +115,8 @@ class ProductFormFragment : Fragment() {
                     "DELETION" -> { navigateTo(ProductFormFragmentDirections
                         .actionProductFormFragmentToMyProductFragment())
                     }
-                    "NONE" -> {
-                        (activity as MainActivity).supportFragmentManager.popBackStack()
+                    "NONE" -> { navigateTo(ProductFormFragmentDirections
+                        .actionProductFormFragmentToMyProductFragment())
                     }
                     else -> { }
                 }
@@ -153,32 +157,34 @@ class ProductFormFragment : Fragment() {
         val month = cal.get(Calendar.MONTH)
         val day = cal.get(Calendar.DAY_OF_MONTH)
 
-        //Mostra la data di scadenza selezionata
-        view.findViewById<ImageButton>(R.id.dataButton).setOnClickListener {
+        // Mostra la data di scadenza selezionata
+        binding.dataButton.setOnClickListener {
             val dpd = DatePickerDialog(requireActivity(), { _, year, tempMonth, tempDay ->
+
                 // Mostra data selezionata nella TextView
+                val monthOfYear =
+                    if (month <= 9)
+                        (tempMonth + 1).extendToTens()
+                    else
+                        (tempMonth + 1).toString()
 
-               val monthOfYear = if(month <= 9)
-                    "0$tempMonth+1"
-                else
-                    "$tempMonth+1"
+                val dayOfMonth =
+                    if (day <= 9)
+                        tempDay.extendToTens()
+                    else
+                        tempDay.toString()
 
-               val dayOfMonth = if(day <= 9)
-                   "0$tempDay"
-               else
-                   "$tempDay"
-
-                view.findViewById<TextView>(R.id.dataScadenza).text =
+                binding.dataScadenza.text =
                     "$dayOfMonth/$monthOfYear/$year"
-                view.findViewById<CheckBox>(R.id.checkBoxSenzascadenza).isChecked = false
+                binding.checkBoxSenzascadenza.isChecked = false
             }, year, month, day)
             dpd.datePicker.minDate = System.currentTimeMillis() - 1000
             dpd.show()
         }
 
         //Rimuove la data inserita se si spunta la checkbox di un prodotto senza scadenza
-        view.findViewById<CheckBox>(R.id.checkBoxSenzascadenza).setOnClickListener{
-            view.findViewById<TextView>(R.id.dataScadenza).text = "--/--/----"
+        binding.checkBoxSenzascadenza.setOnClickListener {
+            binding.dataScadenza.text = "--/--/----"
         }
 
     }

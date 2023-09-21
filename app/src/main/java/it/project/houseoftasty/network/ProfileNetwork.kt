@@ -4,19 +4,19 @@ import android.util.Log
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import it.project.houseoftasty.model.Product
 import it.project.houseoftasty.model.Profile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class ProfileNetwork : FirebaseNetwork("users") {
+class ProfileNetwork : StorageNetwork("immagini_profili") {
 
-    val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    //lateinit var firestoreReference: DocumentReference
+    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val usersReference: CollectionReference =
+        FirebaseFirestore.getInstance().collection("users")
 
     suspend fun getUserData(): Profile {
 
@@ -25,23 +25,24 @@ class ProfileNetwork : FirebaseNetwork("users") {
 
         // Recupera i dati sulle ricette (richiede la connessione a Firestore)
         withContext(Dispatchers.IO) {
-            document = firestoreReference.document(firebaseAuth.uid.toString()).get().await()
+            document = usersReference.document(firebaseAuth.uid.toString()).get().await()
         }
 
-        // Converte gli snapshot dei documenti in oggetti Recipe e li aggiunge alla lista "recipeList"
+        // Converte lo snapshot del documento in un oggetto Profile
         withContext(Dispatchers.Default) {
-            profile = Profile(
-                firebaseAuth.uid.toString(),
-                document.data!!["email"].toString(),
-                null,
-                null,
-                null,
-                null,
-                document.data!!["nome"].toString(),
-                document.data!!["cognome"].toString(),
-                document.data!!["username"].toString()
-            )
+            document.toObject(Profile::class.java).also {
+                if (it != null) {
+                    profile = it
+                }
+            }
+
+            profile.id = firebaseAuth.uid
         }
+
+        // Prende un riferimento al file immagine della ricetta (non scarica il file)
+        if (profile.boolImmagine)
+            profile.imageReference = getFileReference(profile.id.toString())
+
         return profile
     }
 
@@ -49,36 +50,45 @@ class ProfileNetwork : FirebaseNetwork("users") {
         Log.d("Insert", user.toString())
 
         withContext(Dispatchers.IO) {
-            firebaseAuth.createUserWithEmailAndPassword(user.mail!!, user.password!!)
+            firebaseAuth.createUserWithEmailAndPassword(user.email!!, user.password!!)
                 .addOnFailureListener{return@addOnFailureListener}.await()
-            val temp = HashMap<String, Any>()
-            temp["username"] = user.username!!
-            temp["email"] = user.mail!!
-            temp["nome"] = user.nome!!
-            temp["cognome"] = user.cognome!!
 
-            Log.d("insert", "uid: "+firebaseAuth.currentUser!!.uid.toString())
-            firestoreReference.document(firebaseAuth.currentUser!!.uid).set(temp).await()
+            usersReference.document(firebaseAuth.currentUser!!.uid).set(user).await()
         }
     }
 
-    suspend fun updateUser(user:Profile) {
+    suspend fun updateUser(user: Profile) {
         withContext(Dispatchers.IO) {
-            val credential: AuthCredential = EmailAuthProvider.getCredential(firebaseAuth.currentUser!!.email!!, user.password!!)
-            firebaseAuth.currentUser!!.reauthenticate(credential).addOnSuccessListener {
-                if(user.newPsw!!.isNotEmpty() && user.chkNewPsw!!.isNotEmpty() && user.newPsw.equals(user.chkNewPsw))
-                    firebaseAuth.currentUser!!.updatePassword(user.newPsw!!)
-                if(firebaseAuth.currentUser!!.email != user.mail!!)
-                    firebaseAuth.currentUser!!.updateEmail(user.mail!!)
-            }.addOnFailureListener{return@addOnFailureListener}
+            firebaseAuth.currentUser.also { currentUser ->
+                if (currentUser != null) {
+                    val credential: AuthCredential = EmailAuthProvider.getCredential(currentUser.email!!, user.password!!)
+                    currentUser.reauthenticate(credential).addOnSuccessListener {
+                        if (!user.newPassword.isNullOrEmpty() && user.newPassword != user.password) {
+                            Log.d("UpdateUser", "Inside password update: " + user.newPassword)
+                            currentUser.updatePassword(user.newPassword!!)
+                        }
+                        if (currentUser.email != user.email!!) {
+                            Log.d("UpdateUser", "Inside email update: " + user.email)
+                            currentUser.updateEmail(user.email!!)
+                        }
+                    }.addOnFailureListener{return@addOnFailureListener}
 
-            Log.d("Update", user.toString())
-            val temp = HashMap<String, Any>()
-            temp["username"] = user.username!!
-            temp["email"] = user.mail!!
-            temp["nome"] = user.nome!!
-            temp["cognome"] = user.cognome!!
-            firestoreReference.document(firebaseAuth.currentUser!!.uid).update(temp)
+                    usersReference.document(currentUser.uid).set(user).await()
+                }
+            }
+        }
+    }
+
+    /* Factory method */
+    companion object {
+        private var INSTANCE: ProfileNetwork? = null
+
+        fun getDataSource(): ProfileNetwork {
+            return synchronized(ProfileNetwork::class) {
+                val newInstance = INSTANCE ?: ProfileNetwork()
+                INSTANCE = newInstance
+                newInstance
+            }
         }
     }
 

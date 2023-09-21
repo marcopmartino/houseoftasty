@@ -11,13 +11,18 @@
         android:title="@string/menu_profile"/>
     <item
         android:id="@+id/nav_product"
-        android:icon="@drawable/icon_product"
+        android:icon="@drawable/icon_egg"
         android:title="@string/products"
         />
     <item
         android:id="@+id/nav_cookbook"
         android:icon="@drawable/icon_cookbook"
         android:title="@string/menu_ricettario"/>
+    <item
+        android:id="@+id/nav_collections"
+        android:icon="@drawable/icon_folder"
+        android:title="@string/collections"
+        />
     <item
         android:id="@+id/nav_logout"
         android:icon="@drawable/icon_logout"

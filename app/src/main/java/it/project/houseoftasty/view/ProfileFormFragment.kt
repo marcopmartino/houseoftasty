@@ -1,6 +1,7 @@
 package it.project.houseoftasty.view
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,9 +13,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import it.project.houseoftasty.R
 import it.project.houseoftasty.databinding.FragmentProfileFormBinding
+import it.project.houseoftasty.validation.EditTextValidator
+import it.project.houseoftasty.validation.ImageViewValidator
 import it.project.houseoftasty.validation.ValidationRule
-import it.project.houseoftasty.validation.Validator
 import it.project.houseoftasty.viewModel.ProfileFormViewModel
 import it.project.houseoftasty.viewModel.ProfileFormViewModelFactory
 import kotlinx.coroutines.*
@@ -22,11 +25,9 @@ import java.util.*
 
 class ProfileFormFragment : Fragment() {
 
-    val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-
     private val profileFormViewModel: ProfileFormViewModel by viewModels {
         // Factory class constructor
-        ProfileFormViewModelFactory(firebaseAuth.currentUser!!.uid)
+        ProfileFormViewModelFactory()
     }
 
     lateinit var binding: FragmentProfileFormBinding
@@ -52,11 +53,9 @@ class ProfileFormFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as MainActivity).setActionBarTitle("Modifica profilo")
+        val mainActivity = (activity as MainActivity)
 
-        val retriveString: (str: String?) -> Boolean = {
-            it == binding.dataNewPsw.text.toString()
-        }
+        mainActivity.setActionBarTitle("Modifica Profilo")
 
         // Campi di input della form
         val dataUsernameView: EditText = binding.dataUsername
@@ -66,39 +65,107 @@ class ProfileFormFragment : Fragment() {
         val dataPswView: EditText = binding.dataPsw
         val dataNewPswView: EditText = binding.dataNewPsw
         val dataChkNewPswView: EditText = binding.dataChkPsw
+        val dataImage: ImageView = binding.profileImage
+
+        // Taglia l'immagine oltre i bordi (gli angoli dell'ImageView sono arrotondati)
+        dataImage.clipToOutline = true
+
+        // Costruisce un validatore per l'ImageView
+        val imageViewValidator: ImageViewValidator =
+            ImageViewValidator.Builder()
+                .setInputView(dataImage)
+                .setErrorView(binding.errorImage)
+                .setSelectButton(binding.buttonEditImage)
+                .setRemoveButton(binding.buttonRemoveImage)
+                .setDefaultImage(R.drawable.img_peopleiconcol)
+                .onSelectButtonClicked {
+                    mainActivity.showPictureSelectionDialog()
+                }.build()
 
         // Costruisce un validatore per la form
-        profileFormViewModel.generateValidatorBuilder()
-            .addValidators(
-                Validator.Builder()
-                    .setInputView(dataUsernameView) //Username
+        profileFormViewModel.generateFormManagerBuilder()
+            .addEditTextValidators(
+                EditTextValidator.Builder()
+                    .setInputView(dataUsernameView) // Username
                     .setErrorView(binding.errorUsername)
-                    .addRules(ValidationRule.MaxLength(20), ValidationRule.Required()),
-                Validator.Builder()
-                    .setInputView(dataNomeView) //Nome
+                    .addRules(ValidationRule.Required(),
+                        ValidationRule.MinLength(6),
+                        ValidationRule.MaxLength(20)),
+                EditTextValidator.Builder()
+                    .setInputView(dataNomeView) // Nome
                     .setErrorView(binding.errorNome)
-                    .addRules(ValidationRule.MaxLength(50), ValidationRule.Required()),
-                Validator.Builder()
-                    .setInputView(dataCognomeView) //Cognome
+                    .addRules(ValidationRule.Required(), ValidationRule.MaxLength(30)),
+                EditTextValidator.Builder()
+                    .setInputView(dataCognomeView) // Cognome
                     .setErrorView(binding.errorCognome)
-                    .addRules(ValidationRule.MaxLength(50), ValidationRule.Required()),
-                Validator.Builder()
-                    .setInputView(dataEmailView) //Email
+                    .addRules(ValidationRule.Required(), ValidationRule.MaxLength(30)),
+                EditTextValidator.Builder()
+                    .setInputView(dataEmailView) // Email
                     .setErrorView(binding.errorEmail)
-                    .addRules(ValidationRule.isMail(), ValidationRule.Required()),
-                Validator.Builder()
+                    .addRules(ValidationRule.Required(), ValidationRule.Mail()),
+                EditTextValidator.Builder()
                     .setInputView(dataPswView)
                     .setErrorView(binding.errorPsw)
-                    .addRules(ValidationRule.isCurrentPsw(null, firebaseAuth), ValidationRule.Required()),
-                Validator.Builder()
+                    .addRules(ValidationRule.Required())
+                    .enableOnFocusLostValidation(),
+                EditTextValidator.Builder()
+                    .setInputView(dataNewPswView)
+                    .setErrorView(binding.errorNewPsw)
+                    .addRules(ValidationRule.Custom(
+                        "La password deve essere lunga tra 8 e 24 caratteri") {
+                        inputText -> if (inputText.isNullOrEmpty()) true
+                            else ValidationRule.Length(8, 24).validate(inputText)
+                    })
+                    .enableOnFocusLostValidation(),
+                EditTextValidator.Builder()
                     .setInputView(dataChkNewPswView)
                     .setErrorView(binding.errorChkPsw)
-                    .addRules(ValidationRule.isEqualString(null, retriveString))
-            )
-            .addUnvalidatedFields(dataNewPswView)
+                    .addRules(ValidationRule.PasswordCheckField(dataNewPswView))
+                    .enableOnFocusLostValidation())
+            .addImageViewValidators(imageViewValidator)
             .setSubmitButton(binding.buttonSubmitProfile)
+            .enableOnTextChangedValidation()
             .enableOnFocusLostValidation()
             .build()
+
+        // Osservatore per il LiveData "isPasswordWrong"
+        profileFormViewModel.isPasswordWrong.observe(viewLifecycleOwner) {
+            if (it == true)
+                binding.errorPsw.text = "Password corrente errata!"
+        }
+
+        // Osservatore per il LiveData del profilo
+        profileFormViewModel.profileLiveData.observe(viewLifecycleOwner) {
+            it.let {
+                /* Se la ricetta non ha un'immagine, mostra l'immagine "carica_immagine" e
+                * disabilita il pulsante di rimozione dell'immagine, altrimenti carica l'immagine
+                * e abilita il pulsante.
+                 */
+                Log.d("DataInitialized", profileFormViewModel.profileLiveData.value.toString())
+                Log.d("DataInitialized", profileFormViewModel.profileImageExists().toString())
+                if (profileFormViewModel.profileImageExists()) {
+                    imageViewValidator.enableRemoveButton()
+                    imageViewValidator.loadImageFromReference(
+                        requireContext(),
+                        profileFormViewModel.profileLiveData.value!!.imageReference!!)
+                } else {
+                    imageViewValidator.disableRemoveButton()
+                    imageViewValidator.loadDefaultImage()
+                }
+            }
+        }
+
+        // Gestisco i dati ritornati da un'activity fotocamera
+        mainActivity.onCameraActivityResult = {
+            imageViewValidator.loadBitmap(it?.extras?.get("data") as Bitmap)
+            imageViewValidator.onSelectSuccess()
+        }
+
+        // Gestisco i dati ritornati da un'activity galleria
+        mainActivity.onGalleryActivityResult = {
+            imageViewValidator.loadFromUri(it?.data)
+            imageViewValidator.onSelectSuccess()
+        }
 
         // Funzione per navigare verso altri Fragment
         fun navigateTo(direction: NavDirections) {
@@ -111,14 +178,11 @@ class ProfileFormFragment : Fragment() {
 
             it?.let {
                 when(it.name) {
-                    "INSERTION" -> { navigateTo(ProfileFormFragmentDirections
-                        .actionProfileFormFragmentToProfileFragment())
-                    }
                     "UPDATE" -> { navigateTo(ProfileFormFragmentDirections
                         .actionProfileFormFragmentToProfileFragment())
                     }
-                    "NONE" -> {
-                        (activity as MainActivity).supportFragmentManager.popBackStack()
+                    "NONE" -> { navigateTo(ProfileFormFragmentDirections
+                        .actionProfileFormFragmentToProfileFragment())
                     }
                     else -> { }
                 }

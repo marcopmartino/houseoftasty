@@ -25,6 +25,7 @@ import com.google.firebase.storage.ktx.storage
 import it.project.houseoftasty.R
 import it.project.houseoftasty.adapter.BindingAdapters.Companion.setFabVisibility
 import it.project.houseoftasty.databinding.FragmentProfileBinding
+import it.project.houseoftasty.utility.ImageLoader
 import it.project.houseoftasty.viewModel.ProfileViewModel
 import it.project.houseoftasty.viewModel.UserViewModel
 import kotlinx.coroutines.runBlocking
@@ -34,11 +35,6 @@ import kotlin.coroutines.suspendCoroutine
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
-    private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var firebaseDb: DocumentReference
-    private lateinit var firebaseStorage: StorageReference
-
-    private val maxImageSize: Long = 1024*1024
 
     private val profileViewModel: ProfileViewModel by viewModels()
 
@@ -49,6 +45,7 @@ class ProfileFragment : Fragment() {
 
         binding = FragmentProfileBinding.inflate(inflater)
         binding.profileData = profileViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
 
     }
@@ -63,6 +60,21 @@ class ProfileFragment : Fragment() {
 
         // Modifico il titolo della Action Bar
         (activity as MainActivity).setActionBarTitle("Profilo")
+
+        // Taglia l'immagine oltre i bordi (gli angoli dell'ImageView sono arrotondati)
+        binding.profileImage.clipToOutline = true
+
+
+        profileViewModel.profileLiveData.observe(viewLifecycleOwner) {
+            if (it.imageReference != null)
+                ImageLoader.loadFromReference(
+                    requireContext(),
+                    it.imageReference,
+                    binding.profileImage,
+                    R.drawable.img_peopleiconcol,
+                    R.drawable.img_peopleiconcol
+                )
+        }
 
         /* Imposta un clickListener sul F.A.B */
         val fab = binding.floatingActionButton

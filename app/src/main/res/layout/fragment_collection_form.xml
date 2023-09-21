@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.CookbookFragment">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="it.project.houseoftasty.viewModel.CollectionFormViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/sand_brown"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/scrollviewDescription"
+            android:visibility="@{viewModel.loadingCompleted ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="24dp">
+
+                <!-- Titolo ricetta -->
+
+                <Button
+                    android:id="@+id/button_submitCollection"
+                    android:layout_width="@dimen/_300sp"
+                    android:layout_height="@dimen/_60sp"
+                    android:layout_marginTop="24dp"
+                    android:backgroundTint="@color/tawny_brown"
+                    android:contentDescription="@string/contentDescription_recipe_form_button"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@{viewModel.isCollectionNew ? @string/txtCreateCollection : @string/txtSaveEdit}"
+                    android:textSize="16sp"
+                    app:cornerRadius="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.495"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+                    tools:textAllCaps="true" />
+
+                <Button
+                    android:id="@+id/button_deleteCollection"
+                    android:layout_width="@dimen/_300sp"
+                    android:layout_height="@dimen/_60sp"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/red_A700"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/txtDeleteCollection"
+                    android:textSize="16sp"
+                    android:visibility="@{viewModel.isCollectionNew ? View.GONE : View.VISIBLE}"
+                    app:cornerRadius="30dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button_submitCollection"
+                    tools:textAllCaps="true" />
+
+                <TextView
+                    android:id="@+id/labelName"
+                    style="@style/txtBaloo2baloo2semibold16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="24dp"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:singleLine="true"
+                    android:text="@string/collectionName"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/dataName"
+                    style="@style/etSolidRoundedOutline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="48dp"
+                    android:autofillHints="no"
+                    android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+                    android:ellipsize="end"
+                    android:hint="@string/hintCollectionName"
+                    android:inputType="text"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:paddingStart="@dimen/_15pxh"
+                    android:paddingTop="@dimen/_13pxv"
+                    android:paddingEnd="@dimen/_15pxh"
+                    android:paddingBottom="@dimen/_12pxv"
+                    android:singleLine="true"
+                    android:tag="nome"
+                    android:text='@{viewModel.collectionNameLiveData}'
+                    android:textColorHint="@color/gray_400"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelName" />
+
+                <TextView
+                    android:id="@+id/errorName"
+                    style="@style/txtBaloo2medium14error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/errorMessagePlaceholder"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dataName" />
+
+                <TextView
+                    android:id="@+id/labelListaRicette"
+                    style="@style/txtBaloo2baloo2semibold16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="16dp"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:singleLine="true"
+                    android:text="@string/labelListaRicette"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/errorName" />
+
+                <android.widget.Button
+                    android:id="@+id/addRecipeButton"
+                    style="@style/etSolidRoundedOutline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="48dp"
+                    android:background="@drawable/rectangle_bg_white_a700_border_red_300_radius_5"
+                    android:drawableEnd="@drawable/action_add_caramel"
+                    android:ellipsize="end"
+                    android:paddingStart="@dimen/_15pxh"
+                    android:paddingTop="@dimen/_13pxv"
+                    android:paddingEnd="@dimen/_15pxh"
+                    android:paddingBottom="@dimen/_12pxv"
+                    android:text="@string/txtAddRecipe"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
+                    android:textColor="@color/caramel_brown"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelListaRicette" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/addRecipeButton" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/caramel_brown"
+            android:visibility="@{viewModel.loadingCompleted ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

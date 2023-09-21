@@ -12,67 +12,61 @@
             type="it.project.houseoftasty.viewModel.ProductViewModel" />
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/productList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.loadingCompleted ? View.VISIBLE : View.GONE}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/coordinatorLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:listitem="@layout/product_item" />
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefresh"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.loadingCompleted ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floating_action_button"
+                style="@style/Widget.App.FloatingActionButton"
+                setFabVisibility="@{viewModel.loadingCompleted}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="16dp"
+                android:contentDescription="@string/fab_add_product"
+                app:srcCompat="@drawable/action_add" />
 
-                <LinearLayout
-                    android:id="@+id/linearProduct"
-                    style="@style/groupStyledeep_orange_50"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/productList"
-                            android:layout_width="349dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_15sp"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:listitem="@layout/product_item" />
-
-                </LinearLayout>
-            </ScrollView>
-
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <ProgressBar
-            android:id="@+id/waitingBar"
-            style="?android:attr/progressBarStyleLarge"
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
+            android:indeterminate="true"
+            android:indeterminateTint="@color/caramel_brown"
+            android:visibility="@{viewModel.loadingCompleted ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addProduct"
-            app:fabCustomSize="@dimen/_70sp"
-            android:backgroundTint="@color/red_300"
-            android:layout_width="@dimen/_90sp"
-            android:layout_height="@dimen/_90sp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/_25sp"
-            android:layout_marginTop="@dimen/_25sp"
-            android:layout_marginEnd="@dimen/_25sp"
-            android:layout_marginBottom="@dimen/_25sp"
-            android:src="@drawable/action_add"
-            android:contentDescription="@string/bottone_aggiunta_prodotto" />
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="16dp"
-                android:contentDescription="@string/fab_add"
+                android:contentDescription="@string/fab_add_recipe"
                 android:visibility="gone"
                 app:srcCompat="@drawable/action_add" />
 

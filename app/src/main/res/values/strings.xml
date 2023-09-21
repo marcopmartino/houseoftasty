@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Stringhe generiche -->
     <string name="app_name">House of Tasty</string>
@@ -12,6 +12,8 @@
 
     <string name="button_login">Accedi</string>
     <string name="button_register">Registrati</string>
+
+    <string name ="timestampTemplate">Creata in data %1$s alle %2$s</string>
 
     <!-- Stringhe di errore predefinite -->
     <string name="loadingError">[ERROR_001: Errore di caricamento]</string>
@@ -58,9 +60,13 @@
     <string name="totalLike">Totale "mi piace" ricette</string>
     <string name="totalComment">Totale commenti ricette</string>
     <string name="totalDownload">Totale download ricette</string>
+    <string name="fab_edit_profile">Modifica i dati del profilo</string>
 
-    <!-- Stringe specigiche di "fragment_product_form" -->
+    <string name="password">Password</string>
+
+    <!-- Stringe specifiche di "fragment_my_product" e "fragment_product_form" -->
     <string name="txtAddProduct">Aggiungi prodotto</string>
+    <string name="fab_add_product">Aggiungi un nuovo prodotto</string>
 
     <!-- Stringhe specifiche di "fragment_editProfile" -->
 
@@ -68,12 +74,17 @@
     <string name="txtEditImage">Modifica immagine</string>
     <string name="txtRemoveImage">Rimuovi immagine</string>
     <string name="txtNewPassword">Nuova password</string>
+    <string name="txtChkPassword">Conferma nuova password</string>
     <string name="txtEmptyNotEdit">Lascia vuoto per non modificare</string>
     <string name="txtConfermaPassword">Conferma password</string>
     <string name="txtSaveEdit">Salva modifiche</string>
 
+    <string name ="hintUsername">Inserire il nuovo username</string>
+    <string name ="hintEmail">Inserire la nuova email</string>
+    <string name ="hintNome">Inserire il nuovo nome</string>
+    <string name ="hintCognome">Inserire il nuovo cognome</string>
+
     <!-- Stringhe specifiche di "fragment_cookbook" e "fragment_recipe_detail" -->
-    <string name ="timestampTemplate">Creata in data %1$s alle %2$s</string>
     <string name ="scrollviewDescription">Interfaccia scorrevole con i dettagli della ricetta</string>
     <string name ="recipeImageDescription">Immagine di copertina della ricetta</string>
     <string name ="recipeEditLogoDescription">Icona per la modifica della ricetta</string>
@@ -92,11 +103,12 @@
     <string name ="recipeCommentEditTextPlaceholder">Scrivi un commento</string>
     <string name ="recipeNumPeoplePlaceholder">4</string>
     <string name ="recipePreparationTimePlaceholder">1h 20min</string>
-    <string name="fab_add">Aggiungi una nuova ricetta</string>
-    <string name="fab_edit">Modifica i dati della ricetta</string>
+    <string name="fab_add_recipe">Aggiungi una nuova ricetta</string>
+    <string name="fab_edit_recipe">Modifica i dati della ricetta</string>
 
     <!-- Stringhe specifiche di "fragment_recipe_form" -->
     <string name ="errorMessagePlaceholder">error_message </string>
+    <string name ="labelImage">Immagine di copertina:</string>
     <string name ="labelTitle">Titolo della ricetta:</string>
     <string name ="hintTitle">Inserire il titolo della ricetta</string>
     <string name ="labelIngredients">Lista degli ingredienti:</string>
@@ -112,6 +124,18 @@
     <string name ="labelIsPublished">Ricetta pubblicata:</string>
     <string name ="labelIsPostPrivate">Post ricetta privato:</string>
     <string name ="txtDeleteRecipe">Elimina ricetta</string>
+    <string name ="txtCreateRecipe">Crea ricetta</string>
+
+    <!-- Stringhe specifiche di "fragment_collections" e "fragment_collection_form" -->
+    <string name ="collectionName">Nome della raccolta:</string>
+    <string name ="hintCollectionName">Inserire il nome della raccolta</string>
+    <string name ="labelListaRicette">Ricette:</string>
+    <string name ="collectionImageDescription">Immagine di copertina della raccolta</string>
+    <string name="fab_add_collection">Aggiungi una nuova raccolta</string>
+    <string name="fab_edit_collection">Modifica la raccolta</string>
+
+    <string name ="txtDeleteCollection">Elimina raccolta</string>
+    <string name ="txtCreateCollection">Crea raccolta</string>
     <string name ="txtAddRecipe">Aggiungi ricetta</string>
 
     <!-- Stringhe specifiche del Navigation Drawer -->
@@ -126,6 +150,7 @@
     <string name="registrati">Registrati</string>
     <string name="logout">Logout</string>
     <string name="products">I miei prodotti</string>
+    <string name="collections">Raccolte</string>
 
     <!-- Stringhe specifiche di "activity_home" -->
     <string name="raccolte">Raccolte</string>
@@ -140,13 +165,13 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="nome_prodotto">Nome prodotto:</string>
     <string name="quantit">Quantità:</string>
-    <string name="amountUnit">Quantita e unità di misura</string>
+    <string name="amountUnit">Quantita e unità di misura:</string>
     <string name="dataPlaceholder">--/--/----</string>
     <string name="setExpire">Seleziona data di scadenza</string>
     <string name="noExpire">Senza scadenza</string>
     <string name="addProduct">Aggiungi prodotto</string>
     <string name="productNameHint">Inserire nome prodotto/ingrediente</string>
-    <string name="quantitaHint">Inserire quantita</string>
+    <string name="quantitaHint">Inserire quantità</string>
     <string name="aggiungi_prodotto">Aggiungi prodotto</string>
     <string name="txt_deleteProduct">Elimina prodotto</string>
     <string name="bottone_aggiunta_prodotto">Bottone aggiunta prodotto</string>
@@ -163,5 +188,19 @@
     <!-- String relative alle notifiche -->
     <string name="productExpireName">Scadenza prodotti</string>
     <string name="productExpireDescription">Prodotti in scadenza</string>
+
+    <!-- String relative al testo di SnackBar e Toast -->
+    <string name="camera_unavailable"><b tools:ignore="Typos">Non è stato possibile aprire la fotocamera.</b>\nQuesto avviene quando la fotocamera non è disponibile (per esempio se è già in uso) o se il sistema ha negato l\'accesso (per esempio se la fotocamera è disabilitata).</string>
+    <string name="ok">OK</string>
+    <string name="camera_access_required">L\'accesso alla fotocamera è richiesto.</string>
+    <string name="camera_permission_not_available">Permesso non disponibile. Richiedere permesso di accedere alla fotocamera.</string>
+    <string name="camera_permission_available">Permesso di accedere alla fotocamera garantito. Apertura fotocamera in corso.</string>
+    <string name="camera_permission_granted">Permesso di accedere alla fotocamera garantito.</string>
+    <string name="camera_permission_denied">Permesso di accedere alla fotocamera negato.</string>
+    <string name="gallery_access_required">L\'accesso alla galleria è richiesto.</string>
+    <string name="gallery_permission_not_available">Permesso non disponibile. Richiedere permesso di accedere alla galleria.</string>
+    <string name="gallery_permission_available">Permesso di accedere alla galleria garantito. Apertura galleria in corso.</string>
+    <string name="gallery_permission_granted">Permesso di accedere alla galleria garantito.</string>
+    <string name="gallery_permission_denied">Permesso di accedere alla galleria negato.</string>
 
 </resources>

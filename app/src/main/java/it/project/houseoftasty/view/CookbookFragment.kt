@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import it.project.houseoftasty.adapter.BindingAdapters.Companion.setFabVisibility
 import it.project.houseoftasty.adapter.PrivateRecipeAdapter
 import it.project.houseoftasty.databinding.FragmentCookbookBinding
-import it.project.houseoftasty.model.Recipe
 import it.project.houseoftasty.viewModel.CookbookViewModel
 
 class CookbookFragment : Fragment() {
@@ -47,7 +46,7 @@ class CookbookFragment : Fragment() {
         /* Imposta il "layoutManager" e l'"adapter" per la RecyclerView;
         passa all'Adapter la funzione da eseguire al click sul singolo elemento della RecyclerView */
         val recyclerView: RecyclerView = binding.recyclerView
-        val privateRecipeAdapter = PrivateRecipeAdapter(requireContext(), resources) { recipe -> adapterOnClick(recipe) }
+        val privateRecipeAdapter = PrivateRecipeAdapter(requireContext(), resources) { recipeId -> adapterOnClick(recipeId) }
         val layoutManager = LinearLayoutManager(requireContext())
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = layoutManager
@@ -80,22 +79,18 @@ class CookbookFragment : Fragment() {
 
     /* Naviga verso RecipeFormFragment al click sul F.A.B */
     private fun fabOnClick() {
-        val action : NavDirections = CookbookFragmentDirections.actionNavCookbookToRecipeFormFragment(null)
-        requireView().findNavController().navigate(action)
+        navigateTo(CookbookFragmentDirections.actionNavCookbookToRecipeFormFragment(null))
     }
 
 
     /* Naviga verso RecipeDetailFragment al click su un elemento della RecyclerView. */
-    private fun adapterOnClick(recipe: Recipe) {
-        val recipeId = recipe.id
+    private fun adapterOnClick(recipeId: String) {
+        navigateTo(CookbookFragmentDirections.actionNavCookbookToRecipeDetailFragment(recipeId))
+    }
 
-        if (recipeId != null) {
-            val action : NavDirections =
-                CookbookFragmentDirections.actionNavCookbookToRecipeDetailFragment(
-                    recipeId
-                )
-            requireView().findNavController().navigate(action)
-        }
+    // Funzione per navigare verso altri Fragment
+    private fun navigateTo(direction: NavDirections) {
+        requireView().findNavController().navigate(direction)
     }
 
 }

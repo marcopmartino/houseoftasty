@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -49,23 +50,29 @@ class ProductAdapter(
             // Binding del nome
             itemBinding.nomeData.text = product.nome
 
-            // Binding del quantita
-            var temp = product.quantita+" "+product.misura
-            itemBinding.quantitaData.text = temp
+            // Binding della quantita
+            "${product.quantita} ${if (product.misura != "-") product.misura else ""}"
+                .also { itemBinding.quantitaData.text = it }
 
-            if(product.scadenza != "-") {
+            val dataScadenza: String? = product.scadenza
 
-                val chkDate = sdf.parse(product.scadenza!!)
+            if (dataScadenza != "--/--/----") {
+
+                val chkDate = sdf.parse(dataScadenza!!)
                 val diff = chkDate!!.time - Date().time
                 val hours = (((diff / 1000) / 60) / 60)
 
+                Log.d("Ore di differenza", hours.toString())
+
                 if (hours in -23..48) {
-                    itemBinding.scadenzaData.setTextColor(Color.rgb(255,255,0))
-                }else if(hours<=-24){
+                    itemBinding.scadenzaData.setTextColor(Color.rgb(255,120,0))
+                } else if (hours<=-24) {
                     itemBinding.scadenzaData.setTextColor(Color.rgb(255,0,0))
                 }
+
             }
-            itemBinding.scadenzaData.text = product.scadenza
+
+            itemBinding.scadenzaData.text = dataScadenza
         }
     }
 

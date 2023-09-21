@@ -4,10 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import it.project.houseoftasty.model.Recipe
-import it.project.houseoftasty.repository.RecipeRepository
+import it.project.houseoftasty.network.RecipeNetwork
 
 class RecipeDetailsViewModel(val recipeId: String) : LoadingManagerViewModel() {
-    private val dataSource: RecipeRepository = RecipeRepository.getDataSource()
+    private val dataSource: RecipeNetwork = RecipeNetwork.getDataSource()
     val recipeLiveData : MutableLiveData<Recipe> = MutableLiveData(Recipe())
     val likeButtonPressed: MutableLiveData<Boolean> = MutableLiveData(false)
 
@@ -28,19 +28,6 @@ class RecipeDetailsViewModel(val recipeId: String) : LoadingManagerViewModel() {
     fun toggleLikeButtonPressed() {
         likeButtonPressed.postValue(!likeButtonPressed.value!!)
     }
-
-    /*
-     /* Queries datasource to returns a flower that corresponds to an id. */
-     fun getRecipeForId(id: Long) : Recipe? {
-         return datasource.getFlowerForId(id)
-     }
-
-     /* Queries datasource to remove a flower. */
-     fun removeRecipe(recipe: Recipe) {
-         datasource.removeRecipe(recipe)
-     }
-
-  */
 }
 
 // Factory class

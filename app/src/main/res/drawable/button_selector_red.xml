@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/rectangle_bg_red_a700_radius_20" android:state_enabled="true" />
+    <item android:drawable="@drawable/rectangle_bg_light_red_a700_radius_20" android:state_enabled="false" />
+    <!-- default state-->
+    <item android:drawable="@drawable/rectangle_bg_red_a700_radius_20" />
+</selector>

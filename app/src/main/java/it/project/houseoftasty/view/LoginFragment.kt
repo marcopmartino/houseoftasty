@@ -45,16 +45,6 @@ class LoginFragment : Fragment() {
                 firebaseDb = FirebaseFirestore.getInstance().collection("users").document(email)
                 firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener{
                     if(it.isSuccessful){
-                        /*
-                        val navView = activity?.findViewById<NavigationView>(R.id.navView)
-                        navView!!.menu.clear()
-                        navView.inflateMenu(R.menu.menu_authenticated)
-                        (activity as AppCompatActivity).supportActionBar?.title ="Profilo"
-
-                        val fragment = parentFragmentManager.beginTransaction()
-                        fragment.replace(R.id.fragment_container, ProfileFragment()).commit()
-
-                         */
                         navController.navigate(
                             LoginFragmentDirections.actionLoginFragmentToMainActivity()
                         )
@@ -68,11 +58,6 @@ class LoginFragment : Fragment() {
         }
 
         binding.textBottomBar.setOnClickListener {
-            /*
-            val fragment = parentFragmentManager.beginTransaction()
-            fragment.replace(R.id.fragment_container, RegisterFragment()).commit()
-
-             */
             navController.navigate(
                 LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
             )

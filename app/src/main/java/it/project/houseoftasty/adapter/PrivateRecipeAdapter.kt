@@ -3,6 +3,7 @@ package it.project.houseoftasty.adapter
 import android.content.Context
 import android.content.res.Resources
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -18,19 +19,18 @@ import it.project.houseoftasty.utility.ImageLoader
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class PrivateRecipeAdapter(
     private val context: Context,
     private val resources: Resources,
-    private val onClick: (Recipe) -> Unit) :
+    private val onClick: (String) -> Unit) :
     ListAdapter<Recipe, PrivateRecipeAdapter.PrivateRecipeViewHolder>(RecipeDiffCallback) {
 
-    /* ViewHolder for Flower, takes in the inflated view and the onClick behavior. */
+    /* ViewHolder for Recipe, takes in the inflated view and the onClick behavior. */
     class PrivateRecipeViewHolder(
         private val itemBinding: ItemPrivateRecipeBinding,
         private val context: Context,
         private val resources: Resources,
-        private val onClick: (Recipe) -> Unit) :
+        private val onClick: (String) -> Unit) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         private var currentRecipe: Recipe? = null
@@ -38,7 +38,7 @@ class PrivateRecipeAdapter(
         init {
             itemView.setOnClickListener {
                 currentRecipe?.let {
-                    onClick(it)
+                    if (!it.id.isNullOrEmpty()) onClick(it.id!!)
                 }
             }
         }
@@ -56,7 +56,6 @@ class PrivateRecipeAdapter(
 
             // Binding dell'immagine
             ImageLoader.loadFromReference(context, recipe.imageReference, itemBinding.privateRecipeImage)
-
         }
     }
 

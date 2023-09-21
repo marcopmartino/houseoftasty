@@ -1,69 +1,20 @@
 package it.project.houseoftasty.validation
 
-import android.renderscript.ScriptGroup.Input
-import android.util.Log
 import android.view.View
-import android.widget.EditText
-import android.widget.Spinner
 import android.widget.TextView
-import androidx.core.widget.doOnTextChanged
-import androidx.databinding.adapters.TextViewBindingAdapter.OnTextChanged
-import it.project.houseoftasty.utility.*
 
-/* Classe per validare un campo di input di tipo EditText. Ha come proprietà:
+/* Classe per validare un campo di input. Ha come proprietà:
 * inputField: campo di input con cui l'utente può interagire;
 * errorView: TextView in cui viene mostrato l'eventuale messaggio di errore;
-* rules: MutableList con le regole di validazione associate all'EditText;
 *
 * La classe viene costruita facendo uso del pattern Builder */
-class Validator {
-    //private var inputSpinner: InputField<Spinner>? = null
-    private var inputField: InputField<EditText>? = null
-   // private var inputText: InputField<TextView>? = null
-    private var errorView: TextView? = null
-    private var rules: MutableList<ValidationRule> = mutableListOf()
-    //private var rulesDate: MutableList<ValidationRuleData> = mutableListOf()
+abstract class Validator<T: View> {
+    protected var inputField: InputField<T>? = null
+    protected var errorView: TextView? = null
 
     /* Esegue la validazione del testo contenuto in inputView. Ritorna TRUE se non sono stati
     * riscontrati errori, altrimenti FALSE. */
-    fun validate(): Boolean {
-        var isValid = true
-        if (inputField != null) {
-            val inputText: String = inputField!!.getInputData() as String
-
-            Log.d("update", "<-"+inputText)
-            // Con un ciclo controlla che ogni regola di validazione sia stata rispettata
-            var counter = 0
-            val rulesCounter = rules.size
-            while (isValid && counter < rulesCounter) {
-                isValid = rules[counter].validate(inputText)
-                counter++
-            }
-
-            // Mostra il messaggio di errore della prima regola di validazione infranta
-            if (isValid)
-                resetErrorMessage()
-            else
-                setErrorMessage(rules[counter - 1].getErrorMessage())
-        }
-
-        /*f(inputText != null){
-            val input: String = inputText!!.getInputData() as String
-
-            var counter = 0
-            val rulesCounter = rulesDate.size
-            while(isValid && counter < rulesCounter){
-                isValid == rules[counter].validate(input)
-                counter++
-            }
-            if(isValid)
-                resetErrorMessage()
-            else
-                setErrorMessage(rules[counter-1].getErrorMessage())
-        }*/
-
-        return isValid
-    }
+    abstract fun validate(): Boolean
 
     // Ritorna l'id dell'EditText
     fun getInputViewTag(): String {
@@ -71,17 +22,12 @@ class Validator {
     }
 
     // Ritorna il testo contenuto nell'EditText
-    fun getInputData(): Any {
+    open fun getInputData(): Any {
         return inputField?.getInputData() ?: String()
     }
 
-    // Controlla se il valore iniziale differisce da quello attuale
-    fun hasDataChanged(): Boolean {
-        return inputField?.hasDataChanged() ?: false
-    }
-
     // Mostra un messaggio di errore in errorView
-    private fun setErrorMessage(message: String) {
+    protected fun setErrorMessage(message: String) {
         if (errorView != null)
             errorView!!.text = message
     }
@@ -96,90 +42,18 @@ class Validator {
     * della costruzione e ritorna l'oggetto Validator personalizzato.
     *
     * Le proprietà della classe Builder sono usate solo durante la costruzione del validatore:
-    * validator: l'oggetto Validator da costruire
-    * onTextChangedValidation: indica se la validazione onTextChanged è abilitata o meno;
-    * onFocusLostValidation: indica se la validazione onFocusLost è abilitata o meno;
-    * allowExternalOptionChanges: indica se onTextChangedValidation oppure onFocusLostValidation
-    *   sono stati impostati esplicitamente attraverso i metodi del Builder. In questo modo non
-    *   potranno essere sovrascritti da un FormValidator (si veda il metodo build() della classe
-    *   Builder di FormValidator). */
-    class Builder {
-        private val validator: Validator = Validator()
-        private var onTextChangedValidation: Boolean = false
-        private var onFocusLostValidation: Boolean = false
-        var allowExternalOptionChanges: Boolean = true
+    *   validator: l'oggetto Validator da costruire */
+    abstract class Builder<T: View> {
+        abstract val validator: Validator<T>
 
-        /* Viene eseguito se onTextChangedValidation oppure onFocusLostValidation sono stati
-        * impostati facendo uso dei metodi appositi */
-        private fun blockExternalOptionChanges() {
-            if (allowExternalOptionChanges)
-                allowExternalOptionChanges = false
-        }
-
-        // Imposta un InputField di tipo EditText su cui eseguire la validazione
-        fun setInputView(inputView: EditText): Builder {
-            validator.inputField = InputField(inputView)
-            return this
-        }
-
-        /*fun setInputView(inputView: TextView): Builder{
-            validator.inputText = InputField(inputView)
-            return this
-        }
-
-        // Imposta un InputField di tipo Spinner su cui eseguire la validazione
-        fun setInputView(inputView: Spinner): Builder{
-            if(inputView.selectedItem!=null) Log.d("insert",inputView.selectedItem.toString())
-            validator.inputSpinner = InputField(inputView)
-            return this
-        }*/
+        // Imposta un InputField su cui eseguire la validazione
+        abstract fun setInputView(inputView: T): Builder<T>
 
         // Imposta una TextView dove mostrare eventuali errori
-        fun setErrorView(errorView: TextView): Builder {
-            validator.errorView = errorView
-            return this
-        }
-
-        /* Aggiunge una o più regole alla lista di regole del validatore. Il parametro prepend
-        * serve a decidere se aggiungere le regole in cima o in fondo alla lista. */
-        fun addRules(vararg rules: ValidationRule, prepend: Boolean = false): Builder {
-            if (prepend)
-                for (rule in rules)
-                    validator.rules.prepend(rule)
-            else
-                for (rule in rules)
-                    validator.rules.add(rule)
-            return this
-        }
-
-        // Abilita\disabilita la validazione automatica ogni volta che il testo del campo di input cambia
-        fun enableOnTextChangedValidation(enabled: Boolean = true): Builder {
-            onTextChangedValidation = enabled
-            blockExternalOptionChanges()
-            return this
-        }
-
-        // Abilita\disabilita la validazione automatica ogni volta che il campo di input perde il focus
-        fun enableOnFocusLostValidation(enabled: Boolean = true): Builder {
-            onFocusLostValidation = enabled
-            blockExternalOptionChanges()
-            return this
-        }
+        abstract fun setErrorView(errorView: TextView): Builder<T>
 
         // Ultima la costruzione del validatore e lo ritorna
-        fun build(): Validator {
-            if (validator.inputField != null) {
-                val inputView = validator.inputField!!.getInputView()
-                if (onTextChangedValidation)
-                    inputView.onTextChanged { validator.validate() }
-                if (onFocusLostValidation)
-                    inputView.onFocusLost { validator.validate() }
-            }
-
-            if (validator.errorView != null)
-                validator.resetErrorMessage()
-            return validator
-        }
+        abstract fun build(): Validator<T>
     }
 
 }

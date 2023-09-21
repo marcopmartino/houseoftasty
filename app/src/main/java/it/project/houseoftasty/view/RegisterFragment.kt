@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import it.project.houseoftasty.databinding.FragmentProfileFormBinding
 import it.project.houseoftasty.view.RegisterFragmentDirections
 import it.project.houseoftasty.databinding.FragmentRegisterBinding
+import it.project.houseoftasty.validation.EditTextValidator
 import it.project.houseoftasty.validation.ValidationRule
 import it.project.houseoftasty.validation.Validator
 import it.project.houseoftasty.viewModel.ProfileFormViewModel
@@ -55,10 +56,6 @@ class RegisterFragment : Fragment() {
         // Ottengo un riferimento al NavigationController
         val navController = requireView().findNavController()
 
-        val retriveString: (str: String?) -> Boolean = {
-            it == binding.passwordRegister.text.toString()
-        }
-
         // Campi di input della form
         val usernameView: EditText =  binding.usernameRegister
         val nomeView: EditText = binding.nomeRegister
@@ -68,31 +65,33 @@ class RegisterFragment : Fragment() {
         val chkPswView: EditText = binding.confirmPasswordRegister
 
         // Costruisce un validatore per la form
-        registerViewModel.generateValidatorBuilder()
-            .addValidators(
-                Validator.Builder()
-                    .setInputView(usernameView) //Username
+        registerViewModel.generateFormManagerBuilder(false)
+            .addEditTextValidators(
+                EditTextValidator.Builder()
+                    .setInputView(usernameView) // Username
                     .setErrorView(binding.errorUsername)
                     .addRules(ValidationRule.MaxLength(20)),
-                Validator.Builder()
-                    .setInputView(nomeView) //Nome
+                EditTextValidator.Builder()
+                    .setInputView(nomeView) // Nome
                     .setErrorView(binding.errorNome)
                     .addRules(ValidationRule.MaxLength(50)),
-                Validator.Builder()
-                    .setInputView(cognomeView) //Cognome
+                EditTextValidator.Builder()
+                    .setInputView(cognomeView) // Cognome
                     .setErrorView(binding.errorCognome)
                     .addRules(ValidationRule.MaxLength(50)),
-                Validator.Builder()
-                    .setInputView(emailView) //Email
+                EditTextValidator.Builder()
+                    .setInputView(emailView) // Email
                     .setErrorView(binding.errorEmail)
-                    .addRules(ValidationRule.isMail()),
-                Validator.Builder()
-                    .setInputView(pswView) //Password
-                    .setErrorView(binding.errorPsw),
-                Validator.Builder()
-                    .setInputView(chkPswView) //Conferma Password
+                    .addRules(ValidationRule.Mail()),
+                EditTextValidator.Builder()
+                    .setInputView(pswView) // Password
+                    .setErrorView(binding.errorPsw)
+                    .addRules(ValidationRule.Length(8, 24,
+                        "La password deve essere lunga tra 8 e 24 caratteri")),
+                EditTextValidator.Builder()
+                    .setInputView(chkPswView) // Conferma Password
                     .setErrorView(binding.errorChkPsw)
-                    .addRules(ValidationRule.isEqualString(null, retriveString))
+                    .addRules(ValidationRule.PasswordCheckField(pswView))
             )
             .setSubmitButton(binding.buttonSubmitRegister)
             .addCommonRules(ValidationRule.Required())
@@ -118,10 +117,7 @@ class RegisterFragment : Fragment() {
             it?.let {
                 when(it.name) {
                     "INSERTION" -> { navigateTo(RegisterFragmentDirections
-                        .actionRegisterFragmentToProfileFragment())
-                    }
-                    "NONE" -> {
-                        (activity as MainActivity).supportFragmentManager.popBackStack()
+                        .actionRegisterFragmentToMainActivity())
                     }
                     else -> { }
                 }

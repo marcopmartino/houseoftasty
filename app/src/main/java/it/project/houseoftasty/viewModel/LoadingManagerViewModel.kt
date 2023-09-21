@@ -4,9 +4,12 @@ import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import it.project.houseoftasty.utility.OperationType
+import it.project.houseoftasty.utility.update
 import kotlinx.coroutines.launch
 
 open class LoadingManagerViewModel(initialStatus: Boolean = false) : ViewModel() {
+    val initializationCompleted: MutableLiveData<Boolean> = MutableLiveData(initialStatus)
     val loadingCompleted: MutableLiveData<Boolean> = MutableLiveData(initialStatus)
 
     protected open fun initSync() { }
@@ -16,12 +19,23 @@ open class LoadingManagerViewModel(initialStatus: Boolean = false) : ViewModel()
         initSync()
         viewModelScope.launch {
             initAsync()
-            stopLoading()
+            stopInitializing()
         }
     }
 
     fun reinitialize() {
-        startLoadingAndDo { initialize() }
+        startInitializing()
+        initialize()
+    }
+
+    private fun startInitializing() {
+        setInitializationCompleted(false)
+        startLoading()
+    }
+
+    private fun stopInitializing() {
+        setInitializationCompleted(true)
+        stopLoading()
     }
 
     fun startLoading() {
@@ -43,14 +57,12 @@ open class LoadingManagerViewModel(initialStatus: Boolean = false) : ViewModel()
         stopLoading()
     }
 
+    private fun setInitializationCompleted(isCompleted: Boolean = true) {
+        initializationCompleted.update(isCompleted)
+    }
+
     private fun setLoadingCompleted(isCompleted: Boolean = true) {
-        /* Controlla se il thread attuale è quello principale; in caso affermativo, aggiorna
-        * initializationCompleted usando setValue(), altrimenti usando postValue() */
-        if(Looper.myLooper() == Looper.getMainLooper()) {
-            loadingCompleted.setValue(isCompleted)
-        } else {
-            loadingCompleted.postValue(isCompleted)
-        }
+        loadingCompleted.update(isCompleted)
     }
 
 }

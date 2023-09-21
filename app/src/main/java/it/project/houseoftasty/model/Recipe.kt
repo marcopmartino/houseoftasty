@@ -17,7 +17,7 @@ data class Recipe(
     @get: PropertyName("tempoPreparazione") var tempoPreparazione: Int? = null,
     @get: PropertyName("boolPubblicata") var boolPubblicata: Boolean = false,
     @get: PropertyName("boolPostPrivato") var boolPostPrivato: Boolean = false,
+    @get: PropertyName("boolImmagine") var boolImmagine: Boolean = false,
     @get: PropertyName("timestampCreazione") var timestampCreazione: Timestamp? = null,
     @get: PropertyName("timestampPubblicazione") var timestampPubblicazione: Timestamp? = null,
-    @get: PropertyName("nomeImmagine") var nomeImmagine: String? = null,
     @get: Exclude @set: Exclude var imageReference: StorageReference? = null)

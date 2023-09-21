@@ -4,14 +4,14 @@ import android.util.Log
 import androidx.lifecycle.*
 import it.project.houseoftasty.adapter.ProductAdapter
 import it.project.houseoftasty.model.Product
-import it.project.houseoftasty.repository.ProductRepository
+import it.project.houseoftasty.network.ProductNetwork
 import it.project.houseoftasty.utility.OperationType
 import kotlinx.coroutines.launch
 
 class ProductFormViewModel(private val productId: String?, val isProductNew: MutableLiveData<Boolean>) : FormManagerViewModel() {
-    private val dataSource: ProductRepository = ProductRepository.getDataSource()
+    private val dataSource: ProductNetwork = ProductNetwork.getDataSource()
     val productLiveData: MutableLiveData<Product> = MutableLiveData(Product())
-    var isScadenzaNull = true
+    private var isScadenzaNull = true
 
     // Inizializzazione
     init {
@@ -25,7 +25,7 @@ class ProductFormViewModel(private val productId: String?, val isProductNew: Mut
             // Ottiene la ricetta dalla repository e aggiorna il LiveData
             val product = productId?.let{dataSource.getProductById(it)}
             Log.d("checker", product!!.misura.toString())
-            if(product!!.scadenza!!.isNotEmpty()){
+            if(product.scadenza!!.isNotEmpty()){
                 isScadenzaNull = false
                 Log.d("checker", isScadenzaNull.toString())
             }
@@ -55,7 +55,7 @@ class ProductFormViewModel(private val productId: String?, val isProductNew: Mut
         viewModelScope.launch {
             Log.d("Delete", productId.toString())
 
-            dataSource.deleteProduct(productId!!)
+            dataSource.deleteProductById(productId!!)
             setOperationCompleted(OperationType.DELETION)
         }
     }

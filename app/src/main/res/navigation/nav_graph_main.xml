@@ -17,9 +17,6 @@
         <action
             android:id="@+id/action_profileFragment_to_profileFormFragment"
             app:destination="@id/profileFormFragment" />
-        <action
-            android:id="@+id/action_profileFormFragment_to_profileFragment"
-            app:destination="@id/nav_profile" />
     </fragment>
     <fragment
         android:id="@+id/profileFormFragment"
@@ -28,7 +25,9 @@
         tools:layout="@layout/fragment_profile_form">
         <action
             android:id="@+id/action_profileFormFragment_to_profileFragment"
-            app:destination="@id/nav_profile" />
+            app:destination="@id/nav_profile"
+            app:popUpTo="@id/nav_profile"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/nav_product"
@@ -50,7 +49,9 @@
             app:nullable="true" />
         <action
             android:id="@+id/action_productFormFragment_to_myProductFragment"
-            app:destination="@id/nav_product" />
+            app:destination="@id/nav_product"
+            app:popUpTo="@id/nav_product"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/nav_cookbook"
@@ -68,7 +69,7 @@
         android:id="@+id/recipeDetailFragment"
         android:name="it.project.houseoftasty.view.RecipeDetailsFragment"
         android:label="fragment_recipe_detail"
-        tools:layout="@layout/fragment_recipe_detail">
+        tools:layout="@layout/fragment_recipe_details">
         <argument
             android:name="recipeId"
             app:argType="string" />
@@ -98,5 +99,83 @@
             app:destination="@id/nav_cookbook"
             app:popUpTo="@id/nav_cookbook"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_collections"
+        android:name="it.project.houseoftasty.view.CollectionsFragment"
+        android:label="fragment_collections" >
+        <action
+            android:id="@+id/action_nav_collections_to_collectionFormFragment"
+            app:destination="@id/collectionFormFragment" />
+        <action
+            android:id="@+id/action_nav_collections_to_collectionDetailsFragment"
+            app:destination="@id/collectionDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/collectionFormFragment"
+        android:name="it.project.houseoftasty.view.CollectionFormFragment"
+        android:label="fragment_collection_form" >
+        <argument
+            android:name="collectionId"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_collectionFormFragment_to_nav_collections"
+            app:destination="@id/nav_collections"
+            app:popUpTo="@id/nav_collections"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_collectionFormFragment_to_collectionDetailsFragment"
+            app:destination="@id/collectionDetailsFragment"
+            app:popUpTo="@id/collectionDetailsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_collectionFormFragment_to_collectionAddRecipeFragment"
+            app:destination="@id/collectionAddRecipeFragment" />
+        <argument
+            android:name="recipeIdArray"
+            app:argType="string[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="collectionName"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/collectionDetailsFragment"
+        android:name="it.project.houseoftasty.view.CollectionDetailsFragment"
+        android:label="fragment_collection_details"
+        tools:layout="@layout/fragment_collection_details" >
+        <argument
+            android:name="collectionId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_collectionDetailsFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment" />
+        <action
+            android:id="@+id/action_collectionDetailsFragment_to_collectionFormFragment"
+            app:destination="@id/collectionFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/collectionAddRecipeFragment"
+        android:name="it.project.houseoftasty.view.CollectionAddRecipeFragment"
+        android:label="fragment_collection_add_recipe"
+        tools:layout="@layout/fragment_collection_add_recipe" >
+        <action
+            android:id="@+id/action_collectionAddRecipeFragment_to_collectionFormFragment"
+            app:destination="@id/collectionFormFragment"
+            app:popUpTo="@id/collectionFormFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="collectionId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="collectionName"
+            app:argType="string" />
+        <argument
+            android:name="recipeIdArray"
+            app:argType="string[]" />
     </fragment>
 </navigation>

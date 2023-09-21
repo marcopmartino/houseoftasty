@@ -29,7 +29,6 @@ class MyProductFragment() : Fragment(){
     private val productViewModel : ProductViewModel by viewModels()
 
     private lateinit var binding: FragmentMyProductBinding
-    private lateinit var vista: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +37,6 @@ class MyProductFragment() : Fragment(){
         binding = FragmentMyProductBinding.inflate(inflater)
         binding.viewModel = productViewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        vista = binding.root
         return binding.root
     }
 
@@ -74,17 +72,7 @@ class MyProductFragment() : Fragment(){
             }
         }
 
-        val dividerItemDecoration = DividerItemDecoration(
-            recyclerview.context,
-            DividerItemDecoration.VERTICAL
-        )
-
-        dividerItemDecoration.setDrawable(
-            ContextCompat.getDrawable(requireContext(), R.drawable.product_divider)!!
-        )
-        recyclerview.addItemDecoration(dividerItemDecoration)
-
-        view.findViewById<FloatingActionButton>(R.id.addProduct).setOnClickListener {
+        binding.floatingActionButton.setOnClickListener {
 
             val action: NavDirections =
                 MyProductFragmentDirections.actionMyProductFragmentToProductFormFragment(null)

@@ -4,13 +4,14 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.google.firebase.Timestamp
 import it.project.houseoftasty.model.Recipe
-import it.project.houseoftasty.repository.RecipeRepository
+import it.project.houseoftasty.network.RecipeCollectionNetwork
+import it.project.houseoftasty.network.RecipeNetwork
 import it.project.houseoftasty.utility.OperationType
 import it.project.houseoftasty.utility.toInt
 import kotlinx.coroutines.launch
 
 class RecipeFormViewModel(private val recipeId: String?, val isRecipeNew: MutableLiveData<Boolean>) : FormManagerViewModel() {
-    private val dataSource: RecipeRepository = RecipeRepository.getDataSource()
+    private val dataSource: RecipeCollectionNetwork = RecipeCollectionNetwork.getDataSource()
     val recipeLiveData: MutableLiveData<Recipe> = MutableLiveData(Recipe())
 
     // Inizializzazione
@@ -29,9 +30,28 @@ class RecipeFormViewModel(private val recipeId: String?, val isRecipeNew: Mutabl
 
     }
 
+    // Ritorna TRUE se esiste un'immagine per la ricetta, altrimenti ritorna FALSE
+    fun recipeImageExists(): Boolean {
+        return recipeLiveData.value?.boolImmagine ?: false
+    }
+
+    // Controlla se i campi in input sono cambiati (usata nel caso di UPDATE di una ricetta)
+    override fun hasDataChanged(formData: MutableMap<String, Any>): Boolean {
+        val oldData = recipeLiveData.value!!
+        return oldData.titolo != formData["titolo"] as String ||
+                oldData.ingredienti != formData["ingredienti"] as String ||
+                oldData.numPersone != formData["numPersone"]?.toInt() ||
+                oldData.preparazione != formData["preparazione"] as String ||
+                oldData.tempoPreparazione != formData["tempoPreparazione"]?.toInt() ||
+                oldData.boolPubblicata != formData["boolPubblicata"] as Boolean ||
+                oldData.boolPostPrivato != formData["boolPostPrivato"] as Boolean ||
+                "NONE" != formData["immagineOperationType"] as String
+    }
+
     // Funzione eseguita al Submit della form
     override fun onFormSubmit(formData: MutableMap<String, Any>, hasDataChanged: Boolean) {
         viewModelScope.launch {
+            Log.d("Immagine", formData["immagineOperationType"] as String)
             if (isRecipeNew.value == true) {
                 insertRecipe(formData)
                 setOperationCompleted(OperationType.INSERTION)
@@ -49,7 +69,7 @@ class RecipeFormViewModel(private val recipeId: String?, val isRecipeNew: Mutabl
         viewModelScope.launch {
             Log.d("Delete", recipeId.toString())
 
-            dataSource.deleteRecipe(recipeId!!)
+            dataSource.deleteRecipeById(recipeId!!)
             setOperationCompleted(OperationType.DELETION)
         }
     }
@@ -59,7 +79,8 @@ class RecipeFormViewModel(private val recipeId: String?, val isRecipeNew: Mutabl
         Log.d("Insert", formData.toString())
 
         val isPublished = formData["boolPubblicata"] as Boolean
-        dataSource.addRecipe(
+        val isImageSelected = formData["immagineOperationType"] as String == "SELECTION"
+        val newRecipeId = dataSource.addRecipe(
             Recipe(
                 null,
                 null,
@@ -70,17 +91,22 @@ class RecipeFormViewModel(private val recipeId: String?, val isRecipeNew: Mutabl
                 formData["tempoPreparazione"]?.toInt(),
                 isPublished,
                 formData["boolPostPrivato"] as Boolean,
+                isImageSelected,
                 Timestamp.now(),
                 if (isPublished) Timestamp.now() else null,
                 null,
-                null
             )
         )
+
+        if (isImageSelected)
+            dataSource.uploadFileFromByteArray(newRecipeId, formData["immagine"] as ByteArray)
     }
 
     // Aggiorna una ricetta esistente con i dati della form
     private suspend fun updateRecipe(formData: MutableMap<String, Any>) {
         Log.d("Update", formData.toString())
+
+        val imageOperation = formData["immagineOperationType"] as String
 
         val oldData = recipeLiveData.value!!
         val wasPublished = oldData.boolPubblicata
@@ -96,12 +122,21 @@ class RecipeFormViewModel(private val recipeId: String?, val isRecipeNew: Mutabl
                 formData["tempoPreparazione"]?.toInt(),
                 isPublished,
                 formData["boolPostPrivato"] as Boolean,
+                when (imageOperation) {
+                "SELECTION" -> true
+                "REMOVAL" -> false
+                    else -> { oldData.boolImmagine }
+                },
                 oldData.timestampCreazione,
                 if (!isPublished) null else if (wasPublished) oldData.timestampPubblicazione else Timestamp.now(),
-                oldData.nomeImmagine,
                 oldData.imageReference
             )
         )
+
+        when (imageOperation) {
+            "SELECTION" -> dataSource.uploadFileFromByteArray(oldData.id.toString(), formData["immagine"] as ByteArray)
+            "REMOVAL" -> dataSource.deleteFile(oldData.id.toString())
+        }
     }
 }
 

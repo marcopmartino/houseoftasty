@@ -18,7 +18,6 @@
         android:paddingTop="0dp"
         android:paddingBottom="0dp">
 
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -26,17 +25,79 @@
             android:visibility="@{viewModel.loadingCompleted ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintVertical_bias="0.0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="24dp">
 
-                <!-- Titolo ricetta -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button_removeImage"
+                    style="@style/btnSolidRounded_1"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/button_selector_red"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/_11pxh"
+                    android:paddingTop="@dimen/_9pxv"
+                    android:paddingEnd="@dimen/_9pxh"
+                    android:paddingBottom="@dimen/_9pxv"
+                    android:singleLine="true"
+                    android:text="@string/txtRemoveImage"
+                    android:textAllCaps="false"
+                    app:layout_constraintEnd_toEndOf="@+id/dataImage"
+                    app:layout_constraintStart_toStartOf="@+id/dataImage"
+                    app:layout_constraintTop_toBottomOf="@+id/dataImage"
+                    tools:text="@string/txtRemoveImage" />
+
+                <TextView
+                    android:id="@+id/labelImage"
+                    style="@style/txtBaloo2baloo2semibold16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="24dp"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="@dimen/_10pxh"
+                    android:singleLine="true"
+                    android:text="@string/labelImage"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/errorImage"
+                    style="@style/txtBaloo2medium14error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/errorMessagePlaceholder"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button_removeImage" />
+
+                <ImageView
+                    android:id="@+id/dataImage"
+                    android:layout_width="0dp"
+                    android:layout_height="160dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="48dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/imageview_border"
+                    android:contentDescription="@string/recipeImageDescription"
+                    android:src="@drawable/carica_immagine"
+                    android:tag="immagine"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/labelImage" />
+
                 <Button
                     android:id="@+id/button_submitRecipe"
                     android:layout_width="@dimen/_300sp"
@@ -45,7 +106,7 @@
                     android:backgroundTint="@color/tawny_brown"
                     android:contentDescription="@string/contentDescription_recipe_form_button"
                     android:fontFamily="@font/baloo_bhai"
-                    android:text='@{viewModel.isRecipeNew ? @string/txtAddRecipe : @string/txtSaveEdit}'
+                    android:text="@{viewModel.isRecipeNew ? @string/txtCreateRecipe : @string/txtSaveEdit}"
                     android:textSize="16sp"
                     app:cornerRadius="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -77,13 +138,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginStart="40dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
                     android:ellipsize="end"
                     android:lineSpacingExtra="@dimen/_10pxh"
                     android:singleLine="true"
                     android:text="@string/labelTitle"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/errorImage" />
 
                 <EditText
                     android:id="@+id/dataTitle"

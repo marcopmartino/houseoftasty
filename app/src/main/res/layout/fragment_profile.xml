@@ -5,6 +5,7 @@
     tools:context=".view.ProfileFragment">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="profileData"
             type="it.project.houseoftasty.viewModel.ProfileViewModel"/>
@@ -19,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#45D19266"
-            android:visibility="visible"
+            android:visibility="@{profileData.loadingCompleted ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,9 +33,11 @@
 
                 <ImageView
                     android:id="@+id/profileImage"
-                    android:layout_width="170dp"
-                    android:layout_height="170dp"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
                     android:layout_marginTop="16dp"
+                    android:background="@drawable/rectangle_bg_red_300_2b_radius_80"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/img_peopleiconcol"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -44,9 +47,10 @@
                     android:id="@+id/dettagli"
                     style="@style/txtSolid"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30sp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/rectangle_bg_red_300"
+                    android:gravity="center"
                     android:singleLine="true"
                     android:text="@string/dettagli"
                     android:textAlignment="center"
@@ -62,12 +66,13 @@
                     android:layout_width="89dp"
                     android:layout_height="27dp"
                     android:layout_gravity="start"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="@string/username"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.049"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dettagli"
                     tools:ignore="TextContrastCheck" />
@@ -78,13 +83,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginEnd="16dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="@{profileData.profileLiveData.username}"
                     android:textSize="@dimen/_16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.042"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtUsername" /> <!-- Informazioni Username-->
 
@@ -94,12 +101,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="@string/mail"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.042"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dataUsername"
                     tools:ignore="TextContrastCheck" />
@@ -110,13 +118,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginEnd="16dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="@{profileData.profileLiveData.mail}"
+                    android:text="@{profileData.profileLiveData.email}"
                     android:textSize="@dimen/_16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.042"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtEmail" /> <!-- Informazioni Email-->
 
@@ -126,12 +136,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="@string/name"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.043"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dataEmail"
                     tools:ignore="TextContrastCheck" />
@@ -142,13 +153,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginEnd="16dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="@{profileData.profileLiveData.nome}"
                     android:textSize="@dimen/_16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.042"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtNome" /> <!-- Informazioni Nome -->
 
@@ -158,12 +171,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="@string/surname"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.046"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dataNome"
                     tools:ignore="TextContrastCheck" />
@@ -174,14 +188,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginEnd="16dp"
                     android:ellipsize="end"
                     android:paddingBottom="@dimen/_10pxh"
                     android:singleLine="true"
                     android:text="@{profileData.profileLiveData.cognome}"
                     android:textSize="@dimen/_16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.042"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtCognome" /> <!-- Informazioni Cognome -->
 
@@ -189,10 +205,10 @@
                     android:id="@+id/statistiche"
                     style="@style/txtSolid"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30sp"
                     android:layout_marginTop="16dp"
                     android:ellipsize="end"
-                    android:gravity="start"
+                    android:gravity="center"
                     android:paddingStart="@dimen/_30pxh"
                     android:paddingTop="@dimen/_3pxv"
                     android:paddingEnd="@dimen/_30pxh"
@@ -403,27 +419,36 @@
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinatorLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.941"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.971">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="1dp">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floating_action_button"
                 style="@style/Widget.App.FloatingActionButton"
+                setFabVisibility="@{profileData.loadingCompleted}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="16dp"
-                android:contentDescription="@string/fab_edit"
+                android:contentDescription="@string/fab_edit_profile"
                 android:visibility="visible"
                 app:srcCompat="@drawable/action_edit" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/caramel_brown"
+            android:visibility="@{profileData.loadingCompleted ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
