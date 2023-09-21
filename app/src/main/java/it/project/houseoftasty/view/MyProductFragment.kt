@@ -3,7 +3,6 @@ package it.project.houseoftasty.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,10 +82,7 @@ class MyProductFragment() : Fragment(){
     private fun adapterOnClick(product: Product) {
         val productId = product.id
 
-        Log.d("TAG",product.id.toString())
-
         if (productId != null) {
-            Log.d("TAG",productId)
             val action : NavDirections =
                 MyProductFragmentDirections.actionMyProductFragmentToProductFormFragment(productId)
             requireView().findNavController().navigate(action)

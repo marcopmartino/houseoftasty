@@ -1,8 +1,11 @@
 package it.project.houseoftasty.network
 
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Query
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import it.project.houseoftasty.model.Recipe
 import kotlinx.coroutines.Dispatchers
@@ -141,12 +144,14 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
         return newRecipeId
     }
 
+    // Aggiorna i dati di una ricetta
     suspend fun updateRecipe(recipe: Recipe) {
         withContext(Dispatchers.IO) {
             recipesReference.document(recipe.id.toString()).set(recipe).await()
         }
     }
 
+    // Elimina una ricetta a partire dal suo id
     open suspend fun deleteRecipeById(recipeId: String) {
         withContext(Dispatchers.IO) {
             recipesReference.document(recipeId).delete().await()
@@ -189,6 +194,118 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
                         // Inserisce la ricetta in lista
                         recipeList.add(recipe)
                     }
+                }
+            }
+        }
+
+        return recipeList
+    }
+
+    // Aggiunge un like ad una ricetta di cui è noto l'id
+    suspend fun addLike(recipeId: String){
+        withContext(Dispatchers.IO){
+            val like: List<String?> = recipesReference.document(recipeId).get().await().get("likes") as List<String?>
+            for(user in like){
+                if(currentUserId == user) return@withContext
+            }
+            recipesReference.document(recipeId).update("likes", FieldValue.arrayUnion(currentUserId)).await()
+            recipesReference.document(recipeId).update("likesCounter", FieldValue.increment(1))
+        }
+    }
+
+    // Rimuove un like da una ricetta di cui è noto l'id
+    suspend fun removeLike(recipeId: String){
+        withContext(Dispatchers.IO){
+            val like: List<String?> = recipesReference.document(recipeId).get().await().get("likes") as List<String?>
+            for(user in like){
+                if(currentUserId != user) return@withContext
+            }
+            recipesReference.document(recipeId).update("likes", FieldValue.arrayRemove(currentUserId)).await()
+            recipesReference.document(recipeId).update("likesCounter", FieldValue.increment(-1))
+        }
+    }
+
+    // Effettua la ricerca di una ricetta a patire da una parola chiave
+    suspend fun getSearchList(keyWord: String?): MutableList<Recipe>{
+        lateinit var recipeList: MutableList<Recipe>
+        lateinit var documents: MutableList<DocumentSnapshot>
+
+        withContext(Dispatchers.IO){
+            documents = recipesReference.get().await().documents
+        }
+
+        withContext(Dispatchers.Default) {
+
+            // Inizializzo la lista
+            recipeList = mutableListOf()
+
+            if(keyWord.isNullOrEmpty()) return@withContext recipeList
+
+            for (document in documents) {
+                if(document["titolo"].toString().contains(keyWord, true)){
+                    if(document["boolPubblicata"] == true) {
+                        val recipe = document.toObject(Recipe::class.java)
+                        if (recipe != null) {
+
+                            // Prende un riferimento al file immagine della ricetta (non scarica il file)
+                            recipe.imageReference = getFileReference(recipe.id.toString())
+
+                            recipeList.add(recipe)
+                        }
+                    }
+                }
+            }
+        }
+        return recipeList
+    }
+
+    // Ritorna una lista delle ricette ordinate in base al numero di mi piace
+    suspend fun getMostLiked(): MutableList<Recipe>{
+        lateinit var recipeList: MutableList<Recipe>
+        lateinit var documents: MutableList<DocumentSnapshot>
+
+
+        withContext(Dispatchers.IO){
+            documents = recipesReference.orderBy("likeCounter", Query.Direction.DESCENDING).get().await().documents
+        }
+
+        withContext(Dispatchers.Default){
+            recipeList = mutableListOf()
+            for (document in documents) {
+                val recipe = document.toObject(Recipe::class.java)
+                if (recipe != null) {
+
+                    // Prende un riferimento al file immagine della ricetta (non scarica il file)
+                    recipe.imageReference = getFileReference(recipe.id.toString())
+
+                    recipeList.add(recipe)
+                }
+            }
+        }
+
+        return recipeList
+    }
+
+    // Ritorna una lista delle ricette ordinate in base alla date di creazione (dalla più recente alla più vecchia)
+    suspend fun getMostRecent(): MutableList<Recipe>{
+        lateinit var recipeList: MutableList<Recipe>
+        lateinit var documents: MutableList<DocumentSnapshot>
+
+
+        withContext(Dispatchers.IO){
+            documents = recipesReference.orderBy("timestampCreazione", Query.Direction.DESCENDING).get().await().documents
+        }
+
+        withContext(Dispatchers.Default){
+            recipeList = mutableListOf()
+            for (document in documents) {
+                val recipe = document.toObject(Recipe::class.java)
+                if (recipe != null) {
+
+                    // Prende un riferimento al file immagine della ricetta (non scarica il file)
+                    recipe.imageReference = getFileReference(recipe.id.toString())
+
+                    recipeList.add(recipe)
                 }
             }
         }

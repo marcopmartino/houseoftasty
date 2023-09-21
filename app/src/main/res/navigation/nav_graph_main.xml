@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/nav_home">
+    <!-- Main Fragment -->
     <fragment
         android:id="@+id/nav_home"
         android:name="it.project.houseoftasty.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home"/>
+    <!-- Profile Fragment -->
     <fragment
         android:id="@+id/nav_profile"
         android:name="it.project.houseoftasty.view.ProfileFragment"
@@ -29,6 +31,7 @@
             app:popUpTo="@id/nav_profile"
             app:popUpToInclusive="true" />
     </fragment>
+    <!-- ProductFragment -->
     <fragment
         android:id="@+id/nav_product"
         android:name="it.project.houseoftasty.view.MyProductFragment"
@@ -53,6 +56,7 @@
             app:popUpTo="@id/nav_product"
             app:popUpToInclusive="true" />
     </fragment>
+    <!-- Cookbook Fragment -->
     <fragment
         android:id="@+id/nav_cookbook"
         android:name="it.project.houseoftasty.view.CookbookFragment"
@@ -77,10 +81,6 @@
             android:id="@+id/action_recipeDetailFragment_to_recipeFormFragment"
             app:destination="@id/recipeFormFragment" />
     </fragment>
-    <activity
-        android:id="@+id/nav_logout"
-        android:name="it.project.houseoftasty.view.AccessActivity"
-        android:label="AccessActivity" />
     <fragment
         android:id="@+id/recipeFormFragment"
         android:name="it.project.houseoftasty.view.RecipeFormFragment"
@@ -100,6 +100,7 @@
             app:popUpTo="@id/nav_cookbook"
             app:popUpToInclusive="true" />
     </fragment>
+    <!-- Collection fragment -->
     <fragment
         android:id="@+id/nav_collections"
         android:name="it.project.houseoftasty.view.CollectionsFragment"
@@ -178,4 +179,48 @@
             android:name="recipeIdArray"
             app:argType="string[]" />
     </fragment>
+    <!-- Explore Fragment -->
+    <fragment
+        android:id="@+id/nav_explore"
+        android:name="it.project.houseoftasty.view.ExploreFragment"
+        android:label="fragment_explore">
+        <action
+            android:id="@id/action_searchFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment"/>
+        <action
+            android:id="@id/action_popularFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment"/>
+        <action
+            android:id="@id/action_recentFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="it.project.houseoftasty.view.SearchFragment"
+        android:label="fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/popularFragment"
+        android:name="it.project.houseoftasty.view.PopularFragment"
+        android:label="fragment_popular">
+        <action
+            android:id="@+id/action_popularFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/recentFragment"
+        android:name="it.project.houseoftasty.view.RecentFragment"
+        android:label="fragment_recent">
+        <action
+            android:id="@+id/action_recentFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment"/>
+    </fragment>
+    <!-- Logout -->
+    <activity
+        android:id="@+id/nav_logout"
+        android:name="it.project.houseoftasty.view.AccessActivity"
+        android:label="AccessActivity" />
 </navigation>

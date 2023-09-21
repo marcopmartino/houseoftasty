@@ -25,7 +25,8 @@ class RecipeDetailsViewModel(val recipeId: String) : LoadingManagerViewModel() {
     }
 
     // Fa il toggle di "likeButtonPressed" e notifica eventuali osservatori
-    fun toggleLikeButtonPressed() {
+    suspend fun toggleLikeButtonPressed() {
+        dataSource.addLike(recipeId)
         likeButtonPressed.postValue(!likeButtonPressed.value!!)
     }
 }

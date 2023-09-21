@@ -24,6 +24,10 @@
         android:title="@string/collections"
         />
     <item
+        android:id="@+id/nav_explore"
+        android:icon="@drawable/icon_explore"
+        android:title="@string/menu_esplora"/>
+    <item
         android:id="@+id/nav_logout"
         android:icon="@drawable/icon_logout"
         android:title="@string/logout"/>

@@ -143,6 +143,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_profile">Profilo</string>
     <string name="menu_ricettario">Ricettario</string>
+    <string name="menu_esplora">Esplora</string>
     <string name="openDrawer">Open</string>
     <string name="closeDrawer">Close</string>
     <string name="home">Home</string>
@@ -188,6 +189,8 @@
     <!-- String relative alle notifiche -->
     <string name="productExpireName">Scadenza prodotti</string>
     <string name="productExpireDescription">Prodotti in scadenza</string>
+    <string name="search_hint">Inserire il nome di una ricetta</string>
+    <string name="ricette_pubblicate">Ricette pubblicate</string>
 
     <!-- String relative al testo di SnackBar e Toast -->
     <string name="camera_unavailable"><b tools:ignore="Typos">Non è stato possibile aprire la fotocamera.</b>\nQuesto avviene quando la fotocamera non è disponibile (per esempio se è già in uso) o se il sistema ha negato l\'accesso (per esempio se la fotocamera è disabilitata).</string>

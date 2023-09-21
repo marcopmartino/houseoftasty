@@ -35,7 +35,6 @@ class ProductNetwork {
             productList = mutableListOf()
 
             for (document in documents) {
-                Log.d("TAG", document.data.toString())
                 val data = document.data
                 val product = Product(
                     document.id,
@@ -58,10 +57,7 @@ class ProductNetwork {
         // Recupera i dati sul prodotto (richiede la connessione a Firestore)
         withContext(Dispatchers.IO) {
             document = productsReference.document(productId).get().await()
-            Log.d("TAG","XD "+document.toObject(Product::class.java).toString())
         }
-
-        Log.d("TAG",productId)
 
         // Converte lo snapshot del documento in un oggetto Product
         document.toObject(Product::class.java).also {

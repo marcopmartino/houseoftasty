@@ -26,11 +26,17 @@ import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import it.project.houseoftasty.ExpireWorker
 import it.project.houseoftasty.R
 import it.project.houseoftasty.databinding.ActivityMainBinding
+import java.util.concurrent.TimeUnit
 import it.project.houseoftasty.utility.checkSelfPermissionCompat
 import it.project.houseoftasty.utility.requestPermissionsCompat
 import it.project.houseoftasty.utility.shouldShowRequestPermissionRationaleCompat
@@ -72,6 +78,11 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         firebaseAuth = FirebaseAuth.getInstance()
         val firebaseUser = firebaseAuth.currentUser
 
+        val dataExpired: PeriodicWorkRequest =
+            PeriodicWorkRequestBuilder<ExpireWorker>(12, TimeUnit.HOURS).build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("Scadenza prodotti", ExistingPeriodicWorkPolicy.KEEP, dataExpired)
+
         // Imposto il menù in base allo stato di autenticazione
         navView.menu.clear()
 
@@ -83,13 +94,15 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                     R.id.nav_product,
                     R.id.nav_cookbook,
                     R.id.nav_collections,
-                    R.id.nav_logout
+                    R.id.nav_explore,
+                    R.id.nav_logout,
             ))
         } else {
             setNavigationConfiguration(
                 R.menu.menu_unauthenticated, setOf(
                     R.id.nav_home,
                     R.id.nav_cookbook,
+                    R.id.nav_explore,
                     R.id.nav_logout
             ))
         }

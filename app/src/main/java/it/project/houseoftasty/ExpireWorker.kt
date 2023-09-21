@@ -9,6 +9,11 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.work.*
+import it.project.houseoftasty.model.Product
+import it.project.houseoftasty.network.ProductNetwork
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -21,32 +26,38 @@ class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
     Worker(appContext, workerParams){
 
 
-    /*private lateinit var currentDate: Date
+    private lateinit var currentDate: Date
     private val channelId = "checkExpire"
-    private lateinit var builder: NotificationCompat.Builder*/
+    private lateinit var builder: NotificationCompat.Builder
+    private val productNetwork: ProductNetwork = ProductNetwork()
 
     override fun doWork(): Result {
 
-       // checkDate()
-
+        runBlocking{
+            checkDate()
+        }
         return Result.success()
     }
 
     /**
      * Questa funzione controlla le scadenze dei prodotti e, se necessario, invia una notifica
     **/
-    /*@SuppressLint("SimpleDateFormat", "MissingPermission")
-    private fun checkDate(){
+    @SuppressLint("SimpleDateFormat", "MissingPermission")
+    private suspend fun checkDate(){
 
+        lateinit var products: MutableList<Product>
         var counter = 0
         val sdf = SimpleDateFormat("dd/MM/yyyy")
         val temp = sdf.format(System.currentTimeMillis())
         currentDate = Date(temp)
 
-        val products = houseTastyDao.getAll()
+        withContext(Dispatchers.IO){
+            products = productNetwork.getProductByUser()
+        }
+
         for(product in products) {
             if(product.scadenza == "-") continue
-            val chkDate = sdf.parse(product.scadenza)
+            val chkDate = sdf.parse(product.scadenza!!)
             val diff = chkDate!!.time - currentDate.time
             val days = (((diff / 1000) / 60) / 60) / 24
             if (days <= 2) {
@@ -75,6 +86,6 @@ class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
             }
 
         }
-    }*/
+    }
 
 }

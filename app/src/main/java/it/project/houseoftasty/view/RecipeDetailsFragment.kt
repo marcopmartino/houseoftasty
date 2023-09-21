@@ -13,7 +13,7 @@ import it.project.houseoftasty.adapter.BindingAdapters.Companion.setFabVisibilit
 import it.project.houseoftasty.databinding.FragmentRecipeDetailsBinding
 import it.project.houseoftasty.viewModel.RecipeDetailsViewModel
 import it.project.houseoftasty.viewModel.RecipeDetailsViewModelFactory
-
+import kotlinx.coroutines.runBlocking
 
 
 class RecipeDetailsFragment : Fragment() {
@@ -62,8 +62,10 @@ class RecipeDetailsFragment : Fragment() {
                 rotationYBy(90f)
             }.withEndAction {
 
-                // Codice da eseguire tra le due parti dell'animazione
-                recipeDetailViewModel.toggleLikeButtonPressed()
+                runBlocking {
+                    // Codice da eseguire tra le due parti dell'animazione
+                    recipeDetailViewModel.toggleLikeButtonPressed()
+                }
 
                 // Seconda parte dell'animazione: rotazione di 270° in 750ms
                 it.animate().apply {
