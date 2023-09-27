@@ -1,9 +1,7 @@
 package it.project.houseoftasty.utility
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.widget.ImageView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -11,7 +9,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.StorageReference
 import it.project.houseoftasty.R
 import it.project.houseoftasty.module.GlideApp
-import java.io.ByteArrayOutputStream
 
 class ImageLoader {
 
@@ -40,6 +37,7 @@ class ImageLoader {
             errorImage: Int = defaultErrorImage,
             animatedLoading: Boolean = false
         ) {
+            FirebaseFirestore.getInstance().clearPersistence()
             if (!animatedLoading) {
                 // Glide carica l'immagine in maniera asincrona
                 GlideApp.with(context)

@@ -15,6 +15,7 @@ import it.project.houseoftasty.adapter.BindingAdapters.Companion.setFabVisibilit
 import it.project.houseoftasty.adapter.PrivateRecipeAdapter
 import it.project.houseoftasty.databinding.FragmentCookbookBinding
 import it.project.houseoftasty.viewModel.CookbookViewModel
+import kotlinx.coroutines.runBlocking
 
 class CookbookFragment : Fragment() {
 

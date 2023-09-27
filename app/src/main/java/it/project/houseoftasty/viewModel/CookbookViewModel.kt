@@ -7,7 +7,7 @@ import it.project.houseoftasty.network.RecipeNetwork
 
 class CookbookViewModel : LoadingManagerViewModel() {
 
-    private val dataSource: RecipeNetwork = RecipeNetwork.getDataSource()
+    val dataSource: RecipeNetwork = RecipeNetwork.getDataSource()
     val recipesLiveData: MutableLiveData<MutableList<Recipe>> = MutableLiveData(mutableListOf())
 
     // Inizializzazione
@@ -21,5 +21,4 @@ class CookbookViewModel : LoadingManagerViewModel() {
         * Il metodo "postValue" imposta il nuovo valore e notifica eventuali osservatori. */
         recipesLiveData.postValue(dataSource.getRecipesByUser())
     }
-
 }

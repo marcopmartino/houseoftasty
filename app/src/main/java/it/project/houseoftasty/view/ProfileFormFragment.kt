@@ -2,17 +2,20 @@ package it.project.houseoftasty.view
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import it.project.houseoftasty.R
 import it.project.houseoftasty.databinding.FragmentProfileFormBinding
 import it.project.houseoftasty.validation.EditTextValidator

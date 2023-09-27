@@ -155,6 +155,9 @@
             android:id="@+id/action_collectionDetailsFragment_to_recipeDetailFragment"
             app:destination="@id/recipeDetailFragment" />
         <action
+            android:id="@+id/action_collectionDetailsFragment_to_recipePostFragment"
+            app:destination="@id/recipePostFragment" />
+        <action
             android:id="@+id/action_collectionDetailsFragment_to_collectionFormFragment"
             app:destination="@id/collectionFormFragment" />
     </fragment>

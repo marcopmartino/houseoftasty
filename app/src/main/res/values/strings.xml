@@ -105,6 +105,7 @@
     <string name ="recipeStatusPublished">Ricetta pubblicata</string>
     <string name ="recipeStatusUnPublished">Ricetta non pubblicata</string>
     <string name ="recipeStatusPublishedPrivate">Ricetta pubblicata (post privato)</string>
+    <string name ="recipeStats">Numero visualizzazioni: </string>
     <string name ="recipeLikes">Mi Piace</string>
     <string name ="recipeDownloads">Salva</string>
     <string name ="recipeIngredientsTitle">INGREDIENTI</string>

@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.signature.ObjectKey
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -43,9 +44,14 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
+        requireContext().cacheDir.deleteRecursively()
+        FirebaseFirestore.getInstance().clearPersistence()
+
         binding = FragmentProfileBinding.inflate(inflater)
         binding.profileData = profileViewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+
         return binding.root
 
     }

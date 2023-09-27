@@ -1,8 +1,10 @@
 package it.project.houseoftasty.network
 
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import it.project.houseoftasty.model.Recipe
@@ -41,6 +43,7 @@ class RecipeCollectionNetwork: RecipeNetwork() {
                     if (it != null) {
                         val recipeIdList: List<String> = document
                             .get("listaRicette") as List<String>
+
                         for(recipeId in recipeIdList)
                             it.listaRicette.add(getRecipeById(recipeId))
                         recipeCollectionList.add(it)
@@ -148,7 +151,7 @@ class RecipeCollectionNetwork: RecipeNetwork() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private suspend fun removeRecipeFromCollections(recipeId: String) {
+    suspend fun removeRecipeFromCollections(recipeId: String) {
         lateinit var documents: MutableList<DocumentSnapshot>
 
         // Recupera i dati sulle raccolte (richiede la connessione a Firestore)
@@ -167,6 +170,63 @@ class RecipeCollectionNetwork: RecipeNetwork() {
         super.deleteRecipeById(recipeId)
         removeRecipeFromCollections(recipeId)
     }
+
+    @Suppress("UNCHECKED_CAST")
+    private suspend fun removeRecipeFromCollection(recipeId: String) {
+        lateinit var documents: MutableList<DocumentSnapshot>
+        var collection = ""
+
+        withContext(Dispatchers.IO){
+            documents = recipeCollectionsReference.get().await().documents
+        }
+
+        for(document in documents){
+            val temp = document.toObject(RecipeCollection::class.java)
+            if(temp!!.nome.equals("Salvati")){
+                recipeCollectionsReference.document(temp.id!!)
+                    .update("listaRicette", FieldValue.arrayRemove(recipeId))
+                break
+            }
+        }
+    }
+
+    suspend fun removeRecipeById(recipeId: String){
+        removeRecipeFromCollection(recipeId)
+    }
+
+    private suspend fun addRecipeIntoCollection(recipeId: String){
+        lateinit var documents: MutableList<DocumentSnapshot>
+        var collection = ""
+
+        withContext(Dispatchers.IO){
+            documents = recipeCollectionsReference.get().await().documents
+        }
+
+        for(document in documents){
+            val temp = document.toObject(RecipeCollection::class.java)
+            if(temp!!.nome.equals("Salvati")){
+                collection = temp.id!!
+                break
+            }
+        }
+
+        if(collection.isEmpty()){
+            collection = addCollection(RecipeCollection(
+                null,
+                "Salvati",
+                Timestamp.now()))
+        }
+
+        withContext(Dispatchers.IO){
+            recipeCollectionsReference.document(collection)
+                .update("listaRicette", FieldValue.arrayUnion(recipeId))
+        }
+    }
+
+    suspend fun addRecipeById(recipeId: String){
+        addRecipeIntoCollection(recipeId)
+    }
+
 
     /* Factory method */
     companion object {

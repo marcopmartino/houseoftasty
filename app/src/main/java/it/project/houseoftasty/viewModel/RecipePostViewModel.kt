@@ -18,6 +18,7 @@ class RecipePostViewModel(private val recipeId: String) : LoadingManagerViewMode
     val recipeLiveData: MutableLiveData<Recipe> = MutableLiveData(Recipe())
     val commentsLiveData : MutableLiveData<MutableList<Comment>> = MutableLiveData(mutableListOf())
     val likeButtonPressed: MutableLiveData<Boolean> = MutableLiveData(false)
+    val downloadButtonPressed: MutableLiveData<Boolean> = MutableLiveData(false)
 
     // Inizializzazione
     init {
@@ -38,11 +39,16 @@ class RecipePostViewModel(private val recipeId: String) : LoadingManagerViewMode
         }
         recipeLiveData.postValue(recipe)
         likeButtonPressed.postValue(recipe.likes.contains(dataSource.currentUserId))
+        downloadButtonPressed.postValue(recipe.downloads.contains(dataSource.currentUserId))
         commentsLiveData.postValue(dataSource.getCommentsByRecipeId(recipeId))
     }
 
     fun isRecipeLiked(): Boolean {
         return likeButtonPressed.value!!
+    }
+
+    fun isRecipeDownloaded(): Boolean {
+        return downloadButtonPressed.value!!
     }
 
     fun isRecipeCreatorNotCurrentUser(): Boolean {
@@ -61,6 +67,15 @@ class RecipePostViewModel(private val recipeId: String) : LoadingManagerViewMode
 
         viewModelScope.launch {
             if (isLiked) dataSource.removeLike(recipeId) else dataSource.addLike(recipeId)
+        }
+    }
+
+    fun toggleDownloadButtonPressed() {
+        val isDownloaded = isRecipeDownloaded()
+        downloadButtonPressed.postValue(!isDownloaded)
+
+        viewModelScope.launch {
+            if (isDownloaded) dataSource.removeDownload(recipeId) else dataSource.addDownload(recipeId)
         }
     }
 

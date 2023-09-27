@@ -80,7 +80,7 @@ class PopularFragment : Fragment() {
     /* Naviga verso RecipeDetailFragment al click su un elemento della RecyclerView. */
     private fun adapterOnClick(recipeId: String) {
         navigateTo(PopularFragmentDirections.actionPopularFragmentToRecipePostFragment(recipeId))
-    }
+     }
 
     // Funzione per navigare verso altri Fragment
     private fun navigateTo(direction: NavDirections) {

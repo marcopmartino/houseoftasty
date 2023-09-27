@@ -13,6 +13,7 @@ import it.project.houseoftasty.model.Comment
 import it.project.houseoftasty.model.Profile
 import it.project.houseoftasty.model.Recipe
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
@@ -255,7 +256,6 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
         return recipeList
     }
 
-
     // Aggiunge un like ad una ricetta di cui è noto l'id
     @Suppress("UNCHECKED_CAST")
     suspend fun addLike(recipeId: String){
@@ -284,10 +284,45 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
         }
     }
 
+    // Aggiunge una ricetta alla collezione "Salvati" e incrementa il numero dei download della stessa
+    @Suppress("UNCHECKED_CAST")
+    suspend fun addDownload(recipeId: String) {
+        withContext(Dispatchers.IO) {
+            val downloads: List<String?> =
+                recipesReference.document(recipeId).get().await().get("downloads") as List<String?>
+            if (downloads.contains(currentUserId)) return@withContext
+            val collectionNetwork = RecipeCollectionNetwork()
+            collectionNetwork.addRecipeById(recipeId)
+            recipesReference.document(recipeId)
+                .update("downloads", FieldValue.arrayUnion(currentUserId)).await()
+            recipesReference.document(recipeId).update("downloadCounter", FieldValue.increment(1))
+                .await()
+        }
+    }
+
+    // Rimuove una ricetta dalla collezione "Salvati" di un utente e decrementa il numero dei download della stessa
+    @Suppress("UNCHECKED_CAST")
+    suspend fun removeDownload(recipeId: String){
+        withContext(Dispatchers.IO){
+            val downloads: List<String?> = recipesReference.document(recipeId).get().await().get("downloads") as List<String?>
+            for(user in downloads){
+                if (currentUserId == user) {
+                    val collectionNetwork = RecipeCollectionNetwork()
+                    collectionNetwork.removeRecipeFromCollections(recipeId)
+                    recipesReference.document(recipeId).update("downloads", FieldValue.arrayRemove(currentUserId)).await()
+                    recipesReference.document(recipeId).update("downloadCounter", FieldValue.increment(-1)).await()
+                    return@withContext
+                }
+            }
+        }
+    }
+
     // Incrementa le visualizzazioni di una ricetta
     suspend fun incrementViews(recipeId: String){
         withContext(Dispatchers.IO){
-            recipesReference.document(recipeId).update("views", FieldValue.increment(1)).await()
+            val recipe = recipesReference.document(recipeId).get().await().toObject(Recipe::class.java)
+            if(!recipe!!.idCreatore.equals(currentUserId))
+                recipesReference.document(recipeId).update("views", FieldValue.increment(1)).await()
         }
     }
 
@@ -465,6 +500,18 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
         }
 
         return comment
+    }
+
+    fun isCreator(recipeId: String): Boolean{
+        lateinit var documents: DocumentSnapshot
+
+        // Recupera i dati sulla ricetta (richiede la connessione a Firestore)
+        runBlocking {
+            documents = recipesReference.document(recipeId).get().await()
+        }
+
+        return documents["idCreatore"]!! == currentUserId
+
     }
 
     /* Factory method */

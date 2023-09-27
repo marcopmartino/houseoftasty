@@ -2,12 +2,11 @@ package it.project.houseoftasty.view
 
 
 import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Binder
 import android.os.Build
+import android.os.Binder
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.MenuItem
@@ -33,7 +32,6 @@ import androidx.work.WorkManager
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import it.project.houseoftasty.ExpireWorker
 import it.project.houseoftasty.R
 import it.project.houseoftasty.databinding.ActivityMainBinding
@@ -81,7 +79,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         val firebaseUser = firebaseAuth.currentUser
 
         val dataExpired: PeriodicWorkRequest =
-            PeriodicWorkRequestBuilder<ExpireWorker>(12, TimeUnit.HOURS).build()
+            PeriodicWorkRequestBuilder<ExpireWorker>(15, TimeUnit.MINUTES).build()
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork("Scadenza prodotti", ExistingPeriodicWorkPolicy.KEEP, dataExpired)
 
@@ -219,7 +217,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
      * Successivamente alla scelta, esegue il metodo [startActivityWithPermissionRequest] con i
      * parametri specifici del caso selezionato.
      */
-     fun showPictureSelectionDialog() {
+    fun showPictureSelectionDialog() {
         val pictureSelectionDialog = AlertDialog.Builder(this)
         val pictureSelectionDialogItems = arrayOf("Scatta dalla fotocamera", "Scegli dalla galleria")
         pictureSelectionDialog.setTitle("Seleziona un'immagine")

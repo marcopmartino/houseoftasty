@@ -6,7 +6,7 @@ import it.project.houseoftasty.network.RecipeNetwork
 
 class RecentViewModel : LoadingManagerViewModel() {
 
-    private val dataSource: RecipeNetwork = RecipeNetwork.getDataSource()
+    val dataSource: RecipeNetwork = RecipeNetwork.getDataSource()
     val recentLiveData: MutableLiveData<MutableList<Recipe>> = MutableLiveData(mutableListOf())
 
     // Inizializzazione

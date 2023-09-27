@@ -20,7 +20,7 @@ class RegisterViewModel : FormManagerViewModel(true) {
     }
 
     // Inserisce un nuovo profilo con i dati della form
-    private suspend fun insertProfile(formData: MutableMap<String, Any>) {
+    suspend fun insertProfile(formData: MutableMap<String, Any>) {
         Log.d("Insert", formData["username"].toString())
 
         dataSource.addUser(

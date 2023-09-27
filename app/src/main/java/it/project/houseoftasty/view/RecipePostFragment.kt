@@ -1,5 +1,6 @@
 package it.project.houseoftasty.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -25,6 +26,8 @@ import it.project.houseoftasty.adapter.BindingAdapters.Companion.setFabVisibilit
 import it.project.houseoftasty.adapter.CommentAdapter
 import it.project.houseoftasty.databinding.FragmentRecipeDetailsBinding
 import it.project.houseoftasty.databinding.FragmentRecipePostBinding
+import it.project.houseoftasty.model.RecipeCollection
+import it.project.houseoftasty.network.RecipeCollectionNetwork
 import it.project.houseoftasty.utility.DateTimeFormatter
 import it.project.houseoftasty.utility.dateToString
 import it.project.houseoftasty.utility.decrement
@@ -43,7 +46,7 @@ class RecipePostFragment : Fragment() {
     }
 
     lateinit var binding: FragmentRecipePostBinding
-
+    val recipeCollectionNetwork = RecipeCollectionNetwork()
 
     // Parametri passati al Fragment dalla navigazione
     private val args: RecipePostFragmentArgs by navArgs()
@@ -62,6 +65,7 @@ class RecipePostFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -72,6 +76,9 @@ class RecipePostFragment : Fragment() {
         // Ottiene un riferimento al pulsante dei "Mi piace" e al relativo contatore
         val likeButton = binding.likeIcon
         val likeCounter = binding.likesCounter
+
+        val downloadButton = binding.downloadIcon
+        val downloadCounter = binding.downloadsCounter
 
         // Ottiene un riferimento al pulsante dei "Commenti" e al relativo contatore
         val commentIcon = binding.commentIcon
@@ -90,8 +97,18 @@ class RecipePostFragment : Fragment() {
                     likeCounter.increment()
         }
 
+        // Aggiorna il contatore dei Download al click sull'icona
+        fun updateDownloadCounter(){
+            downloadCounter.text =
+                if(recipePostViewModel.isRecipeDownloaded()) {
+                    downloadCounter.decrement()
+                }else {
+                    downloadCounter.increment()
+                }
+        }
+
         /* Osservatore su "recipeLiveData" per il binding del timestamp, per determinare la
-            visibilità del F.A.B e il comportamento del pulsante dei "Mi piace" */
+            visibilità del F.A.B e il comportamento del pulsante dei "Mi piace" e dei "Download" */
         recipePostViewModel.recipeLiveData.observe(viewLifecycleOwner) {
             if (it.id != null) {
 
@@ -151,6 +168,29 @@ class RecipePostFragment : Fragment() {
                             }
                         }.start()
                     }
+
+                    downloadButton.setOnClickListener {
+                        downloadButton.isClickable = false
+                        updateDownloadCounter()
+
+                        // Prima parte dell'animazione: rotazione di 90° in 250ms
+                        downloadButton.animate().apply {
+                            duration = 250
+                            rotationYBy(90f)
+                        }.withEndAction {
+
+                            // Codice da eseguire tra le due parti dell'animazione
+                            recipePostViewModel.toggleDownloadButtonPressed()
+
+                            // Seconda parte dell'animazione: rotazione di 270° in 750ms
+                            downloadButton.animate().apply {
+                                duration = 750
+                                rotationYBy(270f)
+                            }.withEndAction {
+                                downloadButton.isClickable = true
+                            }
+                        }.start()
+                    }
                 }
             }
         }
@@ -165,6 +205,16 @@ class RecipePostFragment : Fragment() {
                     likeButton.setImageResource(R.drawable.icon_heart_empty)
             } else
                 likeButton.setImageResource(R.drawable.icon_heart)
+        }
+
+        recipePostViewModel.downloadButtonPressed.observe(viewLifecycleOwner) {
+            if (recipePostViewModel.isRecipeCreatorNotCurrentUser()) {
+                if (it)
+                    downloadButton.setImageResource(R.drawable.icon_tick)
+                else
+                    downloadButton.setImageResource(R.drawable.icon_download)
+            } else
+                downloadButton.setImageResource(R.drawable.icon_download)
         }
 
         // Sezione commenti

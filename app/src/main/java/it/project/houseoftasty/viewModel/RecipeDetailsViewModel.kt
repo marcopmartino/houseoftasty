@@ -3,12 +3,14 @@ package it.project.houseoftasty.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import it.project.houseoftasty.model.Comment
 import it.project.houseoftasty.model.Recipe
 import it.project.houseoftasty.network.RecipeNetwork
 
 class RecipeDetailsViewModel(val recipeId: String) : LoadingManagerViewModel() {
     private val dataSource: RecipeNetwork = RecipeNetwork.getDataSource()
     val recipeLiveData : MutableLiveData<Recipe> = MutableLiveData(Recipe())
+    val commentLiveData : MutableLiveData<MutableList<Comment>> = MutableLiveData(mutableListOf(Comment()))
     val likeButtonPressed: MutableLiveData<Boolean> = MutableLiveData(false)
 
     // Inizializzazione
@@ -21,14 +23,10 @@ class RecipeDetailsViewModel(val recipeId: String) : LoadingManagerViewModel() {
         // Ottiene la ricetta dalla repository e aggiorna il LiveData
         // Il metodo "postValue" imposta il nuovo valore e notifica eventuali osservatori
         recipeLiveData.postValue(dataSource.getRecipeById(recipeId))
+        commentLiveData.postValue(dataSource.getCommentsByRecipeId(recipeId))
 
     }
 
-    // Fa il toggle di "likeButtonPressed" e notifica eventuali osservatori
-    suspend fun toggleLikeButtonPressed() {
-        dataSource.addLike(recipeId)
-        likeButtonPressed.postValue(!likeButtonPressed.value!!)
-    }
 }
 
 // Factory class

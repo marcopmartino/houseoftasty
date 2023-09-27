@@ -6,7 +6,7 @@ import it.project.houseoftasty.network.RecipeNetwork
 
 class PopularViewModel : LoadingManagerViewModel() {
 
-    private val dataSource: RecipeNetwork = RecipeNetwork.getDataSource()
+    val dataSource: RecipeNetwork = RecipeNetwork.getDataSource()
     val popularLiveData: MutableLiveData<MutableList<Recipe>> = MutableLiveData(mutableListOf())
 
     // Inizializzazione

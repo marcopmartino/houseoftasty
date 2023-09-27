@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel : LoadingManagerViewModel() {
 
-    private val dataSource: RecipeNetwork = RecipeNetwork.getDataSource()
+    val dataSource: RecipeNetwork = RecipeNetwork.getDataSource()
     val searchLiveData: MutableLiveData<MutableList<Recipe>> = MutableLiveData(mutableListOf())
 
     // Inizializzazione

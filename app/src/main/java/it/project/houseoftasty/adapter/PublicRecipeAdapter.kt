@@ -48,7 +48,7 @@ class PublicRecipeAdapter(
 
             // Binding del titolo
             itemBinding.recipeItemTitle.text = recipe.titolo.toString().uppercase()
-
+            
             // Binding del timestamp
             val timestamp = (recipe.timestampPubblicazione as com.google.firebase.Timestamp).toLocalDateTime()
             val nomeCreatore = recipe.nomeCreatore
@@ -70,7 +70,7 @@ class PublicRecipeAdapter(
             itemBinding.likesCounter.text = recipe.likeCounter.toString()
             itemBinding.commentsCounter.text = recipe.commentCounter.toString()
             itemBinding.viewsCounter.text = recipe.views.toString()
-            itemBinding.downloadsCounter.text = recipe.downloads.toString()
+            itemBinding.downloadsCounter.text = recipe.downloadCounter.toString()
 
 
             // Binding dell'immagine

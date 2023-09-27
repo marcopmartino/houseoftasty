@@ -1,10 +1,12 @@
 package it.project.houseoftasty.viewModel
 
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.*
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import it.project.houseoftasty.model.Profile
 import it.project.houseoftasty.network.ProfileNetwork
 import it.project.houseoftasty.utility.OperationType
@@ -38,6 +40,7 @@ class ProfileFormViewModel : FormManagerViewModel() {
 
     // Controlla se i campi in input sono cambiati (usata nel caso di UPDATE del profilo)
     override fun hasDataChanged(formData: MutableMap<String, Any>): Boolean {
+        FirebaseFirestore.getInstance().clearPersistence()
         val oldData = profileLiveData.value!!
         val newPassword = formData["newPsw"] as String
         return oldData.username != formData["username"] as String ||

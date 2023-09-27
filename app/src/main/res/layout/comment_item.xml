@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="start"
+    android:orientation="vertical">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent">
+
+        <View
+            android:id="@+id/divider"
+            style="@style/brownDivider"
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/profileImageContainer"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/rectangle_bg_red_300_2b_radius_80"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_peopleiconcol"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/userUsername" />
+
+        <TextView
+            android:id="@+id/userUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/baloo_bhai"
+            android:text="@string/username"
+            android:textColor="@color/caramel_brown"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/profileImageContainer"
+            app:layout_constraintTop_toTopOf="@id/divider" />
+
+        <TextView
+            android:id="@+id/commentText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/baloo_bhai_2"
+            android:text="@string/recipeCommentEditTextPlaceholder"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/userUsername"
+            app:layout_constraintTop_toBottomOf="@+id/userUsername" />
+
+        <TextView
+            android:id="@+id/commentTimestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/baloo_bhai_2"
+            android:text="@string/timestamp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/commentText"
+            app:layout_constraintTop_toTopOf="@+id/userUsername" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

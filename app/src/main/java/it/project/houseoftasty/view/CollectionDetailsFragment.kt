@@ -1,23 +1,25 @@
 package it.project.houseoftasty.view
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import it.project.houseoftasty.R
 import it.project.houseoftasty.adapter.BindingAdapters.Companion.setFabVisibility
 import it.project.houseoftasty.adapter.PrivateRecipeAdapter
 import it.project.houseoftasty.databinding.FragmentCollectionDetailsBinding
 import it.project.houseoftasty.viewModel.CollectionDetailsViewModel
 import it.project.houseoftasty.viewModel.CollectionDetailsViewModelFactory
+import kotlinx.coroutines.runBlocking
+
 
 class CollectionDetailsFragment : Fragment() {
 
@@ -74,10 +76,15 @@ class CollectionDetailsFragment : Fragment() {
 
         /* Imposta un clickListener sul F.A.B */
         val fab = binding.floatingActionButton
-        fab.setOnClickListener {
-            fab.setFabVisibility(false)
-            fabOnClick()
+        var nome: Boolean
+        runBlocking {
+            nome = collectionDetailsViewModel.collectionName()
         }
+        if(!nome)
+            fab.setOnClickListener {
+                fab.setFabVisibility(false)
+                fabOnClick()
+            }
     }
 
     override fun onStart() {
@@ -96,8 +103,12 @@ class CollectionDetailsFragment : Fragment() {
 
     /* Naviga verso RecipeDetailFragment al click su un elemento della RecyclerView. */
     private fun adapterOnClick(recipeId: String) {
-        navigateTo(CollectionDetailsFragmentDirections
-            .actionCollectionDetailsFragmentToRecipeDetailFragment(recipeId))
+        if(collectionDetailsViewModel.isCreator(recipeId))
+            navigateTo(CollectionDetailsFragmentDirections
+                .actionCollectionDetailsFragmentToRecipeDetailFragment(recipeId))
+        else
+            navigateTo(CollectionDetailsFragmentDirections
+                .actionCollectionDetailsFragmentToRecipePostFragment(recipeId))
     }
 
     // Funzione per navigare verso altri Fragment

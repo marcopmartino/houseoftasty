@@ -161,10 +161,11 @@ class ProductFormFragment : Fragment() {
         binding.dataButton.setOnClickListener {
             val dpd = DatePickerDialog(requireActivity(), { _, year, tempMonth, tempDay ->
 
+                Log.d("Temp", (tempMonth+1).extendToTens())
                 // Mostra data selezionata nella TextView
                 val monthOfYear =
                     if (month <= 9)
-                        (tempMonth + 1).extendToTens()
+                        (tempMonth + 1).extendToTens().toString()
                     else
                         (tempMonth + 1).toString()
 
