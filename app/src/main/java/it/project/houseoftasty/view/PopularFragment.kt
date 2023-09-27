@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.project.houseoftasty.adapter.PrivateRecipeAdapter
+import it.project.houseoftasty.adapter.PublicRecipeAdapter
 import it.project.houseoftasty.databinding.FragmentPopularBinding
 import it.project.houseoftasty.databinding.FragmentSearchBinding
 import it.project.houseoftasty.model.Recipe
@@ -48,6 +49,11 @@ class PopularFragment : Fragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        (activity as MainActivity).hideSoftKeyboard()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -56,24 +62,24 @@ class PopularFragment : Fragment() {
         /* Imposta il "layoutManager" e l'"adapter" per la RecyclerView;
         passa all'Adapter la funzione da eseguire al click sul singolo elemento della RecyclerView */
 
-        val privateRecipeAdapter = PrivateRecipeAdapter(requireContext(), resources) { recipeId -> adapterOnClick(recipeId) }
+        val publicRecipeAdapter = PublicRecipeAdapter(requireContext(), resources) { recipeId -> adapterOnClick(recipeId) }
         val layoutManager = LinearLayoutManager(requireContext())
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = privateRecipeAdapter
+        recyclerView.adapter = publicRecipeAdapter
 
         /* Imposta un osservatore sulla lista di ricette, per aggiornare la lista dinamicamente. */
         popularViewModel.popularLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 /* Invia all'Adapter la lista di ricette da mostrare */
-                privateRecipeAdapter.submitList(it)
+                publicRecipeAdapter.submitList(it)
             }
         }
     }
 
     /* Naviga verso RecipeDetailFragment al click su un elemento della RecyclerView. */
     private fun adapterOnClick(recipeId: String) {
-        navigateTo(PopularFragmentDirections.actionPopularFragmentToRecipeDetailFragment(recipeId))
+        navigateTo(PopularFragmentDirections.actionPopularFragmentToRecipePostFragment(recipeId))
     }
 
     // Funzione per navigare verso altri Fragment

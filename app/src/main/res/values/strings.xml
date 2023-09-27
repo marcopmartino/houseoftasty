@@ -13,7 +13,15 @@
     <string name="button_login">Accedi</string>
     <string name="button_register">Registrati</string>
 
-    <string name ="timestampTemplate">Creata in data %1$s alle %2$s</string>
+    <string name="placeholder">generic_placeholder</string>
+    <string name="timestamp">timestamp</string>
+    <string name="number">7283</string>
+    <string name="number_long">17520893</string>
+
+    <string name ="timestampTemplate_creation">Creata in data %1$s alle %2$s</string>
+    <string name ="timestampTemplate_publication">Pubblicata in data %1$s alle %2$s</string>
+    <string name ="timestampTemplate_publicationPrivate">Pubblicata il %1$s alle %2$s (privata)</string>
+    <string name ="authorAndTimestampTemplate">%1$s - %2$s alle %3$s</string>
 
     <!-- Stringhe di errore predefinite -->
     <string name="loadingError">[ERROR_001: Errore di caricamento]</string>
@@ -33,7 +41,7 @@
     <string name="contentDescription_access_background">immagine di sfondo</string>
 
     <!-- Stringhe specifiche di "activity_login" -->
-    <string name="login_editTextPlaceholder_usernameEmail"><i>Username o Email</i></string>
+    <string name="login_editTextPlaceholder_email"><i>Email</i></string>
     <string name="login_editTextPlaceholder_password"><i>Password</i></string>
     <string name="login_bottomText">Non hai un account? Registrati</string>
 
@@ -46,7 +54,7 @@
     <string name="register_editTextPlaceholder_confirmPassword"><i>Conferma password</i></string>
     <string name="register_bottomText">Hai già un account? Accedi</string>
 
-    <!-- Stringhe specifiche di "fragment_profile" -->
+    <!-- Stringhe specifiche di "fragment_profile" e "fragment_public_profile" -->
 
     <string name="username">Username</string>
     <string name="name">Nome</string>
@@ -61,6 +69,7 @@
     <string name="totalComment">Totale commenti ricette</string>
     <string name="totalDownload">Totale download ricette</string>
     <string name="fab_edit_profile">Modifica i dati del profilo</string>
+    <string name="fab_publish_recipe">Pubblica una ricetta</string>
 
     <string name="password">Password</string>
 
@@ -84,15 +93,18 @@
     <string name ="hintNome">Inserire il nuovo nome</string>
     <string name ="hintCognome">Inserire il nuovo cognome</string>
 
-    <!-- Stringhe specifiche di "fragment_cookbook" e "fragment_recipe_detail" -->
+    <!-- Stringhe specifiche di "fragment_cookbook", "fragment_recipe_detail" e "fragment_recipe_post_detail" -->
     <string name ="scrollviewDescription">Interfaccia scorrevole con i dettagli della ricetta</string>
     <string name ="recipeImageDescription">Immagine di copertina della ricetta</string>
     <string name ="recipeEditLogoDescription">Icona per la modifica della ricetta</string>
     <string name ="numPersoneImageDescription">Immagine di copertina della ricetta</string>
     <string name ="timeImageDescription">Immagine di copertina della ricetta</string>
     <string name ="recipeTitle">Titolo della ricetta</string>
-    <string name ="recipeInfo">Creatore, data di creazione o di pubblicazione</string>
-    <string name ="recipeStats">Numero visualizzazioni </string>
+    <string name ="recipeInfo">Creatore e/o data di creazione o di pubblicazione</string>
+    <string name ="recipeStatus">Stato ricetta (pubblicata, non pubblicata, privata)</string>
+    <string name ="recipeStatusPublished">Ricetta pubblicata</string>
+    <string name ="recipeStatusUnPublished">Ricetta non pubblicata</string>
+    <string name ="recipeStatusPublishedPrivate">Ricetta pubblicata (post privato)</string>
     <string name ="recipeLikes">Mi Piace</string>
     <string name ="recipeDownloads">Salva</string>
     <string name ="recipeIngredientsTitle">INGREDIENTI</string>
@@ -137,6 +149,8 @@
     <string name ="txtDeleteCollection">Elimina raccolta</string>
     <string name ="txtCreateCollection">Crea raccolta</string>
     <string name ="txtAddRecipe">Aggiungi ricetta</string>
+
+    <!-- Stringhe specifiche di ... -->
 
     <!-- Stringhe specifiche del Navigation Drawer -->
 

@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import it.project.houseoftasty.R
 import it.project.houseoftasty.adapter.BindingAdapters.Companion.setFabVisibility
 import it.project.houseoftasty.databinding.FragmentRecipeDetailsBinding
 import it.project.houseoftasty.viewModel.RecipeDetailsViewModel
@@ -48,34 +49,6 @@ class RecipeDetailsFragment : Fragment() {
 
         // Modifico il titolo della Action Bar
         (activity as MainActivity).setActionBarTitle("Dettagli Ricetta")
-
-        // Ottiene un riferimento al pulsante dei "Mi piace"
-        val likeButton = binding.likeButton
-
-        // Imposta un clickListener per il pulsante dei "Mi piace"
-        likeButton.setOnClickListener {
-            it.isClickable = false
-
-            // Prima parte dell'animazione: rotazione di 90° in 250ms
-            it.animate().apply {
-                duration = 250
-                rotationYBy(90f)
-            }.withEndAction {
-
-                runBlocking {
-                    // Codice da eseguire tra le due parti dell'animazione
-                    recipeDetailViewModel.toggleLikeButtonPressed()
-                }
-
-                // Seconda parte dell'animazione: rotazione di 270° in 750ms
-                it.animate().apply {
-                    duration = 750
-                    rotationYBy(270f)
-                }.withEndAction {
-                    it.isClickable = true
-                }
-            }.start()
-        }
 
         /* Imposta un clickListener sul F.A.B */
         val fab = binding.floatingActionButton

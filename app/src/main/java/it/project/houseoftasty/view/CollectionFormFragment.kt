@@ -30,7 +30,7 @@ class CollectionFormFragment : Fragment() {
         CollectionFormViewModelFactory(args.collectionId, args.collectionName, args.recipeIdArray)
     }
     lateinit var binding: FragmentCollectionFormBinding
-    lateinit var recipeListAdapter: CollectionFormRecipeAdapter
+    private lateinit var recipeListAdapter: CollectionFormRecipeAdapter
 
     // Parametri passati al Fragment dalla navigazione
     private val args: CollectionFormFragmentArgs by navArgs()

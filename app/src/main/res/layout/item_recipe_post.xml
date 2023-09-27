@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/recipeCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/darker_sand_brown"
+            android:orientation="vertical">
+
+            <!-- Media -->
+            <ImageView
+                android:id="@+id/recipeImagePreview"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:contentDescription="@string/contentDescription_recipe_preview"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/medium_logo" />
+
+
+            <!-- Title, secondary and supporting text -->
+            <TextView
+                android:id="@+id/recipeItemTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/baloo_bhai"
+                android:text="@string/recipeTitle"
+                android:textColor="@color/tawny_brown"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recipeImagePreview" />
+
+            <TextView
+                android:id="@+id/recipeItemInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/baloo_bhai_2"
+                android:text="@string/authorAndTimestampTemplate"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recipeItemTitle" />
+
+            <ImageView
+                android:id="@+id/viewsIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recipeItemInfo"
+                app:srcCompat="@drawable/icon_views_36" />
+
+            <TextView
+                android:id="@+id/viewsCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/baloo2medium"
+                android:text="@string/number"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/viewsIcon"
+                app:layout_constraintStart_toEndOf="@+id/viewsIcon"
+                app:layout_constraintTop_toTopOf="@+id/viewsIcon" />
+
+            <TextView
+                android:id="@+id/likesCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/baloo2medium"
+                android:text="@string/number"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/likeIcon"
+                app:layout_constraintStart_toEndOf="@+id/likeIcon"
+                app:layout_constraintTop_toTopOf="@+id/likeIcon" />
+
+            <TextView
+                android:id="@+id/downloadsCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/baloo2medium"
+                android:text="@string/number"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/downloadIcon"
+                app:layout_constraintStart_toEndOf="@+id/likeIcon"
+                app:layout_constraintStart_toStartOf="@+id/likesCounter"
+                app:layout_constraintTop_toTopOf="@+id/downloadIcon" />
+
+            <TextView
+                android:id="@+id/commentsCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/baloo2medium"
+                android:text="@string/number"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/commentIcon"
+                app:layout_constraintStart_toEndOf="@+id/viewsIcon"
+                app:layout_constraintStart_toStartOf="@+id/viewsCounter"
+                app:layout_constraintTop_toTopOf="@+id/commentIcon" />
+
+            <ImageView
+                android:id="@+id/likeIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleX="0.9"
+                android:scaleY="0.9"
+                app:layout_constraintBottom_toBottomOf="@+id/viewsIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.55"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/viewsIcon"
+                app:srcCompat="@drawable/icon_heart" />
+
+            <ImageView
+                android:id="@+id/commentIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/viewsIcon"
+                app:layout_constraintTop_toBottomOf="@+id/viewsIcon"
+                app:srcCompat="@drawable/icon_comment_36" />
+
+            <ImageView
+                android:id="@+id/downloadIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleX="1.2"
+                android:scaleY="1.2"
+                app:layout_constraintEnd_toEndOf="@+id/likeIcon"
+                app:layout_constraintStart_toStartOf="@+id/likeIcon"
+                app:layout_constraintTop_toTopOf="@+id/commentIcon"
+                app:srcCompat="@drawable/icon_download_36" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

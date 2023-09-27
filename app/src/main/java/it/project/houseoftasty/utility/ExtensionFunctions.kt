@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +32,15 @@ import java.time.ZoneId
 fun Int.extendToTens() : String {
     return (if (this < 10) "0" else "") + this
 }
+
+fun Int.increment(value: Int = 1): Int {
+    return this + value
+}
+
+fun Int.decrement(value: Int = 1) : Int {
+    return this - value
+}
+
 
 // Extension functions per String
 fun String.toIntOrZero(): Int {
@@ -84,6 +94,10 @@ fun Timestamp.toLocalDateTime(): LocalDateTime {
     return LocalDateTime.ofInstant(Instant.ofEpochMilli(milliseconds), timezone)
 }
 
+fun Timestamp.timeDiffSeconds(): Long {
+    return Timestamp.now().seconds - this.seconds
+}
+
 // Extension functions per View
 fun View.tagToString(): String {
     return this.tag.toString()
@@ -120,6 +134,23 @@ fun View.showSnackbar(
     }
 }
 
+// Extension functions per TextView
+fun TextView.textToString(): String {
+    return this.text.toString()
+}
+
+fun TextView.textToInt(): Int {
+    return this.textToString().toIntOrZero()
+}
+
+fun TextView.increment(value: Int = 1): String {
+    return this.textToInt().increment(value).toString()
+}
+
+fun TextView.decrement(value: Int = 1): String {
+    return this.textToInt().decrement(value).toString()
+}
+
 // Extension functions per EditText
 fun EditText.textToString(): String {
     return this.text.toString()
@@ -127,6 +158,15 @@ fun EditText.textToString(): String {
 
 fun EditText.textToInt(): Int {
     return this.textToString().toIntOrZero()
+}
+
+
+fun EditText.increment(value: Int = 1): String {
+    return this.textToInt().increment(value).toString()
+}
+
+fun EditText.decrement(value: Int = 1): String {
+    return this.textToInt().decrement(value).toString()
 }
 
 fun EditText.onTextChanged(onTextChanged: () -> Boolean) {

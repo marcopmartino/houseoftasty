@@ -1,30 +1,25 @@
 package it.project.houseoftasty.view
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.project.houseoftasty.adapter.PrivateRecipeAdapter
-import it.project.houseoftasty.adapter.PublicRecipeAdapter
-import it.project.houseoftasty.databinding.FragmentPopularBinding
-import it.project.houseoftasty.databinding.FragmentRecentBinding
-import it.project.houseoftasty.model.Recipe
-import it.project.houseoftasty.viewModel.RecentViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import it.project.houseoftasty.databinding.FragmentRecipePublishBinding
+import it.project.houseoftasty.viewModel.RecipePublishViewModel
+import kotlinx.coroutines.launch
 
-class RecentFragment : Fragment() {
+class RecipePublishFragment : Fragment() {
 
-    private val recentViewModel : RecentViewModel by viewModels()
-    private lateinit var binding: FragmentRecentBinding
-    private lateinit var recyclerView: RecyclerView
+    private val recipePublishViewModel : RecipePublishViewModel by viewModels()
+    private lateinit var binding: FragmentRecipePublishBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,50 +28,52 @@ class RecentFragment : Fragment() {
     ): View {
 
         // Inflating e View Binding
-        binding = FragmentRecentBinding.inflate(inflater, container, false)
-
+        binding = FragmentRecipePublishBinding.inflate(inflater, container, false)
 
         // Data Binding
-        binding.viewModel = recentViewModel
+        binding.viewModel = recipePublishViewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        recyclerView = binding.recyclerView
-
 
         return binding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
-        (activity as MainActivity).hideSoftKeyboard()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as MainActivity).setActionBarTitle("Esplora")
+        // Modifica il titolo della Action Bar
+        (activity as MainActivity).setActionBarTitle("Pubblica Ricetta")
 
         /* Imposta il "layoutManager" e l'"adapter" per la RecyclerView;
         passa all'Adapter la funzione da eseguire al click sul singolo elemento della RecyclerView */
-
-        val publicRecipeAdapter = PublicRecipeAdapter(requireContext(), resources) { recipeId -> adapterOnClick(recipeId) }
+        val recyclerView: RecyclerView = binding.recyclerView
+        val privateRecipeAdapter = PrivateRecipeAdapter(requireContext(), resources) { recipeId -> adapterOnClick(recipeId) }
         val layoutManager = LinearLayoutManager(requireContext())
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = publicRecipeAdapter
+        recyclerView.adapter = privateRecipeAdapter
 
         /* Imposta un osservatore sulla lista di ricette, per aggiornare la lista dinamicamente. */
-        recentViewModel.recentLiveData.observe(viewLifecycleOwner) {
+        recipePublishViewModel.recipesLiveData.observe(viewLifecycleOwner) {
             it?.let {
+
                 /* Invia all'Adapter la lista di ricette da mostrare */
-                publicRecipeAdapter.submitList(it)
+                privateRecipeAdapter.submitList(it)
+            }
+        }
+
+        /* Imposta un osservatore per navigare al termine della pubblicazione della ricetta. */
+        recipePublishViewModel.publicationCompleted.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it)
+                    navigateTo(RecipePublishFragmentDirections.actionRecipePublishFragmentToNavProfile())
             }
         }
 
     }
 
-    /* Naviga verso RecipeDetailFragment al click su un elemento della RecyclerView. */
+    /* Naviga verso PublicProfileFragment al click su un elemento della RecyclerView. */
     private fun adapterOnClick(recipeId: String) {
-        navigateTo(RecentFragmentDirections.actionRecentFragmentToRecipePostFragment(recipeId))
+        recipePublishViewModel.publishRecipe(recipeId)
     }
 
     // Funzione per navigare verso altri Fragment

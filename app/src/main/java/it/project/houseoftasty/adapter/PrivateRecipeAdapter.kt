@@ -48,14 +48,15 @@ class PrivateRecipeAdapter(
             currentRecipe = recipe
 
             // Binding del titolo
-            itemBinding.privateRecipeTitle.text = recipe.titolo.toString().uppercase()
+            itemBinding.recipeItemTitle.text = recipe.titolo.toString().uppercase()
 
             // Binding del timestamp
             val timestamp = recipe.timestampCreazione as com.google.firebase.Timestamp
-            itemBinding.privateRecipeDate.text = DateTimeFormatter.firebaseTimestampToTemplate(resources, timestamp)
+            itemBinding.recipeItemInfo.text = DateTimeFormatter.firebaseTimestampToTemplate(
+                resources, R.string.timestampTemplate_creation, timestamp)
 
             // Binding dell'immagine
-            ImageLoader.loadFromReference(context, recipe.imageReference, itemBinding.privateRecipeImage)
+            ImageLoader.loadFromReference(context, recipe.imageReference, itemBinding.recipeImagePreview)
         }
     }
 

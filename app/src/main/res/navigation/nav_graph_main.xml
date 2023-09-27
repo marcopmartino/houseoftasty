@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home"/>
     <!-- Profile Fragment -->
     <fragment
-        android:id="@+id/nav_profile"
+        android:id="@+id/profileFragment"
         android:name="it.project.houseoftasty.view.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile">
@@ -27,8 +27,8 @@
         tools:layout="@layout/fragment_profile_form">
         <action
             android:id="@+id/action_profileFormFragment_to_profileFragment"
-            app:destination="@id/nav_profile"
-            app:popUpTo="@id/nav_profile"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/profileFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <!-- ProductFragment -->
@@ -179,48 +179,97 @@
             android:name="recipeIdArray"
             app:argType="string[]" />
     </fragment>
+    <fragment
+        android:id="@+id/recipePostFragment"
+        android:name="it.project.houseoftasty.view.RecipePostFragment"
+        android:label="fragment_recipe_post">
+        <argument
+            android:name="recipeId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_recipePostFragment_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailFragment"
+            app:popUpTo="@id/recipePostFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_recipePostFragment_to_nav_profile"
+            app:destination="@id/nav_profile" />
+    </fragment>
     <!-- Explore Fragment -->
     <fragment
         android:id="@+id/nav_explore"
         android:name="it.project.houseoftasty.view.ExploreFragment"
         android:label="fragment_explore">
         <action
-            android:id="@id/action_searchFragment_to_recipeDetailFragment"
-            app:destination="@id/recipeDetailFragment"/>
+            android:id="@id/action_searchFragment_to_recipePostFragment"
+            app:destination="@id/recipePostFragment"/>
         <action
-            android:id="@id/action_popularFragment_to_recipeDetailFragment"
-            app:destination="@id/recipeDetailFragment"/>
+            android:id="@id/action_popularFragment_to_recipePostFragment"
+            app:destination="@id/recipePostFragment"/>
         <action
-            android:id="@id/action_recentFragment_to_recipeDetailFragment"
-            app:destination="@id/recipeDetailFragment"/>
+            android:id="@id/action_recentFragment_to_recipePostFragment"
+            app:destination="@id/recipePostFragment"/>
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="it.project.houseoftasty.view.SearchFragment"
         android:label="fragment_search">
         <action
-            android:id="@+id/action_searchFragment_to_recipeDetailFragment"
-            app:destination="@id/recipeDetailFragment"/>
+            android:id="@+id/action_searchFragment_to_recipePostFragment"
+            app:destination="@id/recipePostFragment" />
     </fragment>
     <fragment
         android:id="@+id/popularFragment"
         android:name="it.project.houseoftasty.view.PopularFragment"
         android:label="fragment_popular">
         <action
-            android:id="@+id/action_popularFragment_to_recipeDetailFragment"
-            app:destination="@id/recipeDetailFragment"/>
+            android:id="@+id/action_popularFragment_to_recipePostFragment"
+            app:destination="@id/recipePostFragment" />
     </fragment>
     <fragment
         android:id="@+id/recentFragment"
         android:name="it.project.houseoftasty.view.RecentFragment"
         android:label="fragment_recent">
         <action
-            android:id="@+id/action_recentFragment_to_recipeDetailFragment"
-            app:destination="@id/recipeDetailFragment"/>
+            android:id="@+id/action_recentFragment_to_recipePostFragment"
+            app:destination="@id/recipePostFragment" />
     </fragment>
     <!-- Logout -->
     <activity
         android:id="@+id/nav_logout"
         android:name="it.project.houseoftasty.view.AccessActivity"
         android:label="AccessActivity" />
+    <fragment
+        android:id="@+id/recipePublishFragment"
+        android:name="it.project.houseoftasty.view.RecipePublishFragment"
+        android:label="fragment_recipe_publish" >
+        <action
+            android:id="@+id/action_recipePublishFragment_to_nav_profile"
+            app:destination="@id/nav_profile"
+            app:popUpTo="@id/nav_profile"
+            app:popUpToInclusive="true" >
+            <argument
+                android:name="userId"
+                android:defaultValue="[nullValue]" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="it.project.houseoftasty.view.PublicProfileFragment"
+        android:label="fragment_public_profile"
+        tools:layout="@layout/fragment_public_profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <argument
+            android:name="userId"
+            app:argType="string"
+            android:defaultValue="[nullValue]" />
+        <action
+            android:id="@+id/action_nav_profile_to_recipePublishFragment"
+            app:destination="@id/recipePublishFragment" />
+        <action
+            android:id="@+id/action_nav_profile_to_recipePostFragment"
+            app:destination="@id/recipePostFragment" />
+    </fragment>
 </navigation>

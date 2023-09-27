@@ -29,7 +29,6 @@ class ExploreFragment : Fragment() {
     ): View {
 
         binding = FragmentExploreBinding.inflate(inflater)
-        //binding.profileData = profileViewModel
         return binding.root
 
     }
@@ -51,7 +50,7 @@ class ExploreFragment : Fragment() {
 
         override fun getItem(i: Int): Fragment {
 
-            return when(i){
+            return when (i) {
                 0 -> SearchFragment()
                 1 -> PopularFragment()
                 2 -> RecentFragment()
@@ -68,7 +67,7 @@ class ExploreFragment : Fragment() {
 
     class ExploreObjectFragment(i: Int) : Fragment() {
 
-        var pos = i
+        private var pos = i
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             arguments?.takeIf { it.containsKey(tabName[pos]) }?.apply {

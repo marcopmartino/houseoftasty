@@ -18,14 +18,14 @@ class ProfileNetwork : StorageNetwork("immagini_profili") {
     private val usersReference: CollectionReference =
         FirebaseFirestore.getInstance().collection("users")
 
-    suspend fun getUserData(): Profile {
+    suspend fun getUserData(userId: String = firebaseAuth.uid.toString()): Profile {
 
         lateinit var document: DocumentSnapshot
         lateinit var profile: Profile
 
-        // Recupera i dati sulle ricette (richiede la connessione a Firestore)
+        // Recupera i dati sul profilo (richiede la connessione a Firestore)
         withContext(Dispatchers.IO) {
-            document = usersReference.document(firebaseAuth.uid.toString()).get().await()
+            document = usersReference.document(userId).get().await()
         }
 
         // Converte lo snapshot del documento in un oggetto Profile
@@ -41,9 +41,21 @@ class ProfileNetwork : StorageNetwork("immagini_profili") {
 
         // Prende un riferimento al file immagine della ricetta (non scarica il file)
         if (profile.boolImmagine)
-            profile.imageReference = getFileReference(profile.id.toString())
+            profile.imageReference = getFileReference(userId)
 
         return profile
+    }
+
+    suspend fun getUserUsername(userId: String = firebaseAuth.uid.toString()): String {
+
+        lateinit var document: DocumentSnapshot
+
+        // Recupera i dati sul profilo (richiede la connessione a Firestore)
+        withContext(Dispatchers.IO) {
+            document = usersReference.document(userId).get().await()
+        }
+
+        return document.get("username").toString()
     }
 
     suspend fun addUser(user: Profile) {

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import it.project.houseoftasty.R
 import it.project.houseoftasty.databinding.ItemCollectionBinding
 import it.project.houseoftasty.model.RecipeCollection
 import it.project.houseoftasty.utility.DateTimeFormatter
@@ -47,7 +48,8 @@ class CollectionAdapter(
 
             // Binding del timestamp
             val timestamp = recipeCollection.timestampCreazione as com.google.firebase.Timestamp
-            itemBinding.collectionTime.text = DateTimeFormatter.firebaseTimestampToTemplate(resources, timestamp)
+            itemBinding.collectionTime.text = DateTimeFormatter.firebaseTimestampToTemplate(
+                resources, R.string.timestampTemplate_creation, timestamp)
 
             // Binding dell'immagine
             var immagineCaricata = false

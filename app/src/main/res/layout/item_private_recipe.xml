@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/privateRecipeCardView"
+        android:id="@+id/recipeCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -30,7 +30,7 @@
 
             <!-- Media -->
             <ImageView
-                android:id="@+id/privateRecipeImage"
+                android:id="@+id/recipeImagePreview"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:contentDescription="@string/contentDescription_recipe_preview"
@@ -40,7 +40,7 @@
 
             <!-- Title, secondary and supporting text -->
             <TextView
-                android:id="@+id/privateRecipeTitle"
+                android:id="@+id/recipeItemTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -52,14 +52,14 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/privateRecipeDate"
+                android:id="@+id/recipeItemInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/baloo_bhai_2"
-                android:text="@string/timestampTemplate"
+                android:text="@string/timestampTemplate_creation"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 

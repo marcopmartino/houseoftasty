@@ -82,7 +82,7 @@
         android:background="@drawable/login_register_field_shape"
         android:ems="10"
         android:fontFamily="@font/baloo_bhai_2"
-        android:hint="@string/login_editTextPlaceholder_usernameEmail"
+        android:hint="@string/login_editTextPlaceholder_email"
         android:inputType="textPersonName"
         android:padding="10dp"
         android:textColor="@color/white"

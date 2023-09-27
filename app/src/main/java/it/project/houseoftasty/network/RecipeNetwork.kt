@@ -1,5 +1,6 @@
 package it.project.houseoftasty.network
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
@@ -7,6 +8,9 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Source
+import it.project.houseoftasty.model.Comment
+import it.project.houseoftasty.model.Profile
 import it.project.houseoftasty.model.Recipe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -14,7 +18,7 @@ import kotlinx.coroutines.withContext
 
 open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
 
-    protected val currentUserId: String = FirebaseAuth.getInstance().currentUser!!.uid
+    val currentUserId: String = FirebaseAuth.getInstance().currentUser!!.uid
     private val recipesReference: CollectionReference =
         FirebaseFirestore.getInstance().collection("recipes")
 
@@ -26,6 +30,28 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
         withContext(Dispatchers.IO) {
             documents = recipesReference.whereEqualTo("idCreatore", userId).get().await().documents
         }
+
+        return documents.toRecipeList(getImageReferences)
+    }
+
+    // Ritorna tutti i dati sulle ricette di un dato utente
+    suspend fun getPublicRecipesByUser(userId: String = currentUserId, getImageReferences: Boolean = true): MutableList<Recipe> {
+        lateinit var documents: MutableList<DocumentSnapshot>
+
+        if (userId == currentUserId)
+            // Recupera i dati sulle ricette pubblicate (richiede la connessione a Firestore)
+            withContext(Dispatchers.IO) {
+                documents = recipesReference.whereEqualTo("idCreatore", userId)
+                    .whereEqualTo("boolPubblicata", true).get().await().documents
+            }
+        else
+            // Recupera i dati sulle ricette pubblicate (richiede la connessione a Firestore)
+            withContext(Dispatchers.IO) {
+                documents = recipesReference.whereEqualTo("idCreatore", userId)
+                    .whereEqualTo("boolPubblicata", true)
+                    .whereEqualTo("boolPostPrivato", false).get().await().documents
+            }
+
 
         return documents.toRecipeList(getImageReferences)
     }
@@ -78,7 +104,7 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
     }
 
     // Ritorna tutti i dati sulla ricetta di cui è noto l'id
-    suspend fun getRecipeById(recipeId: String, getImageReference: Boolean = true): Recipe {
+    suspend fun getRecipeById(recipeId: String, getImageReference: Boolean = true, getCreatorName: Boolean = false): Recipe {
         lateinit var recipe : Recipe
         lateinit var document : DocumentSnapshot
 
@@ -95,6 +121,10 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
                 // Prende un riferimento al file immagine della ricetta (non scarica il file)
                 if (getImageReference && recipe.boolImmagine)
                     recipe.imageReference = getFileReference(recipe.id.toString())
+
+                // Prende l'username del creatore della ricetta
+                if (getCreatorName)
+                    recipe.nomeCreatore = ProfileNetwork.getDataSource().getUserUsername(recipe.idCreatore.toString())
             }
         }
 
@@ -132,6 +162,16 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
         return recipeIdNameMap
     }
 
+    // Rende pubblica una ricetta
+    suspend fun publishRecipe(recipeId: String) {
+
+        withContext(Dispatchers.IO) {
+            recipesReference.document(recipeId).update("timestampPubblicazione", Timestamp.now()).await()
+            recipesReference.document(recipeId).update("boolPubblicata", true).await()
+        }
+
+    }
+
     suspend fun addRecipe(recipe: Recipe): String {
         lateinit var newRecipeId: String
 
@@ -160,7 +200,7 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
     }
 
     // Converte una lista di DocumentSnapshot in una lista di oggetti Recipe e la ritorna
-    private suspend fun MutableList<DocumentSnapshot>.toRecipeList(getImageReferences: Boolean = true): MutableList<Recipe> {
+    private suspend fun MutableList<DocumentSnapshot>.toRecipeList(getImageReferences: Boolean = true, getCreatorName: Boolean = false): MutableList<Recipe> {
 
         // Inizializzo la lista
         val recipeList: MutableList<Recipe> = mutableListOf()
@@ -177,6 +217,13 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
                     if (recipe != null) {
                         // Prende un riferimento al file immagine della ricetta (non scarica il file)
                         recipe.imageReference = getFileReference(recipe.id.toString())
+
+                        // Prende l'username del creatore della ricetta
+                        if (getCreatorName)
+                            recipe.nomeCreatore = ProfileNetwork.getDataSource().getUserUsername(
+                                recipe.idCreatore.toString())
+
+                        // Inserisce la ricetta in lista
                         recipeList.add(recipe)
                     }
                 }
@@ -191,8 +238,15 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
                     val recipe = document.toObject(Recipe::class.java)
 
                     if (recipe != null) {
+                        // Prende l'username del creatore della ricetta
+                        if (getCreatorName)
+                            recipe.nomeCreatore = ProfileNetwork.getDataSource().getUserUsername(
+                                recipe.idCreatore.toString())
+
                         // Inserisce la ricetta in lista
                         recipeList.add(recipe)
+
+
                     }
                 }
             }
@@ -201,27 +255,39 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
         return recipeList
     }
 
+
     // Aggiunge un like ad una ricetta di cui è noto l'id
+    @Suppress("UNCHECKED_CAST")
     suspend fun addLike(recipeId: String){
         withContext(Dispatchers.IO){
-            val like: List<String?> = recipesReference.document(recipeId).get().await().get("likes") as List<String?>
-            for(user in like){
-                if(currentUserId == user) return@withContext
+            val likes: List<String?> = recipesReference.document(recipeId).get().await().get("likes") as List<String?>
+            for(user in likes){
+                if  (currentUserId == user) return@withContext
             }
             recipesReference.document(recipeId).update("likes", FieldValue.arrayUnion(currentUserId)).await()
-            recipesReference.document(recipeId).update("likesCounter", FieldValue.increment(1))
+            recipesReference.document(recipeId).update("likeCounter", FieldValue.increment(1)).await()
         }
     }
 
     // Rimuove un like da una ricetta di cui è noto l'id
+    @Suppress("UNCHECKED_CAST")
     suspend fun removeLike(recipeId: String){
         withContext(Dispatchers.IO){
-            val like: List<String?> = recipesReference.document(recipeId).get().await().get("likes") as List<String?>
-            for(user in like){
-                if(currentUserId != user) return@withContext
+            val likes: List<String?> = recipesReference.document(recipeId).get().await().get("likes") as List<String?>
+            for(user in likes){
+                if (currentUserId == user) {
+                    recipesReference.document(recipeId).update("likes", FieldValue.arrayRemove(currentUserId)).await()
+                    recipesReference.document(recipeId).update("likeCounter", FieldValue.increment(-1)).await()
+                    return@withContext
+                }
             }
-            recipesReference.document(recipeId).update("likes", FieldValue.arrayRemove(currentUserId)).await()
-            recipesReference.document(recipeId).update("likesCounter", FieldValue.increment(-1))
+        }
+    }
+
+    // Incrementa le visualizzazioni di una ricetta
+    suspend fun incrementViews(recipeId: String){
+        withContext(Dispatchers.IO){
+            recipesReference.document(recipeId).update("views", FieldValue.increment(1)).await()
         }
     }
 
@@ -242,16 +308,21 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
             if(keyWord.isNullOrEmpty()) return@withContext recipeList
 
             for (document in documents) {
-                if(document["titolo"].toString().contains(keyWord, true)){
-                    if(document["boolPubblicata"] == true) {
-                        val recipe = document.toObject(Recipe::class.java)
-                        if (recipe != null) {
+                if (document["idCreatore"].toString() != currentUserId &&
+                    document["boolPubblicata"] as Boolean &&
+                    !(document["boolPostPrivato"] as Boolean) &&
+                    document["titolo"].toString().contains(keyWord, true)) {
+                    val recipe = document.toObject(Recipe::class.java)
+                    if (recipe != null) {
 
-                            // Prende un riferimento al file immagine della ricetta (non scarica il file)
-                            recipe.imageReference = getFileReference(recipe.id.toString())
+                        // Prende l'username del creatore della ricetta
+                        recipe.nomeCreatore = ProfileNetwork.getDataSource().getUserUsername(
+                            recipe.idCreatore.toString())
 
-                            recipeList.add(recipe)
-                        }
+                        // Prende un riferimento al file immagine della ricetta (non scarica il file)
+                        recipe.imageReference = getFileReference(recipe.id.toString())
+
+                        recipeList.add(recipe)
                     }
                 }
             }
@@ -266,19 +337,32 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
 
 
         withContext(Dispatchers.IO){
-            documents = recipesReference.orderBy("likeCounter", Query.Direction.DESCENDING).get().await().documents
+            documents = recipesReference
+                .orderBy("likeCounter", Query.Direction.DESCENDING)
+                .get().await().documents
         }
 
-        withContext(Dispatchers.Default){
+        withContext(Dispatchers.Default) {
+
+            // Inizializzo la lista
             recipeList = mutableListOf()
+
             for (document in documents) {
-                val recipe = document.toObject(Recipe::class.java)
-                if (recipe != null) {
+                if (document["idCreatore"].toString() != currentUserId &&
+                    document["boolPubblicata"] as Boolean &&
+                    !(document["boolPostPrivato"] as Boolean)) {
+                    val recipe = document.toObject(Recipe::class.java)
+                    if (recipe != null) {
 
-                    // Prende un riferimento al file immagine della ricetta (non scarica il file)
-                    recipe.imageReference = getFileReference(recipe.id.toString())
+                        // Prende l'username del creatore della ricetta
+                        recipe.nomeCreatore = ProfileNetwork.getDataSource().getUserUsername(
+                            recipe.idCreatore.toString())
 
-                    recipeList.add(recipe)
+                        // Prende un riferimento al file immagine della ricetta (non scarica il file)
+                        recipe.imageReference = getFileReference(recipe.id.toString())
+
+                        recipeList.add(recipe)
+                    }
                 }
             }
         }
@@ -293,24 +377,94 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
 
 
         withContext(Dispatchers.IO){
-            documents = recipesReference.orderBy("timestampCreazione", Query.Direction.DESCENDING).get().await().documents
+            documents = recipesReference
+                .orderBy("timestampPubblicazione", Query.Direction.DESCENDING)
+                .get().await().documents
         }
 
-        withContext(Dispatchers.Default){
+        withContext(Dispatchers.Default) {
+
+            // Inizializzo la lista
             recipeList = mutableListOf()
+
             for (document in documents) {
-                val recipe = document.toObject(Recipe::class.java)
-                if (recipe != null) {
+                if (document["idCreatore"].toString() != currentUserId &&
+                    document["boolPubblicata"] as Boolean &&
+                    !(document["boolPostPrivato"] as Boolean)) {
+                    val recipe = document.toObject(Recipe::class.java)
+                    if (recipe != null) {
 
-                    // Prende un riferimento al file immagine della ricetta (non scarica il file)
-                    recipe.imageReference = getFileReference(recipe.id.toString())
+                        // Prende l'username del creatore della ricetta
+                        recipe.nomeCreatore = ProfileNetwork.getDataSource().getUserUsername(
+                            recipe.idCreatore.toString())
 
-                    recipeList.add(recipe)
+                        // Prende un riferimento al file immagine della ricetta (non scarica il file)
+                        recipe.imageReference = getFileReference(recipe.id.toString())
+
+                        recipeList.add(recipe)
+                    }
                 }
             }
         }
 
         return recipeList
+    }
+
+    // Ritorna la lista dei commenti di una ricetta di cui è noto l'id
+    suspend fun getCommentsByRecipeId(recipeId: String): MutableList<Comment>{
+        val usersReference: CollectionReference =
+            FirebaseFirestore.getInstance().collection("users")
+        val commentList : MutableList<Comment> = mutableListOf()
+        lateinit var documents : MutableList<DocumentSnapshot>
+
+        withContext(Dispatchers.IO){
+            documents = recipesReference.document(recipeId)
+                .collection("comments")
+                .orderBy("timestamp", Query.Direction.DESCENDING).get().await().documents
+        }
+
+        withContext(Dispatchers.Default){
+            for(document in documents){
+                document.data.also {
+                    if (it != null) {
+                        val comment = Comment(
+                            document.id,
+                            it["userId"].toString(),
+                            it["text"].toString(),
+                            it["timestamp"] as Timestamp)
+                        val userId = comment.userId
+                        if (!userId.isNullOrEmpty()) {
+                            comment.imageReference = ProfileNetwork.getDataSource().getFileReference(userId)
+                            comment.userUsername =
+                                if (userId == currentUserId)
+                                    "Tu"
+                                else
+                                    usersReference
+                                        .document(userId).get().await().get("username").toString()
+                            commentList.add(comment)
+                        }
+                    }
+                }
+
+            }
+        }
+
+        return commentList
+    }
+
+    //Aggiunge un commento ad una ricetta di cui è noto l'id
+    suspend fun addComment(recipeId: String, text: String): Comment{
+        val comment = Comment(null, currentUserId, text, Timestamp.now(), "Tu")
+
+        withContext(Dispatchers.IO){
+            comment.id = recipesReference.document(recipeId)
+                .collection("comments")
+                .add(comment).await().id
+            comment.imageReference = ProfileNetwork.getDataSource().getFileReference(currentUserId)
+            recipesReference.document(recipeId).update("commentCounter", FieldValue.increment(1)).await()
+        }
+
+        return comment
     }
 
     /* Factory method */

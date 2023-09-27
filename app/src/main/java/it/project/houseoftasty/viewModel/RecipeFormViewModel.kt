@@ -89,15 +89,11 @@ class RecipeFormViewModel(private val recipeId: String?, val isRecipeNew: Mutabl
                 formData["numPersone"]?.toInt(),
                 formData["preparazione"] as String,
                 formData["tempoPreparazione"]?.toInt(),
-                emptyList(),
-                0,
-                0,
                 isPublished,
                 formData["boolPostPrivato"] as Boolean,
                 isImageSelected,
                 Timestamp.now(),
                 if (isPublished) Timestamp.now() else null,
-                null,
             )
         )
 
@@ -123,9 +119,6 @@ class RecipeFormViewModel(private val recipeId: String?, val isRecipeNew: Mutabl
                 formData["numPersone"]?.toInt(),
                 formData["preparazione"] as String,
                 formData["tempoPreparazione"]?.toInt(),
-                emptyList(),
-                0,
-                0,
                 isPublished,
                 formData["boolPostPrivato"] as Boolean,
                 when (imageOperation) {
@@ -135,7 +128,11 @@ class RecipeFormViewModel(private val recipeId: String?, val isRecipeNew: Mutabl
                 },
                 oldData.timestampCreazione,
                 if (!isPublished) null else if (wasPublished) oldData.timestampPubblicazione else Timestamp.now(),
-                oldData.imageReference
+                if (isPublished) oldData.views else 0,
+                if (isPublished) oldData.downloads else 0,
+                if (isPublished) oldData.likes else mutableListOf(),
+                if (isPublished) oldData.likeCounter else 0,
+                if (isPublished) oldData.commentCounter else 0,
             )
         )
 

@@ -6,12 +6,12 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.net.Uri
+import android.os.Binder
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -33,14 +33,16 @@ import androidx.work.WorkManager
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import it.project.houseoftasty.ExpireWorker
 import it.project.houseoftasty.R
 import it.project.houseoftasty.databinding.ActivityMainBinding
-import java.util.concurrent.TimeUnit
 import it.project.houseoftasty.utility.checkSelfPermissionCompat
 import it.project.houseoftasty.utility.requestPermissionsCompat
 import it.project.houseoftasty.utility.shouldShowRequestPermissionRationaleCompat
 import it.project.houseoftasty.utility.showSnackbar
+import java.util.concurrent.TimeUnit
+
 
 const val PERMISSION_REQUEST_CAMERA = 0
 const val PERMISSION_REQUEST_GALLERY = 1
@@ -54,8 +56,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var lastSelectedMenuItem : MenuItem
-    lateinit var cameraActivityResult: ActivityResultLauncher<Intent>
-    lateinit var galleryActivityResult: ActivityResultLauncher<Intent>
+    private lateinit var cameraActivityResult: ActivityResultLauncher<Intent>
+    private lateinit var galleryActivityResult: ActivityResultLauncher<Intent>
     var onCameraActivityResult: (Intent?) -> Unit = {}
     var onGalleryActivityResult: (Intent?) -> Unit = {}
 
@@ -91,18 +93,18 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 R.menu.menu_authenticated, setOf(
                     R.id.nav_home,
                     R.id.nav_profile,
-                    R.id.nav_product,
+                    R.id.nav_explore,
                     R.id.nav_cookbook,
                     R.id.nav_collections,
-                    R.id.nav_explore,
+                    R.id.nav_product,
                     R.id.nav_logout,
             ))
         } else {
             setNavigationConfiguration(
                 R.menu.menu_unauthenticated, setOf(
                     R.id.nav_home,
-                    R.id.nav_cookbook,
                     R.id.nav_explore,
+                    R.id.nav_cookbook,
                     R.id.nav_logout
             ))
         }
@@ -160,7 +162,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     }
 
     // Funzione per cambiare il titolo della Action Bar
-    fun setActionBarTitle(title: String){
+    fun setActionBarTitle(title: String) {
         supportActionBar?.title = title
     }
 
@@ -231,7 +233,10 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                     R.string.camera_access_required
                 ) { takePhotoFromCamera() }
                 1 -> startActivityWithPermissionRequest(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    if (Build.VERSION.SDK_INT < 33)
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    else
+                        Manifest.permission.READ_MEDIA_IMAGES,
                     PERMISSION_REQUEST_GALLERY,
                     R.string.gallery_permission_available,
                     R.string.gallery_permission_not_available,
@@ -338,5 +343,15 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             R.string.gallery_permission_denied
         ) { choosePhotoFromGallery() }
 
+    }
+
+    fun hideSoftKeyboard() {
+        val inputMethodManager = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        if (inputMethodManager.isAcceptingText) {
+            inputMethodManager.hideSoftInputFromWindow(
+                this.currentFocus?.windowToken ?: Binder(),
+                0
+            )
+        }
     }
 }

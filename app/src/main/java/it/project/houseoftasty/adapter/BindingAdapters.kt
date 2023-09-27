@@ -1,5 +1,6 @@
 package it.project.houseoftasty.adapter
 
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.View
 import android.widget.ArrayAdapter
@@ -12,6 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import com.google.firebase.storage.StorageReference
 import it.project.houseoftasty.R
+import it.project.houseoftasty.model.Recipe
 import it.project.houseoftasty.utility.DateTimeFormatter
 import it.project.houseoftasty.utility.ImageLoader
 import java.util.*
@@ -34,7 +36,20 @@ class BindingAdapters {
 
             // Binding del timestamp
             if (timestamp != null) {
-                this.text = DateTimeFormatter.firebaseTimestampToTemplate(resources, timestamp)
+                this.text = DateTimeFormatter.firebaseTimestampToTemplate(
+                    resources, R.string.timestampTemplate_creation, timestamp)
+            }
+
+        }
+
+        @BindingAdapter("setTextByPublicationTimestamp")
+        @JvmStatic
+        fun TextView.setTextByPublicationTimestamp(timestamp: Timestamp?) {
+
+            // Binding del timestamp
+            if (timestamp != null) {
+                this.text = DateTimeFormatter.firebaseTimestampToTemplate(
+                    resources, R.string.timestampTemplate_publication, timestamp)
             }
 
         }
@@ -93,7 +108,30 @@ class BindingAdapters {
                 }
             }
 
+        }
 
+        @BindingAdapter("setRecipeStatus")
+        @JvmStatic
+        fun TextView.setRecipeStatus(recipe: Recipe?) {
+            if (recipe != null)
+                if (recipe.boolPubblicata)
+                    if (recipe.boolPostPrivato)
+                        this.text = resources.getString(
+                            R.string.recipeStatusPublishedPrivate)
+                    else
+                        this.text = resources.getString(
+                            R.string.recipeStatusPublished)
+                else
+                    this.text = resources.getString(
+                        R.string.recipeStatusUnPublished)
+
+        }
+
+        @BindingAdapter("setDrawable")
+        @JvmStatic
+        fun ImageView.setDrawable(drawable: Drawable?) {
+            if (drawable != null)
+                this.setImageDrawable(drawable)
         }
 
 
