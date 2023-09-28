@@ -8,7 +8,7 @@ import it.project.houseoftasty.model.Recipe
 import it.project.houseoftasty.network.ProfileNetwork
 import it.project.houseoftasty.network.RecipeNetwork
 
-class PublicProfileViewModel(private val userId: String) : LoadingManagerViewModel() {
+class MyPublicProfileViewModel() : LoadingManagerViewModel() {
     private val profileDataSource: ProfileNetwork = ProfileNetwork.getDataSource()
     private val recipeDataSource: RecipeNetwork = RecipeNetwork.getDataSource()
     var profileLiveData: MutableLiveData<Profile> = MutableLiveData(Profile())
@@ -22,19 +22,7 @@ class PublicProfileViewModel(private val userId: String) : LoadingManagerViewMod
     // Inizializza le variabili "profileLiveData" e "recipeLiveData"
     override suspend fun initAsync() {
         // Il metodo "postValue" imposta il nuovo valore e notifica eventuali osservatori
-        profileLiveData.postValue(profileDataSource.getUserData(userId))
-        recipeLiveData.postValue(recipeDataSource.getPublicRecipesByUser(userId))
-    }
-}
-
-// Factory class
-class PublicProfileViewModelFactory(private val userId: String) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(PublicProfileViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return PublicProfileViewModel(userId) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
+        profileLiveData.postValue(profileDataSource.getUserData())
+        recipeLiveData.postValue(recipeDataSource.getPublicRecipesByUser())
     }
 }

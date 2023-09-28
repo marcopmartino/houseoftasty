@@ -36,7 +36,7 @@ class ProfileNetwork : StorageNetwork("immagini_profili") {
                 }
             }
 
-            profile.id = firebaseAuth.uid
+            profile.id = userId
         }
 
         // Prende un riferimento al file immagine della ricetta (non scarica il file)

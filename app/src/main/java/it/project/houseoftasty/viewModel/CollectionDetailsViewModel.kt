@@ -32,7 +32,7 @@ class CollectionDetailsViewModel(private val collectionId: String) : LoadingMana
         return RecipeCollectionNetwork().isCreator(recipeId)
     }
 
-    fun collectionName(): Boolean{
+    fun collectionName(): Boolean {
         return nome
     }
 

@@ -73,10 +73,14 @@ class RecipePostFragment : Fragment() {
         val mainActivity = (activity as MainActivity)
         mainActivity.setActionBarTitle("Dettagli Ricetta")
 
+        // Ottiene un riferimento al sottotitolo
+        val recipeSubtitle = binding.recipeInfo
+
         // Ottiene un riferimento al pulsante dei "Mi piace" e al relativo contatore
         val likeButton = binding.likeIcon
         val likeCounter = binding.likesCounter
 
+        // Ottiene un riferimento al pulsante dei "Download" e al relativo contatore
         val downloadButton = binding.downloadIcon
         val downloadCounter = binding.downloadsCounter
 
@@ -109,19 +113,20 @@ class RecipePostFragment : Fragment() {
 
         /* Osservatore su "recipeLiveData" per il binding del timestamp, per determinare la
             visibilità del F.A.B e il comportamento del pulsante dei "Mi piace" e dei "Download" */
-        recipePostViewModel.recipeLiveData.observe(viewLifecycleOwner) {
-            if (it.id != null) {
+        recipePostViewModel.recipeLiveData.observe(viewLifecycleOwner) { recipe ->
+            if (recipe.id != null) {
 
                 // Binding del timestamp e dell'username del creatore
-                val timestamp = (it.timestampPubblicazione as com.google.firebase.Timestamp).toLocalDateTime()
+                val timestamp = (recipe.timestampPubblicazione
+                        as com.google.firebase.Timestamp).toLocalDateTime()
 
                 // Controlla che la ricetta sia dell'utente
-                if (it.idCreatore == recipePostViewModel.getCurrentUserId()) {
+                if (recipe.idCreatore == recipePostViewModel.getCurrentUserId()) {
 
                     // Binding del sottotitolo della ricetta
-                    binding.recipeInfo.text = DateTimeFormatter.localDateTimeToTemplate(
+                    recipeSubtitle.text = DateTimeFormatter.localDateTimeToTemplate(
                         resources,
-                        if (it.boolPostPrivato)
+                        if (recipe.boolPostPrivato)
                             R.string.timestampTemplate_publicationPrivate
                         else
                             R.string.timestampTemplate_publication,
@@ -141,9 +146,17 @@ class RecipePostFragment : Fragment() {
 
                 } else {
                     // Binding del sottotitolo della ricetta
-                    binding.recipeInfo.text = resources.getString(
-                        R.string.authorAndTimestampTemplate, it.nomeCreatore,
+                    recipeSubtitle.text = resources.getString(
+                        R.string.authorAndTimestampTemplate, recipe.nomeCreatore,
                         timestamp.dateToString(true), timestamp.timeToString())
+
+                    recipeSubtitle.setOnClickListener {
+                        navigateTo(RecipePostFragmentDirections
+                            .actionRecipePostFragmentToPublicProfileFragment(
+                                recipe.idCreatore.toString()
+                            )
+                        )
+                    }
 
                     // Imposta un clickListener per il pulsante dei "Mi piace"
                     likeButton.setOnClickListener {
@@ -285,16 +298,11 @@ class RecipePostFragment : Fragment() {
 
     /* Naviga verso PublicProfileFragment al click su un commento */
     private fun adapterOnClick(userId: String) {
-        /*
-        if (userId == recipePostViewModel.getCurrentUserId()) {
-            navigateTo(RecipePostFragmentDirections
-                .actionRecipePostFragmentToNavProfile("[nullValue]"))
-        } else {
-            navigateTo(RecipePostFragmentDirections
-                .actionRecipePostFragmentToNavProfile(userId))
+        if (recipePostViewModel.getCurrentUserId() != userId) {
+            navigateTo(
+                RecipePostFragmentDirections.actionRecipePostFragmentToPublicProfileFragment(userId)
+            )
         }
-
-         */
 
     }
 

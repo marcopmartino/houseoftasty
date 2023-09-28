@@ -195,8 +195,8 @@
             app:popUpTo="@id/recipePostFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_recipePostFragment_to_nav_profile"
-            app:destination="@id/nav_profile" />
+            android:id="@+id/action_recipePostFragment_to_publicProfileFragment"
+            app:destination="@id/publicProfileFragment" />
     </fragment>
     <!-- Explore Fragment -->
     <fragment
@@ -257,22 +257,31 @@
         </action>
     </fragment>
     <fragment
-        android:id="@+id/nav_profile"
+        android:id="@+id/publicProfileFragment"
         android:name="it.project.houseoftasty.view.PublicProfileFragment"
         android:label="fragment_public_profile"
         tools:layout="@layout/fragment_public_profile" >
-        <action
-            android:id="@+id/action_nav_profile_to_profileFragment"
-            app:destination="@id/profileFragment" />
         <argument
             android:name="userId"
-            app:argType="string"
-            android:defaultValue="[nullValue]" />
+            app:argType="string" />
         <action
-            android:id="@+id/action_nav_profile_to_recipePublishFragment"
-            app:destination="@id/recipePublishFragment" />
+            android:id="@+id/action_public_profile_to_recipePostFragment"
+            app:destination="@id/recipePostFragment"
+            app:popUpTo="@id/recipePostFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="it.project.houseoftasty.view.MyPublicProfileFragment"
+        android:label="fragment_my_public_profile" >
         <action
             android:id="@+id/action_nav_profile_to_recipePostFragment"
             app:destination="@id/recipePostFragment" />
+        <action
+            android:id="@+id/action_nav_profile_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_nav_profile_to_recipePublishFragment"
+            app:destination="@id/recipePublishFragment" />
     </fragment>
 </navigation>

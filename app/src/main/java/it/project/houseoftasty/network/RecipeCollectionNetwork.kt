@@ -171,10 +171,8 @@ class RecipeCollectionNetwork: RecipeNetwork() {
         removeRecipeFromCollections(recipeId)
     }
 
-    @Suppress("UNCHECKED_CAST")
     private suspend fun removeRecipeFromCollection(recipeId: String) {
         lateinit var documents: MutableList<DocumentSnapshot>
-        var collection = ""
 
         withContext(Dispatchers.IO){
             documents = recipeCollectionsReference.get().await().documents
@@ -215,6 +213,11 @@ class RecipeCollectionNetwork: RecipeNetwork() {
                 null,
                 "Salvati",
                 Timestamp.now()))
+        }
+
+        withContext(Dispatchers.IO){
+            recipeCollectionsReference.document(collection)
+                .update("listaRicette", FieldValue.arrayUnion(recipeId))
         }
 
         withContext(Dispatchers.IO){

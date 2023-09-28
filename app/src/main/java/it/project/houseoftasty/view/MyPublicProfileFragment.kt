@@ -8,28 +8,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.project.houseoftasty.R
 import it.project.houseoftasty.adapter.BindingAdapters.Companion.setFabVisibility
 import it.project.houseoftasty.adapter.PublicRecipeAdapter
-import it.project.houseoftasty.databinding.FragmentPublicProfileBinding
+import it.project.houseoftasty.databinding.FragmentMyPublicProfileBinding
 import it.project.houseoftasty.utility.ImageLoader
-import it.project.houseoftasty.viewModel.PublicProfileViewModel
-import it.project.houseoftasty.viewModel.PublicProfileViewModelFactory
+import it.project.houseoftasty.viewModel.MyPublicProfileViewModel
 
-class PublicProfileFragment: Fragment() {
+class MyPublicProfileFragment: Fragment() {
 
-    private val publicProfileViewModel: PublicProfileViewModel by viewModels {
-        // Factory class constructor
-        PublicProfileViewModelFactory(args.userId)
-    }
+    private val publicProfileViewModel: MyPublicProfileViewModel by viewModels()
 
-    private lateinit var binding: FragmentPublicProfileBinding
-
-    // Parametri passati al Fragment dalla navigazione
-    private val args: PublicProfileFragmentArgs by navArgs()
+    private lateinit var binding: FragmentMyPublicProfileBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +30,7 @@ class PublicProfileFragment: Fragment() {
     ): View {
 
         // Inflating e View Binding
-        binding = FragmentPublicProfileBinding.inflate(inflater, container, false)
+        binding = FragmentMyPublicProfileBinding.inflate(inflater, container, false)
 
         // Data Binding
         binding.viewModel = publicProfileViewModel
@@ -52,19 +44,26 @@ class PublicProfileFragment: Fragment() {
 
         // Modifico il titolo della Action Bar
         val mainActivity: MainActivity = (activity as MainActivity)
-        mainActivity.setActionBarTitle("Profilo")
+        mainActivity.setActionBarTitle("Il tuo profilo")
 
         // Taglia l'immagine oltre i bordi (gli angoli dell'ImageView sono arrotondati)
         binding.imageProfile.clipToOutline = true
 
+        binding.topOfFragment.setOnClickListener {
+            navigateTo(MyPublicProfileFragmentDirections.actionNavProfileToProfileFragment())
+        }
+
+        val fab = binding.floatingActionButton
+        fab.setFabVisibility(true)
+
+        /* Imposta un clickListener sul F.A.B */
+        fab.setOnClickListener {
+            fab.setFabVisibility(false)
+            navigateTo(MyPublicProfileFragmentDirections.actionNavProfileToRecipePublishFragment())
+        }
+
         // Osservatore su "profileLiveData" per caricare l'immagine di profilo
         publicProfileViewModel.profileLiveData.observe(viewLifecycleOwner) {
-
-            it.username.also { username ->
-                if (!username.isNullOrEmpty())
-                    // Modifico il titolo della Action Bar
-                    mainActivity.setActionBarTitle("Profilo di $username")
-            }
 
             // Carica l'immagine
             if (it.imageReference != null)
@@ -99,7 +98,7 @@ class PublicProfileFragment: Fragment() {
 
     /* Naviga verso RecipePostFragment al click su un elemento della RecyclerView. */
     private fun adapterOnClick(recipeId: String) {
-        navigateTo(PublicProfileFragmentDirections.actionPublicProfileToRecipePostFragment(recipeId))
+        navigateTo(MyPublicProfileFragmentDirections.actionNavProfileToRecipePostFragment(recipeId))
     }
 
     // Funzione per navigare verso altri Fragment

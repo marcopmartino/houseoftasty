@@ -195,8 +195,10 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
     // Elimina una ricetta a partire dal suo id
     open suspend fun deleteRecipeById(recipeId: String) {
         withContext(Dispatchers.IO) {
-            recipesReference.document(recipeId).delete().await()
-            deleteFile(recipeId)
+            val documentReference = recipesReference.document(recipeId)
+            if (documentReference.get().await().get("boolPubblicata") == true)
+                deleteFile(recipeId)
+            documentReference.delete().await()
         }
     }
 
