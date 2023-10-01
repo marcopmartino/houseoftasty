@@ -43,7 +43,7 @@ class InputField<T: View>(private val inputView: T) {
         return inputView
     }
 
-    // Inizializza la funzione getInputData() in base al tipo di InputField
+    // Inizializza la funzione getInputData() in base al tipo di InputView
     private fun initGetInputData() = when (inputView::class) {
         AppCompatEditText::class -> initEditText()
         SwitchMaterial::class -> initSwitch()

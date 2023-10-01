@@ -106,9 +106,19 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glide_version"
 
     // Testing
-    testImplementation 'junit:junit:4.13.2'
+    def androidXTestVersion = "1.5.0"
+    def espressoVersion = "3.5.1"
+    def fragment_version = "1.6.1"
+    //implementation "org.jetbrains.kotlin:kotlin-test:1.9.10"
+    testImplementation "junit:junit:4.13.2"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:1.9.10"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-ce:3.5.1'
-    androidTestImplementation("androidx.navigation:navigation-testing:2.5.3")
+    androidTestImplementation "androidx.test.ext:junit:1.1.5"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation "androidx.test:runner:$androidXTestVersion"
+    androidTestImplementation "androidx.test:rules:$androidXTestVersion"
+    androidTestImplementation "androidx.navigation:navigation-testing:$navigation_version"
+    debugImplementation("androidx.fragment:fragment-testing:$fragment_version")
+
+
 }

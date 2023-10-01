@@ -23,7 +23,7 @@ import it.project.houseoftasty.view.PERMISSION_REQUEST_GALLERY
 * hasDataChanged: funzione per determinare se i dati in input sono cambiati.
 *
 * La classe viene costruita facendo uso del pattern Builder */
-open class FormManager {
+class FormManager {
     private var editTextValidators: MutableList<EditTextValidator> = mutableListOf()
     private var imageViewValidators: MutableList<ImageViewValidator> = mutableListOf()
     private var unvalidatedFields: MutableList<InputField<View>> = mutableListOf()
