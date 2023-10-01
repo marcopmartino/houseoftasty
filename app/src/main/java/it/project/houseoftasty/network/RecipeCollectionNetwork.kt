@@ -172,19 +172,9 @@ class RecipeCollectionNetwork: RecipeNetwork() {
     }
 
     private suspend fun removeRecipeFromCollection(recipeId: String) {
-        lateinit var documents: MutableList<DocumentSnapshot>
-
         withContext(Dispatchers.IO){
-            documents = recipeCollectionsReference.get().await().documents
-        }
-
-        for(document in documents){
-            val temp = document.toObject(RecipeCollection::class.java)
-            if(temp!!.nome.equals("Salvati")){
-                recipeCollectionsReference.document(temp.id!!)
-                    .update("listaRicette", FieldValue.arrayRemove(recipeId))
-                break
-            }
+            recipeCollectionsReference.document("saveCollection")
+                .update("listaRicette",FieldValue.arrayRemove(recipeId))
         }
     }
 
@@ -202,7 +192,7 @@ class RecipeCollectionNetwork: RecipeNetwork() {
 
         for(document in documents){
             val temp = document.toObject(RecipeCollection::class.java)
-            if(temp!!.nome.equals("Salvati")){
+            if(temp!!.id.equals("saveCollection")){
                 collection = temp.id!!
                 break
             }
@@ -210,7 +200,7 @@ class RecipeCollectionNetwork: RecipeNetwork() {
 
         if(collection.isEmpty()){
             collection = addCollection(RecipeCollection(
-                null,
+                "saveCollection",
                 "Salvati",
                 Timestamp.now()))
         }

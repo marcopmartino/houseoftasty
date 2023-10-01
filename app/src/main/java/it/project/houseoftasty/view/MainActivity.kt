@@ -3,6 +3,9 @@ package it.project.houseoftasty.view
 
 import android.Manifest
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -15,6 +18,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.getSystemService
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -25,10 +29,7 @@ import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequest
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -58,12 +59,17 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     private lateinit var lastSelectedMenuItem : MenuItem
     private lateinit var cameraActivityResult: ActivityResultLauncher<Intent>
     private lateinit var galleryActivityResult: ActivityResultLauncher<Intent>
+    private lateinit var notificationManager: NotificationManager
+
+    private val channelID = "checkExpire"
     var onCameraActivityResult: (Intent?) -> Unit = {}
     var onGalleryActivityResult: (Intent?) -> Unit = {}
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        createNotificationChannel()
 
         // View Binding
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -80,10 +86,21 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         firebaseAuth = FirebaseAuth.getInstance()
         val firebaseUser = firebaseAuth.currentUser
 
-        val dataExpired: PeriodicWorkRequest =
-            PeriodicWorkRequestBuilder<ExpireWorker>(15, TimeUnit.MINUTES).build()
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
 
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork("Scadenza prodotti", ExistingPeriodicWorkPolicy.KEEP, dataExpired)
+        /*val expir = OneTimeWorkRequestBuilder<ExpireWorker>()
+            .setConstraints(constraints)
+            .build()*/
+
+        val dataExpired: PeriodicWorkRequest =
+            PeriodicWorkRequestBuilder<ExpireWorker>(12, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .build()
+
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork("Scadenza prodotti", ExistingPeriodicWorkPolicy.KEEP, dataExpired)
 
         // Imposto il menù in base allo stato di autenticazione
         navView.menu.clear()
@@ -178,14 +195,6 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         navView.inflateMenu(menuId)
         appBarConfiguration = AppBarConfiguration(topViewsIds, drawerLayout)
     }
-
-/*
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-*/
 
     // Delega al navController la gestione del comportamento della freccia per tornare indietro
     override fun onSupportNavigateUp(): Boolean {
@@ -353,5 +362,18 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 0
             )
         }
+    }
+
+    private fun createNotificationChannel(){
+
+        val name = R.string.productExpireName.toString()
+        val descriptionText = R.string.productExpireDescription.toString()
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelID, name, importance).apply{
+            description = descriptionText
+        }
+
+        notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 }
