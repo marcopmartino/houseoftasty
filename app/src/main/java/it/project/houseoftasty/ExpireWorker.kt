@@ -1,16 +1,21 @@
 package it.project.houseoftasty
 
 import android.annotation.SuppressLint
+import android.app.Notification.VISIBILITY_PUBLIC
 import android.content.Context
 import android.app.PendingIntent
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.work.*
 import it.project.houseoftasty.model.Product
 import it.project.houseoftasty.network.ProductNetwork
+import it.project.houseoftasty.view.MainActivity
+import it.project.houseoftasty.view.MyProductFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -32,6 +37,8 @@ class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
     private val productNetwork: ProductNetwork = ProductNetwork()
 
     override fun doWork(): Result {
+
+        Log.d("notify", "PEPINO")
 
         runBlocking{
             checkDate()
@@ -65,10 +72,17 @@ class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
             }
         }
 
+        val productIntent = NavDeepLinkBuilder(applicationContext)
+                            .setComponentName(MainActivity::class.java) //Solo se non è nel launcher activity
+                            .setGraph(R.navigation.nav_graph_main)
+                            .setDestination(R.id.nav_product)
+                            .createPendingIntent()
+
         if(counter!=0) {
 
             builder = NotificationCompat.Builder(applicationContext, channelId)
                 .setSmallIcon(R.drawable.medium_logo)
+                .setContentIntent(productIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
 
