@@ -65,6 +65,13 @@ class CollectionDetailsFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = privateRecipeAdapter
 
+        /* Imposta un clickListener sul F.A.B */
+        val fab = binding.floatingActionButton
+        fab.setOnClickListener {
+            fab.setFabVisibility(false)
+            fabOnClick()
+        }
+
         /* Imposta un osservatore sulla lista di ricette, per aggiornare la lista dinamicamente. */
         collectionDetailsViewModel.recipesLiveData.observe(viewLifecycleOwner) {
             it?.let {
@@ -73,18 +80,6 @@ class CollectionDetailsFragment : Fragment() {
                 privateRecipeAdapter.submitList(it)
             }
         }
-
-        /* Imposta un clickListener sul F.A.B */
-        val fab = binding.floatingActionButton
-        var nome: Boolean
-        runBlocking {
-            nome = collectionDetailsViewModel.collectionName()
-        }
-        if(!nome)
-            fab.setOnClickListener {
-                fab.setFabVisibility(false)
-                fabOnClick()
-            }
     }
 
     override fun onStart() {
