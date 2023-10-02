@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
         WorkManager.getInstance(this)
             .enqueueUniquePeriodicWork("Scadenza prodotti",
-                ExistingPeriodicWorkPolicy.UPDATE,dataExpiredPeriodic)
+                ExistingPeriodicWorkPolicy.KEEP, dataExpiredPeriodic)
 
         // Imposto il menù in base allo stato di autenticazione
         navView.menu.clear()

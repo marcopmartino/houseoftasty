@@ -415,7 +415,7 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
 
         withContext(Dispatchers.IO){
             documents = recipesReference
-                .orderBy("timestampPubblicazione", Query.Direction.DESCENDING)
+                .orderBy("timestampPubblicazione", Query.Direction.DESCENDING).limit(5)
                 .get().await().documents
         }
 
@@ -425,7 +425,7 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
             recipeList = mutableListOf()
 
             for (document in documents) {
-                if (document["idCreatore"].toString() != currentUserId &&
+                if (document["idCreatore"].toString() != currentUserId  &&
                     document["boolPubblicata"] as Boolean &&
                     !(document["boolPostPrivato"] as Boolean)) {
                     val recipe = document.toObject(Recipe::class.java)
@@ -446,6 +446,68 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
 
         return recipeList
     }
+
+    // Ritorna una lista delle ricette ordinate in base alla date di creazione (dalla più recente alla più vecchia) fino ad un massimo di 5 ricette
+    suspend fun getMostRecentHome(): MutableList<Recipe>{
+        lateinit var recipeList: MutableList<Recipe>
+        lateinit var documents: MutableList<DocumentSnapshot>
+
+
+        withContext(Dispatchers.IO){
+            documents = recipesReference
+                .orderBy("timestampPubblicazione", Query.Direction.DESCENDING).limit(5)
+                .get().await().documents
+        }
+
+        withContext(Dispatchers.Default) {
+
+            // Inizializzo la lista
+            recipeList = mutableListOf()
+
+            if(!currentUserId.isNullOrEmpty()){
+                for (document in documents) {
+                    if (document["idCreatore"].toString() != currentUserId  &&
+                        document["boolPubblicata"] as Boolean &&
+                        !(document["boolPostPrivato"] as Boolean)) {
+                        val recipe = document.toObject(Recipe::class.java)
+                        if (recipe != null) {
+
+                            // Prende l'username del creatore della ricetta
+                            recipe.nomeCreatore = ProfileNetwork.getDataSource().getUserUsername(
+                                recipe.idCreatore.toString())
+
+                            // Prende un riferimento al file immagine della ricetta (non scarica il file)
+                            recipe.imageReference = getFileReference(recipe.id.toString())
+
+                            recipeList.add(recipe)
+                        }
+                    }
+                }
+            }else{
+                for (document in documents) {
+                    if (document["boolPubblicata"] as Boolean &&
+                        !(document["boolPostPrivato"] as Boolean)) {
+                        val recipe = document.toObject(Recipe::class.java)
+                        if (recipe != null) {
+
+                            // Prende l'username del creatore della ricetta
+                            recipe.nomeCreatore = ProfileNetwork.getDataSource().getUserUsername(
+                                recipe.idCreatore.toString())
+
+                            // Prende un riferimento al file immagine della ricetta (non scarica il file)
+                            recipe.imageReference = getFileReference(recipe.id.toString())
+
+                            recipeList.add(recipe)
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return recipeList
+    }
+
 
     // Ritorna la lista dei commenti di una ricetta di cui è noto l'id
     suspend fun getCommentsByRecipeId(recipeId: String): MutableList<Comment>{

@@ -9,7 +9,11 @@
         android:id="@+id/nav_home"
         android:name="it.project.houseoftasty.view.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_recipePostFragment"
+            app:destination="@id/recipePostFragment" />
+    </fragment>
     <!-- Profile Fragment -->
     <fragment
         android:id="@+id/profileFragment"

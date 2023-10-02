@@ -96,8 +96,6 @@ class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
                     .setContentText("Alcuni dei tuoi prodotti sono in scadenza")
             }
 
-            Log.d("notify", builder.toString())
-
             with(NotificationManagerCompat.from(applicationContext)) {
                 // notificationId is a unique int for each notification that you must define
                 notify(410, builder.build())
