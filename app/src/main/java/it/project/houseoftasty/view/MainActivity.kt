@@ -18,7 +18,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.getSystemService
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -33,8 +32,6 @@ import androidx.work.*
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
 import it.project.houseoftasty.ExpireWorker
 import it.project.houseoftasty.R
 import it.project.houseoftasty.databinding.ActivityMainBinding
@@ -90,17 +87,14 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
-        /*val expir = OneTimeWorkRequestBuilder<ExpireWorker>()
-            .setConstraints(constraints)
-            .build()*/
-
-        val dataExpired: PeriodicWorkRequest =
-            PeriodicWorkRequestBuilder<ExpireWorker>(12, TimeUnit.HOURS)
+        val dataExpiredPeriodic: PeriodicWorkRequest =
+            PeriodicWorkRequestBuilder<ExpireWorker>(24, TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .build()
 
         WorkManager.getInstance(this)
-            .enqueueUniquePeriodicWork("Scadenza prodotti", ExistingPeriodicWorkPolicy.KEEP, dataExpired)
+            .enqueueUniquePeriodicWork("Scadenza prodotti",
+                ExistingPeriodicWorkPolicy.UPDATE,dataExpiredPeriodic)
 
         // Imposto il menù in base allo stato di autenticazione
         navView.menu.clear()

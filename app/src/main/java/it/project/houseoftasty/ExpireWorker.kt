@@ -38,8 +38,6 @@ class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
 
     override fun doWork(): Result {
 
-        Log.d("notify", "PEPINO")
-
         runBlocking{
             checkDate()
         }
@@ -54,9 +52,10 @@ class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
 
         lateinit var products: MutableList<Product>
         var counter = 0
-        val sdf = SimpleDateFormat("dd/MM/yyyy")
-        val temp = sdf.format(System.currentTimeMillis())
-        currentDate = Date(temp)
+
+        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.ITALY)
+        val temp = sdf.format(Calendar.getInstance().time)
+        currentDate = sdf.parse(temp)!!
 
         withContext(Dispatchers.IO){
             products = productNetwork.getProductByUser()
@@ -64,8 +63,11 @@ class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
 
         for(product in products) {
             if(product.scadenza == "-") continue
+
             val chkDate = sdf.parse(product.scadenza!!)
+
             val diff = chkDate!!.time - currentDate.time
+
             val days = (((diff / 1000) / 60) / 60) / 24
             if (days <= 2) {
                 counter++
@@ -93,6 +95,8 @@ class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
                 builder.setContentTitle("Prodotto in scadenza")
                     .setContentText("Alcuni dei tuoi prodotti sono in scadenza")
             }
+
+            Log.d("notify", builder.toString())
 
             with(NotificationManagerCompat.from(applicationContext)) {
                 // notificationId is a unique int for each notification that you must define
