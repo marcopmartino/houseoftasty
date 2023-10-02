@@ -1,7 +1,9 @@
 package it.project.houseoftasty.network
 
 import android.util.Log
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
@@ -56,6 +58,16 @@ class ProfileNetwork : StorageNetwork("immagini_profili") {
         }
 
         return document.get("username").toString()
+    }
+
+    fun login(email: String, password: String): Task<AuthResult> {
+        return firebaseAuth.signInWithEmailAndPassword(email, password)
+    }
+
+    fun login(email: String, password: String, onSuccess: () -> Unit, onFailure: () -> Unit ) {
+        login(email, password).addOnCompleteListener {
+            if (it.isSuccessful) onSuccess.invoke() else onFailure.invoke()
+        }
     }
 
     suspend fun addUser(user: Profile) {

@@ -165,7 +165,7 @@
     <string name="accedi">Accedi</string>
     <string name="registrati">Registrati</string>
     <string name="logout">Logout</string>
-    <string name="products">I miei prodotti</string>
+    <string name="products">Prodotti</string>
     <string name="collections">Raccolte</string>
 
     <!-- Stringhe specifiche di "activity_home" -->

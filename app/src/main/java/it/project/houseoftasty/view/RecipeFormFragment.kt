@@ -81,7 +81,7 @@ class RecipeFormFragment : Fragment() {
                 }.build()
 
         // Costruisce un gestore per la form al termine dell'inizializzazione
-        recipeFormViewModel.generateFormManagerBuilder(customHasDataChangedFunction = false)
+        recipeFormViewModel.generateFormManagerBuilder()
             .addEditTextValidators(
                 EditTextValidator.Builder()
                     .setInputView(dataTitleView)

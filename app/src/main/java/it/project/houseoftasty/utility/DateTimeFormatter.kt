@@ -20,7 +20,10 @@ class DateTimeFormatter {
         }
 
         fun timeDiffToString(timestamp: Timestamp?): String {
-            val secondsPassed: Long = timestamp?.timeDiffSeconds() ?: -1
+            return timePassedToString(timestamp?.timeDiffSeconds() ?: -1)
+        }
+
+        fun timePassedToString(secondsPassed: Long): String {
             val minutesPassed: Long = secondsPassed/60
             val hoursPassed: Long = minutesPassed/60
             val daysPassed: Long = hoursPassed/24
@@ -28,7 +31,6 @@ class DateTimeFormatter {
             val yearsPassed: Long = daysPassed/356
 
             return when {
-                secondsPassed == -1L -> String()
                 secondsPassed < 60 -> "Adesso"
                 minutesPassed == 1L -> "1 minuto fa"
                 minutesPassed in 2..59 -> (minutesPassed).toString() + " minuti fa"
@@ -39,9 +41,8 @@ class DateTimeFormatter {
                 daysPassed in 30..59 -> "1 mese fa"
                 daysPassed in 60..355 -> (monthsPassed).toString() + " mesi fa"
                 yearsPassed == 1L -> "1 anno fa"
-                else -> {
-                    (yearsPassed).toString() + " anni fa"
-                }
+                yearsPassed >= 2 -> (yearsPassed).toString() + " anni fa"
+                else -> String()
             }
         }
     }
