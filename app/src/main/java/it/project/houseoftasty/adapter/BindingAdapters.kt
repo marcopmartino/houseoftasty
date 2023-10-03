@@ -2,6 +2,7 @@ package it.project.houseoftasty.adapter
 
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ImageView
@@ -9,6 +10,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import com.google.firebase.storage.StorageReference
@@ -132,6 +134,24 @@ class BindingAdapters {
         fun ImageView.setDrawable(drawable: Drawable?) {
             if (drawable != null)
                 this.setImageDrawable(drawable)
+        }
+
+        @BindingAdapter("setVisibility")
+        @JvmStatic
+        fun TextView.setVisibility(size: Int){
+            if(size == 0)
+                this.visibility = View.VISIBLE
+            else
+                this.visibility = View.GONE
+        }
+
+        @BindingAdapter("setVisibility")
+        @JvmStatic
+        fun RecyclerView.setVisibility(size: Int){
+            if(size == 0)
+                this.visibility = View.GONE
+            else
+                this.visibility = View.VISIBLE
         }
 
 

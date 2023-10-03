@@ -1,5 +1,7 @@
 package it.project.houseoftasty.network
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
@@ -9,6 +11,8 @@ import it.project.houseoftasty.model.Product
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ProductNetwork {
 
@@ -86,6 +90,34 @@ class ProductNetwork {
         withContext(Dispatchers.IO) {
             productsReference.document(productId).delete().await()
         }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    suspend fun getExpireProduct(): MutableList<Product>{
+        val products = getProductByUser()
+        val expire: MutableList<Product> = mutableListOf()
+
+        val sdf = SimpleDateFormat("dd/MM/yyyy")
+
+        for(product in products){
+            val dataScadenza: String? = product.scadenza
+
+            if (dataScadenza != "--/--/----") {
+
+                val chkDate = sdf.parse(dataScadenza!!)
+                val diff = chkDate!!.time - Date().time
+                val hours = (((diff / 1000) / 60) / 60)
+
+                Log.d("Ore di differenza", hours.toString())
+
+                if (hours in -23..48) {
+                    continue
+                } else if (hours<=-24) {
+                    expire.add(product)
+                }
+            }
+        }
+        return expire
     }
 
     /* Factory method */

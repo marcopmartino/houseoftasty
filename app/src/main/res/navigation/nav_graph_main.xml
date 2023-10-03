@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_recipePostFragment"
             app:destination="@id/recipePostFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_productFormFragment"
+            app:destination="@id/ProductFormFragment"/>
     </fragment>
     <!-- Profile Fragment -->
     <fragment

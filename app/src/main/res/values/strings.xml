@@ -173,7 +173,9 @@
     <string name="esplora">Esplora</string>
     <string name="ricettario">Ricettario</string>
     <string name="prodotti">Prodotti</string>
-    <string name="ciao_cosa_cucini_oggi">Ciao, cosa cucini oggi?</string>
+    <string name="prodotti_in_scadenza">Prodotti in scadenza</string>
+    <string name="nessun_prodotto">Nessun prodotto in scadenza</string>
+    <string name="cosa_cucini_oggi">Cosa cucini oggi?</string>
     <string name="currentPasswordHint">Inserire password corrente</string>
     <string name="quantita">Quantità:  </string>
     <string name="scadenza">Scadenza:  </string>

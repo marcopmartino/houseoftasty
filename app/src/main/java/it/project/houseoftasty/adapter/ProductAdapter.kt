@@ -44,6 +44,8 @@ class ProductAdapter(
         @SuppressLint("SimpleDateFormat")
         fun bind(product: Product){
 
+            Log.d("TAP", product.toString())
+
             val sdf = SimpleDateFormat("dd/MM/yyyy")
             currentProduct = product
 

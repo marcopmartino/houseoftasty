@@ -14,6 +14,7 @@
     <!-- Colori personalizzati -->
     <color name="sand_brown">#FFFAEADE</color>
     <color name="darker_sand_brown">#FFF1D7C3</color>
+    <color name="caramel_brown_light">#FFCE9F7B</color>
     <color name="caramel_brown">#FFD19266</color>
     <color name="caramel_brown_transparent40">#66D19266</color>
     <color name="tawny_brown">#FFC37F4F</color>
