@@ -57,10 +57,19 @@
             android:name="productId"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="wasHome"
+            app:argType="boolean"
+            android:defaultValue="false" />
         <action
             android:id="@+id/action_productFormFragment_to_myProductFragment"
             app:destination="@id/nav_product"
             app:popUpTo="@id/nav_product"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_productFormFragment_to_HomeFragment"
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/nav_home"
             app:popUpToInclusive="true" />
     </fragment>
     <!-- Cookbook Fragment -->

@@ -105,20 +105,36 @@ class ProductFormFragment : Fragment() {
             Log.d("EndNavigation", productFormViewModel.operationCompleted.value.toString())
 
             it?.let {
-                when(it.name) {
-                    "INSERTION" -> { navigateTo(ProductFormFragmentDirections
-                        .actionProductFormFragmentToMyProductFragment())
+                if(args.wasHome && it.name != "DEFAULT"){
+                    navigateTo(ProductFormFragmentDirections
+                        .actionProductFormFragmentToHomeFragment())
+                }else{
+                    when (it.name) {
+                        "INSERTION" -> { navigateTo(
+                                ProductFormFragmentDirections
+                                    .actionProductFormFragmentToMyProductFragment()
+                            )
+                        }
+                        "UPDATE" -> {
+                            navigateTo(
+                                ProductFormFragmentDirections
+                                    .actionProductFormFragmentToMyProductFragment()
+                            )
+                        }
+                        "DELETION" -> {
+                            navigateTo(
+                                ProductFormFragmentDirections
+                                    .actionProductFormFragmentToMyProductFragment()
+                            )
+                        }
+                        "NONE" -> {
+                            navigateTo(
+                                ProductFormFragmentDirections
+                                    .actionProductFormFragmentToMyProductFragment()
+                            )
+                        }
+                        else -> {}
                     }
-                    "UPDATE" -> { navigateTo(ProductFormFragmentDirections
-                        .actionProductFormFragmentToMyProductFragment())
-                    }
-                    "DELETION" -> { navigateTo(ProductFormFragmentDirections
-                        .actionProductFormFragmentToMyProductFragment())
-                    }
-                    "NONE" -> { navigateTo(ProductFormFragmentDirections
-                        .actionProductFormFragmentToMyProductFragment())
-                    }
-                    else -> { }
                 }
             }
         }

@@ -91,7 +91,8 @@ class HomeFragment : Fragment() {
 
     /* Naviga verso ProductForm al click su un elemento della RecyclerView */
     private fun adapterOnClick(product: Product){
-        navigateTo(HomeFragmentDirections.actionHomeFragmentToProductFormFragment(product.id))
+
+        navigateTo(HomeFragmentDirections.actionHomeFragmentToProductFormFragment(product.id, true))
     }
 
     // Funzione per navigare verso altri Fragment
