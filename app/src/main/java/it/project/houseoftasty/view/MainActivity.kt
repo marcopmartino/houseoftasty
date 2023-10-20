@@ -7,6 +7,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Binder
@@ -21,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -32,13 +34,16 @@ import androidx.work.*
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import it.project.houseoftasty.ExpireWorker
+import it.project.houseoftasty.worker.ExpireWorker
 import it.project.houseoftasty.R
 import it.project.houseoftasty.databinding.ActivityMainBinding
 import it.project.houseoftasty.utility.checkSelfPermissionCompat
+import it.project.houseoftasty.utility.createDeviceAccountIfNotExists
+import it.project.houseoftasty.utility.isUserAuthenticated
 import it.project.houseoftasty.utility.requestPermissionsCompat
 import it.project.houseoftasty.utility.shouldShowRequestPermissionRationaleCompat
 import it.project.houseoftasty.utility.showSnackbar
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 
@@ -50,7 +55,6 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
     private lateinit var navController: NavController
-    private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var lastSelectedMenuItem : MenuItem
@@ -59,9 +63,18 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     private lateinit var notificationManager: NotificationManager
 
     private val channelID = "checkExpire"
+    private val dataExpiredPeriodic: PeriodicWorkRequest =
+        PeriodicWorkRequestBuilder<ExpireWorker>(24, TimeUnit.HOURS)
+            .setConstraints(
+                Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build())
+            .build()
+
     var onCameraActivityResult: (Intent?) -> Unit = {}
     var onGalleryActivityResult: (Intent?) -> Unit = {}
 
+    var isUserAuthenticated: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +84,10 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         // View Binding
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        // Genero un'istanza di FirebaseAuth
+        val firebaseAuth = FirebaseAuth.getInstance()
+        isUserAuthenticated = firebaseAuth.isUserAuthenticated()
+
         // Ottengo riferimenti al DrawerLayout, alla NavigationView e al NavigationController
         drawerLayout = binding.drawerLayout
         navView = binding.navView
@@ -79,27 +96,13 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         // Imposto la toolbar come ActionBar
         setSupportActionBar(binding.contentMain.mainToolbar)
 
-        // Ottengo un riferimento all'utente corrente
-        firebaseAuth = FirebaseAuth.getInstance()
-        val firebaseUser = firebaseAuth.currentUser
-
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-
-        val dataExpiredPeriodic: PeriodicWorkRequest =
-            PeriodicWorkRequestBuilder<ExpireWorker>(24, TimeUnit.HOURS)
-                .setConstraints(constraints)
-                .build()
-
-        WorkManager.getInstance(this)
-            .enqueueUniquePeriodicWork("Scadenza prodotti",
-                ExistingPeriodicWorkPolicy.KEEP, dataExpiredPeriodic)
+        if (this.getSharedPreferences().getBoolean("notifications", true))
+            enableNotifications()
 
         // Imposto il menù in base allo stato di autenticazione
         navView.menu.clear()
 
-        if (firebaseUser != null) {
+        if (isUserAuthenticated) {
             setNavigationConfiguration(
                 R.menu.menu_authenticated, setOf(
                     R.id.nav_home,
@@ -108,14 +111,19 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                     R.id.nav_cookbook,
                     R.id.nav_collections,
                     R.id.nav_product,
+                    R.id.nav_settings,
                     R.id.nav_logout,
             ))
         } else {
+            lifecycleScope.launch { firebaseAuth.createDeviceAccountIfNotExists() }
             setNavigationConfiguration(
                 R.menu.menu_unauthenticated, setOf(
                     R.id.nav_home,
                     R.id.nav_explore,
                     R.id.nav_cookbook,
+                    R.id.nav_collections,
+                    R.id.nav_product,
+                    R.id.nav_settings,
                     R.id.nav_logout
             ))
         }
@@ -193,6 +201,18 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     // Delega al navController la gestione del comportamento della freccia per tornare indietro
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    // Abiltia le notifiche
+    fun enableNotifications() {
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork("Scadenza prodotti",
+                ExistingPeriodicWorkPolicy.KEEP, dataExpiredPeriodic)
+    }
+
+    // Disabilita le modifiche
+    fun disableNotifications() {
+        WorkManager.getInstance(this).cancelWorkById(dataExpiredPeriodic.id)
     }
 
     // Lancia un'activity con la galleria immagini del dispositivo
@@ -346,6 +366,10 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             R.string.gallery_permission_denied
         ) { choosePhotoFromGallery() }
 
+    }
+
+    fun getSharedPreferences(): SharedPreferences {
+        return getSharedPreferences("it.project.houseoftasty", MODE_PRIVATE)
     }
 
     fun hideSoftKeyboard() {

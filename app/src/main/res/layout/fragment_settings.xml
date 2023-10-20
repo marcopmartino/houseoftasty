@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.SettingsFragment">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="it.project.houseoftasty.viewModel.SettingsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#45D19266"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_bg_deep_orange_50">
+
+                <TextView
+                    android:id="@+id/sectionApplication"
+                    style="@style/txtSolid"
+                    android:layout_width="match_parent"
+                    android:layout_height="30sp"
+                    android:background="@drawable/rectangle_bg_red_300"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/sectionTitleApplication"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/settingsImageAbout"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/settings_item_background"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@+id/itemAbout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/itemAbout"
+                    app:srcCompat="@drawable/icon_text_sand_brown" />
+
+                <TextView
+                    android:id="@+id/settingsTitleAbout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/itemTitleAbout"
+                    android:textColor="@color/caramel_brown"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/settingsImageAbout"
+                    app:layout_constraintTop_toTopOf="@+id/settingsImageAbout" />
+
+                <TextView
+                    android:id="@+id/settingsSubtitleAbout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@string/itemSubtitleAbout"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/settingsTitleAbout"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsTitleAbout" />
+
+                <View
+                    android:id="@+id/itemAbout"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sectionApplication" />
+
+                <View
+                    android:id="@+id/settingsDivider1"
+                    style="@style/brownDivider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/itemAbout" />
+
+                <ImageView
+                    android:id="@+id/settingsImageNotificationsManagement"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/settings_item_background"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@+id/itemNotificationsManagement"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/itemNotificationsManagement"
+                    app:srcCompat="@drawable/icon_bell_sand_brown" />
+
+                <TextView
+                    android:id="@+id/settingsTitleNotificationsManagement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/itemTitleNotificationsManagement"
+                    android:textColor="@color/caramel_brown"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/settingsImageAbout"
+                    app:layout_constraintTop_toTopOf="@+id/settingsImageNotificationsManagement" />
+
+                <TextView
+                    android:id="@+id/settingsSubtitleNotificationsManagement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@string/itemSubtitleNotificationsManagement"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/settingsTitleAbout"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsTitleNotificationsManagement" />
+
+                <View
+                    android:id="@+id/itemNotificationsManagement"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/settingsDivider1" />
+
+                <View
+                    android:id="@+id/settingsDivider2"
+                    style="@style/brownDivider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/itemNotificationsManagement" />
+
+                <ImageView
+                    android:id="@+id/settingsImageStartSettings"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/settings_item_background"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@+id/itemStartSettings"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/itemStartSettings"
+                    app:srcCompat="@drawable/icon_power_sand_brown" />
+
+                <TextView
+                    android:id="@+id/settingsTitleStartSettings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/itemTitleStartSettings"
+                    android:textColor="@color/caramel_brown"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/settingsImageAbout"
+                    app:layout_constraintTop_toTopOf="@+id/settingsImageStartSettings" />
+
+                <TextView
+                    android:id="@+id/settingsSubtitleStartSettings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@string/itemSubtitleStartSettings"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/settingsTitleAbout"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsTitleStartSettings" />
+
+                <View
+                    android:id="@+id/itemStartSettings"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/settingsDivider2" />
+
+                <TextView
+                    android:id="@+id/sectionAccount"
+                    style="@style/txtSolid"
+                    android:layout_width="match_parent"
+                    android:layout_height="30sp"
+                    android:background="@drawable/rectangle_bg_red_300"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/sectionTitleAccount"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/itemStartSettings" />
+
+                <ImageView
+                    android:id="@+id/settingsImageAccountInfo"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/settings_item_background"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@+id/itemAccountInfo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/itemAccountInfo"
+                    app:srcCompat="@drawable/icon_profile_sand_brown" />
+
+                <TextView
+                    android:id="@+id/settingsTitleAccountInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/itemTitleAccountInfo"
+                    android:textColor="@color/caramel_brown"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/settingsImageAbout"
+                    app:layout_constraintTop_toTopOf="@+id/settingsImageAccountInfo" />
+
+                <TextView
+                    android:id="@+id/settingsSubtitleAccountInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@string/itemSubtitleAccountInfo"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/settingsTitleAbout"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsTitleAccountInfo" />
+
+                <View
+                    android:id="@+id/itemAccountInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sectionAccount" />
+
+                <View
+                    android:id="@+id/settingsDivider3"
+                    style="@style/brownDivider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/itemAccountInfo" />
+
+                <ImageView
+                    android:id="@+id/settingsImageProfile"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/settings_item_background"
+                    android:scaleType="centerCrop"
+                    android:visibility="@{viewModel.showRestrictedItems ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/itemProfile"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/itemProfile"
+                    app:srcCompat="@drawable/icon_profile_sand_brown" />
+
+                <TextView
+                    android:id="@+id/settingsTitleProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/itemTitleProfile"
+                    android:textColor="@color/caramel_brown"
+                    android:textSize="18sp"
+                    android:visibility="@{viewModel.showRestrictedItems ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/settingsImageAbout"
+                    app:layout_constraintTop_toTopOf="@+id/settingsImageProfile" />
+
+                <TextView
+                    android:id="@+id/settingsSubtitleProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@string/itemSubtitleProfile"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:visibility="@{viewModel.showRestrictedItems ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/settingsTitleAbout"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsTitleProfile" />
+
+                <View
+                    android:id="@+id/itemProfile"
+                    setSettingsItemHeight="@{viewModel.showRestrictedItems}"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsDivider3" />
+
+                <View
+                    android:id="@+id/settingsDivider4"
+                    style="@style/brownDivider"
+                    setSettingsDividerHeight="@{viewModel.showRestrictedItems}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/itemProfile" />
+
+                <View
+                    android:id="@+id/itemLogout"
+                    setSettingsItemHeight="@{viewModel.showRestrictedItems}"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsDivider4" />
+
+                <ImageView
+                    android:id="@+id/settingsImageLogout"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/settings_item_background"
+                    android:scaleType="centerCrop"
+                    android:visibility="@{viewModel.showRestrictedItems ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/itemLogout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/itemLogout"
+                    app:srcCompat="@drawable/icon_logout_sand_brown" />
+
+                <TextView
+                    android:id="@+id/settingsTitleLogout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/itemTitleLogout"
+                    android:textColor="@color/caramel_brown"
+                    android:textSize="18sp"
+                    android:visibility="@{viewModel.showRestrictedItems ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/settingsImageAbout"
+                    app:layout_constraintTop_toTopOf="@+id/settingsImageLogout" />
+
+                <TextView
+                    android:id="@+id/settingsSubtitleLogout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@string/itemSubtitleLogout"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:visibility="@{viewModel.showRestrictedItems ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/settingsTitleAbout"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsTitleLogout" />
+
+                <View
+                    android:id="@+id/settingsDivider5"
+                    style="@style/brownDivider"
+                    setSettingsDividerHeight="@{viewModel.showRestrictedItems}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/itemLogout" />
+
+                <ImageView
+                    android:id="@+id/settingsImageAccountReset"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/settings_item_background_orange"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@+id/itemAccountReset"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/itemAccountReset"
+                    app:srcCompat="@drawable/icon_profile_sand_brown" />
+
+                <TextView
+                    android:id="@+id/settingsTitleAccountReset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/itemTitleAccountReset"
+                    android:textColor="@color/dark_orange"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/settingsImageAbout"
+                    app:layout_constraintTop_toTopOf="@+id/settingsImageAccountReset" />
+
+                <TextView
+                    android:id="@+id/settingsSubtitleAccountReset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@string/itemSubtitleAccountReset"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/settingsTitleAbout"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsTitleAccountReset" />
+
+                <View
+                    android:id="@+id/itemAccountReset"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsDivider5" />
+
+                <View
+                    android:id="@+id/settingsDivider6"
+                    style="@style/brownDivider"
+                    setSettingsDividerHeight="@{viewModel.showRestrictedItems}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/itemAccountReset" />
+
+                <ImageView
+                    android:id="@+id/settingsImageAccountDeletion"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/settings_item_background_red"
+                    android:scaleType="centerCrop"
+                    android:visibility="@{viewModel.showRestrictedItems ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/itemAccountDeletion"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/itemAccountDeletion"
+                    app:srcCompat="@drawable/icon_profile_sand_brown" />
+
+                <TextView
+                    android:id="@+id/settingsTitleAccountDeletion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/itemTitleAccountDeletion"
+                    android:textColor="@color/dark_red"
+                    android:textSize="18sp"
+                    android:visibility="@{viewModel.showRestrictedItems ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/settingsImageAbout"
+                    app:layout_constraintTop_toTopOf="@+id/settingsImageAccountDeletion" />
+
+                <TextView
+                    android:id="@+id/settingsSubtitleAccountDeletion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@string/itemSubtitleAccountDeletion"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:visibility="@{viewModel.showRestrictedItems ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/settingsTitleAbout"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsTitleAccountDeletion" />
+
+                <View
+                    android:id="@+id/itemAccountDeletion"
+                    setSettingsItemHeight="@{viewModel.showRestrictedItems}"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsDivider6" />
+
+                <TextView
+                    android:id="@+id/sectionSynchronization"
+                    style="@style/txtSolid"
+                    android:layout_width="match_parent"
+                    android:layout_height="30sp"
+                    android:background="@drawable/rectangle_bg_red_300"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/sectionTitleDocuments"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/itemAccountDeletion" />
+
+                <ImageView
+                    android:id="@+id/settingsImageReleaseNotes"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/settings_item_background"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@+id/itemReleaseNotes"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/itemReleaseNotes"
+                    app:srcCompat="@drawable/icon_edit_sand_brown" />
+
+                <TextView
+                    android:id="@+id/settingsTitleReleaseNotes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/itemTitleReleaseNotes"
+                    android:textColor="@color/caramel_brown"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/settingsImageAbout"
+                    app:layout_constraintTop_toTopOf="@+id/settingsImageReleaseNotes" />
+
+                <TextView
+                    android:id="@+id/settingsSubtitleReleaseNotes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@string/itemSubtitleReleaseNotes"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/settingsTitleAbout"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsTitleReleaseNotes" />
+
+                <View
+                    android:id="@+id/itemReleaseNotes"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sectionSynchronization" />
+
+                <View
+                    android:id="@+id/settingsDivider7"
+                    style="@style/brownDivider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/itemReleaseNotes" />
+
+                <ImageView
+                    android:id="@+id/settingsImageTermsOfService"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/settings_item_background"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@+id/itemTermsOfService"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/itemTermsOfService"
+                    app:srcCompat="@drawable/icon_terms_sand_brown" />
+
+                <TextView
+                    android:id="@+id/settingsTitleTermsOfService"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/itemTitleTermsOfService"
+                    android:textColor="@color/caramel_brown"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/settingsImageAbout"
+                    app:layout_constraintTop_toTopOf="@+id/settingsImageTermsOfService" />
+
+                <TextView
+                    android:id="@+id/settingsSubtitleTermsOfService"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@string/itemSubtitleTermsOfService"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/settingsTitleAbout"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsTitleTermsOfService" />
+
+                <View
+                    android:id="@+id/itemTermsOfService"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsDivider7" />
+
+                <View
+                    android:id="@+id/settingsDivider8"
+                    style="@style/brownDivider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/itemTermsOfService" />
+
+                <ImageView
+                    android:id="@+id/settingsImagePrivacyPolicy"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/settings_item_background"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@+id/itemPrivacyPolicy"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/itemPrivacyPolicy"
+                    app:srcCompat="@drawable/icon_shield_sand_brown" />
+
+                <TextView
+                    android:id="@+id/settingsTitlePrivacyPolicy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/itemTitlePrivacyPolicy"
+                    android:textColor="@color/caramel_brown"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/settingsImageAbout"
+                    app:layout_constraintTop_toTopOf="@+id/settingsImagePrivacyPolicy" />
+
+                <TextView
+                    android:id="@+id/settingsSubtitlePrivacyPolicy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:text="@string/itemSubtitlePrivacyPolicy"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/settingsTitleAbout"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsTitlePrivacyPolicy" />
+
+                <View
+                    android:id="@+id/itemPrivacyPolicy"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsDivider8" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

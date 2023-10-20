@@ -58,8 +58,17 @@ class RecipeDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Ottengo un riferimento alla MainActivity
+        val mainActivity = activity as MainActivity
+
         // Modifico il titolo della Action Bar
-        (activity as MainActivity).setActionBarTitle("Dettagli Ricetta")
+        mainActivity.setActionBarTitle("Dettagli Ricetta")
+
+        // Modifiche da apportare alla vista se l'utente non è autenticato
+        if (!mainActivity.isUserAuthenticated) {
+            binding.recipeStatus.height = 0
+            binding.recipeStatus.visibility = View.INVISIBLE
+        }
 
         /* Imposta un clickListener sul F.A.B */
         val fab = binding.floatingActionButton

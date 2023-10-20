@@ -1,28 +1,27 @@
 package it.project.houseoftasty.utility
 
-import android.content.Intent
+import android.annotation.SuppressLint
+import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Looper
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.DocumentSnapshot
-import it.project.houseoftasty.model.Recipe
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import it.project.houseoftasty.network.ProfileNetwork
 import java.io.ByteArrayOutputStream
 import java.time.Instant
 import java.time.LocalDateTime
@@ -262,3 +261,32 @@ fun AppCompatActivity.requestPermissionsCompat(permissionsArray: Array<String>,
     ActivityCompat.requestPermissions(this, permissionsArray, requestCode)
 }
 
+// Extension functions per FirebaseAuth
+fun FirebaseAuth.getCurrentUserId() : String {
+    return this.currentUser?.uid.toString()
+}
+
+@SuppressLint("HardwareIds")
+fun FirebaseAuth.getAndroidId() : String {
+    return Settings.Secure.getString(
+        app.applicationContext.contentResolver,
+        Settings.Secure.ANDROID_ID)
+}
+
+@SuppressLint("HardwareIds")
+fun FirebaseAuth.getCurrentUserIdOrAndroidId() : String {
+    return this.currentUser?.uid ?: this.getAndroidId()
+}
+
+fun FirebaseAuth.isUserAuthenticated(): Boolean {
+    return this.currentUser.isAuthenticated()
+}
+
+suspend fun FirebaseAuth.createDeviceAccountIfNotExists() {
+    ProfileNetwork.getDataSource().createUserIfNotExists(this.getAndroidId())
+}
+
+// Extension functions per FirebaseUser
+fun FirebaseUser?.isAuthenticated(): Boolean {
+    return (this != null)
+}

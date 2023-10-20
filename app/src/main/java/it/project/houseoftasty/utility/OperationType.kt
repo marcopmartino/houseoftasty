@@ -12,5 +12,9 @@ enum class OperationType {
     SELECTION,
     SORTING,
     UNKNOWN,
-    UPDATE
+    UPDATE,
+    // Eccezioni
+    FirebaseAuthUserCollisionException,
+    Exception
+
 }

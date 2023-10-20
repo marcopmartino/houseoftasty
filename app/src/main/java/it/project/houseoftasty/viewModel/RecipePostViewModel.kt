@@ -60,6 +60,10 @@ class RecipePostViewModel(private val recipeId: String) : LoadingManagerViewMode
         return dataSource.currentUserId
     }
 
+    fun getCommentCreatorId(position: Int): String? {
+        return commentsLiveData.value?.get(position)?.userId
+    }
+
     // Fa il toggle di "likeButtonPressed" e notifica eventuali osservatori
     fun toggleLikeButtonPressed() {
         val isLiked = isRecipeLiked()
@@ -81,9 +85,23 @@ class RecipePostViewModel(private val recipeId: String) : LoadingManagerViewMode
 
     fun addComment(text: String) {
         viewModelScope.launch {
-            val temp = commentsLiveData.value ?: mutableListOf()
-            temp.prepend(dataSource.addComment(recipeId, text))
-            commentsLiveData.postValue(temp)
+            val commentList = commentsLiveData.value ?: mutableListOf()
+            commentList.prepend(dataSource.addComment(recipeId, text))
+            commentsLiveData.postValue(commentList)
+        }
+    }
+
+    fun removeComment(commentPosition: Int) {
+
+        // Aggiorna il LiveData localmente
+        val commentList: MutableList<Comment> = commentsLiveData.value ?: mutableListOf()
+        val commentId = commentList[commentPosition].id.toString()
+        commentList.removeAt(commentPosition)
+        commentsLiveData.postValue(commentList)
+
+        // Aggiorna la lista dei commenti in Firestore
+        viewModelScope.launch {
+            dataSource.removeComment(recipeId, commentId)
         }
     }
 }

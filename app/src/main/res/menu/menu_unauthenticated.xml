@@ -8,17 +8,25 @@
         android:icon="@drawable/icon_home"
         android:title="@string/menu_home"/>
     <item
-        android:id="@+id/nav_product"
-        android:icon="@drawable/icon_apple_black"
-        android:title="@string/products"/>
+        android:id="@+id/nav_explore"
+        android:icon="@drawable/icon_search"
+        android:title="@string/menu_esplora"/>
     <item
         android:id="@+id/nav_cookbook"
         android:icon="@drawable/icon_cookbook"
         android:title="@string/menu_ricettario"/>
     <item
-        android:id="@+id/nav_explore"
-        android:icon="@drawable/icon_explore"
-        android:title="@string/menu_esplora"/>
+        android:id="@+id/nav_collections"
+        android:icon="@drawable/icon_folder"
+        android:title="@string/collections" />
+    <item
+        android:id="@+id/nav_product"
+        android:icon="@drawable/icon_apple_black"
+        android:title="@string/products" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/icon_settings"
+        android:title="@string/settings"/>
     <item
         android:id="@+id/nav_logout"
         android:icon="@drawable/icon_login"

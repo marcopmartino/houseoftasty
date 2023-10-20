@@ -11,7 +11,7 @@ class CollectionDetailsViewModel(private val collectionId: String) : LoadingMana
     private val dataSource: RecipeCollectionNetwork = RecipeCollectionNetwork.getDataSource()
     val recipesLiveData: MutableLiveData<MutableList<Recipe>> = MutableLiveData(mutableListOf())
     var actionBarTitle: MutableLiveData<String> = MutableLiveData("Dettagli Raccolta")
-    var isSaveCollection: MutableLiveData<Boolean> = MutableLiveData(false)
+    var isSaveCollection: MutableLiveData<Boolean> = MutableLiveData(collectionId == "saveCollection")
 
     // Inizializzazione
     init {
@@ -23,13 +23,12 @@ class CollectionDetailsViewModel(private val collectionId: String) : LoadingMana
         /* Ottiene dalla repository una lista di ricette e aggiorna i LiveData.
         * Il metodo "postValue" imposta il nuovo valore e notifica eventuali osservatori. */
         val collection = dataSource.getCollectionById(collectionId)
-        isSaveCollection.postValue(collection.id == "saveCollection")
         actionBarTitle.postValue("${collection.nome} (${collection.listaRicette.size})")
         recipesLiveData.postValue(collection.listaRicette)
     }
 
-    fun isCreator(recipeId: String): Boolean{
-        return RecipeCollectionNetwork().isCreator(recipeId)
+    fun getIsSaveCollection(): Boolean {
+        return isSaveCollection.value == true
     }
 
 }

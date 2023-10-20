@@ -19,6 +19,18 @@ fun typeEmptyString(): ViewAction? {
     return typeText(String())
 }
 
+fun typeRepeatedText(text: String, times: Int): ViewAction? {
+    return typeText(text.repeat(times))
+}
+
+fun assertEmptyText(text: String?) {
+    assertTrue(text?.isEmpty() ?: false)
+}
+
+fun assertEmptyTextOf(viewId: Int) {
+    assertEmptyText(getTextOf(viewId))
+}
+
 fun assertNullOrEmptyText(text: String?) {
     assertTrue(text.isNullOrEmpty())
 }

@@ -10,13 +10,16 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import it.project.houseoftasty.model.Profile
+import it.project.houseoftasty.utility.getAndroidId
+import it.project.houseoftasty.utility.getCurrentUserIdOrAndroidId
+import it.project.houseoftasty.utility.isUserAuthenticated
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class ProfileNetwork : StorageNetwork("immagini_profili") {
 
-    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val usersReference: CollectionReference =
         FirebaseFirestore.getInstance().collection("users")
 
@@ -64,21 +67,47 @@ class ProfileNetwork : StorageNetwork("immagini_profili") {
         return firebaseAuth.signInWithEmailAndPassword(email, password)
     }
 
-    fun login(email: String, password: String, onSuccess: () -> Unit, onFailure: () -> Unit ) {
+    fun login(email: String, password: String, onSuccess: () -> Unit, onFailure: () -> Unit) {
         login(email, password).addOnCompleteListener {
             if (it.isSuccessful) onSuccess.invoke() else onFailure.invoke()
         }
+    }
+
+    suspend fun createUser(email: String, password: String) {
+        withContext(Dispatchers.IO) {
+            firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+        }
+        Log.d("AndroidRuntime", "Utente: " + firebaseAuth.currentUser?.uid.toString())
     }
 
     suspend fun addUser(user: Profile) {
         Log.d("Insert", user.toString())
 
         withContext(Dispatchers.IO) {
-            firebaseAuth.createUserWithEmailAndPassword(user.email!!, user.password!!)
-                .addOnFailureListener{return@addOnFailureListener}.await()
-
             usersReference.document(firebaseAuth.currentUser!!.uid).set(user).await()
         }
+    }
+
+    suspend fun userExists(userId: String): Boolean {
+        val exists: Boolean
+        withContext(Dispatchers.IO) {
+            exists = usersReference.document(userId).get().await().exists()
+        }
+        return exists
+    }
+
+    suspend fun userNotExists(userId: String): Boolean {
+        return !userExists(userId)
+    }
+
+    suspend fun createEmptyUser(userId: String) {
+        withContext(Dispatchers.IO) {
+            usersReference.document(userId).set(emptyMap<String, Any>())
+        }
+    }
+
+    suspend fun createUserIfNotExists(userId: String) {
+        if (userNotExists(userId)) createEmptyUser(userId)
     }
 
     suspend fun updateUser(user: Profile) {
@@ -103,15 +132,28 @@ class ProfileNetwork : StorageNetwork("immagini_profili") {
         }
     }
 
+    suspend fun deleteUser() {
+        usersReference.document(firebaseAuth.getCurrentUserIdOrAndroidId()).delete()
+        firebaseAuth.currentUser?.delete()
+    }
+
+    fun getAndroidId(): String {
+        return firebaseAuth.getAndroidId()
+    }
+
     /* Factory method */
     companion object {
         private var INSTANCE: ProfileNetwork? = null
+        private var NEW_INSTANCE = ProfileNetwork()
 
-        fun getDataSource(): ProfileNetwork {
+        fun getDataSource(newInstance: Boolean = true): ProfileNetwork {
             return synchronized(ProfileNetwork::class) {
-                val newInstance = INSTANCE ?: ProfileNetwork()
-                INSTANCE = newInstance
-                newInstance
+                if (newInstance) NEW_INSTANCE
+                else {
+                    val instance = INSTANCE ?: NEW_INSTANCE
+                    INSTANCE = instance
+                    instance
+                }
             }
         }
     }

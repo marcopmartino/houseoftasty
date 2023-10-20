@@ -1,7 +1,9 @@
 package it.project.houseoftasty.viewModel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.*
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import it.project.houseoftasty.model.Profile
 import it.project.houseoftasty.network.ProfileNetwork
 import it.project.houseoftasty.utility.OperationType
@@ -15,7 +17,6 @@ class RegisterViewModel : FormManagerViewModel(true) {
     override fun onFormSubmit(formData: MutableMap<String, Any>, hasDataChanged: Boolean) {
         viewModelScope.launch {
             insertProfile(formData)
-            setOperationCompleted(OperationType.UPDATE)
         }
     }
 
@@ -23,16 +24,26 @@ class RegisterViewModel : FormManagerViewModel(true) {
     suspend fun insertProfile(formData: MutableMap<String, Any>) {
         Log.d("Insert", formData["username"].toString())
 
-        dataSource.addUser(
-            Profile(
-                null,
-                formData["email"] as String,
-                formData["psw"] as String,
-                formData["nome"] as String,
-                formData["cognome"] as String,
-                formData["username"] as String
-            )
-        )
+        val email = formData["email"] as String
+        val password = formData["psw"] as String
+
+        try {
+            dataSource.createUser(email, password)
+            dataSource.addUser(
+                Profile(
+                    null,
+                    email = email,
+                    password = password,
+                    nome = formData["nome"] as String,
+                    cognome = formData["cognome"] as String,
+                    username = formData["username"] as String
+                ))
+            setOperationCompleted(OperationType.INSERTION)
+        } catch (e: FirebaseAuthUserCollisionException) {
+            setOperationCompleted(OperationType.FirebaseAuthUserCollisionException)
+        } catch (e: Exception) {
+            setOperationCompleted(OperationType.Exception)
+        }
     }
 }
 

@@ -3,6 +3,7 @@ package it.project.houseoftasty.viewModel
 import android.util.Log
 import androidx.lifecycle.*
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import it.project.houseoftasty.model.Recipe
 import it.project.houseoftasty.network.RecipeCollectionNetwork
 import it.project.houseoftasty.network.RecipeNetwork
@@ -137,6 +138,14 @@ class RecipeFormViewModel(private val recipeId: String?, val isRecipeNew: Mutabl
             )
         )
 
+        /* Se la ricetta è non più pubblicata, viene rimossa dalle raccolte di altri utenti che
+        * l'avevano salvata e vengono rimossi i suoi commenti */
+        if (!isPublished && wasPublished) {
+            dataSource.removeRecipeFromSaveCollections(oldData.id.toString())
+            dataSource.removeComments(oldData.id.toString())
+        }
+
+        // Aggiorna o rimuove l'immagine della ricetta
         when (imageOperation) {
             "SELECTION" -> dataSource.uploadFileFromByteArray(oldData.id.toString(), formData["immagine"] as ByteArray)
             "REMOVAL" -> dataSource.deleteFile(oldData.id.toString())

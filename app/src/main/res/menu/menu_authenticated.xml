@@ -11,7 +11,7 @@
         android:title="@string/menu_profile"/>
     <item
         android:id="@+id/nav_explore"
-        android:icon="@drawable/icon_explore"
+        android:icon="@drawable/icon_search"
         android:title="@string/menu_esplora"/>
     <item
         android:id="@+id/nav_cookbook"
@@ -25,6 +25,10 @@
         android:id="@+id/nav_product"
         android:icon="@drawable/icon_apple_black"
         android:title="@string/products" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/icon_settings"
+        android:title="@string/settings"/>
     <item
         android:id="@+id/nav_logout"
         android:icon="@drawable/icon_logout"

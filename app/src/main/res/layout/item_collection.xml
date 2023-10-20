@@ -14,10 +14,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/collectionImageContainer" />
+        app:layout_constraintTop_toBottomOf="@+id/settingsImageAbout" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/collectionImageContainer"
+        android:id="@+id/settingsImageAbout"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
@@ -31,7 +31,7 @@
             android:id="@+id/collectionImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/icon_apple"
+            android:background="@drawable/icon_folder_60x60"
             android:contentDescription="@string/collectionImageDescription" />
 
     </androidx.cardview.widget.CardView>
@@ -48,8 +48,8 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/collectionImageContainer"
-        app:layout_constraintTop_toTopOf="@+id/collectionImageContainer" />
+        app:layout_constraintStart_toEndOf="@+id/settingsImageAbout"
+        app:layout_constraintTop_toTopOf="@+id/settingsImageAbout" />
 
     <TextView
         android:id="@+id/collectionTime"

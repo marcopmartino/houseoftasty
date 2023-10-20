@@ -23,6 +23,8 @@
     <color name="light_red">#FFFF7F7F</color>
     <color name="heart_red">#FFFF3333</color>
     <color name="dark_red">#FFCC0000</color>
+    <color name="light_orange">#FFFFAA60</color>
+    <color name="dark_orange">#FFFF5C00</color>
 
     <!-- Colori profilo -->
     <color name="deep_orange_50">#faeade</color>

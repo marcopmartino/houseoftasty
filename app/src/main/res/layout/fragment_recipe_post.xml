@@ -194,12 +194,12 @@
                     android:id="@+id/downloadIcon"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    android:scaleX="1.2"
-                    android:scaleY="1.2"
+                    android:scaleX="1.1"
+                    android:scaleY="1.1"
                     app:layout_constraintEnd_toEndOf="@+id/likeIcon"
                     app:layout_constraintStart_toStartOf="@+id/likeIcon"
                     app:layout_constraintTop_toTopOf="@+id/commentIcon"
-                    app:srcCompat="@drawable/icon_download_36" />
+                    app:srcCompat="@drawable/icon_star" />
 
                 <View
                     android:id="@+id/zeroDivider"

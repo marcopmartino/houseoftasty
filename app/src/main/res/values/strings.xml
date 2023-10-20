@@ -18,10 +18,11 @@
     <string name="number">7283</string>
     <string name="number_long">17520893</string>
 
-    <string name ="timestampTemplate_creation">Creata in data %1$s alle %2$s</string>
-    <string name ="timestampTemplate_publication">Pubblicata in data %1$s alle %2$s</string>
-    <string name ="timestampTemplate_publicationPrivate">Pubblicata il %1$s alle %2$s (privata)</string>
-    <string name ="authorAndTimestampTemplate">%1$s - %2$s alle %3$s</string>
+    <string name="timestampTemplate_creation">Creata in data %1$s alle %2$s</string>
+    <string name="timestampTemplate_publication">Pubblicata in data %1$s alle %2$s</string>
+    <string name="timestampTemplate_publicationPrivate">Pubblicata il %1$s alle %2$s (privata)</string>
+    <string name="authorAndTimestampTemplate">%1$s - %2$s alle %3$s</string>
+    <string name="startActivityPreviewTemplate">Preview: %1$s</string>
 
     <!-- Stringhe di errore predefinite -->
     <string name="loadingError">[ERROR_001: Errore di caricamento]</string>
@@ -88,70 +89,270 @@
     <string name="txtConfermaPassword">Conferma password</string>
     <string name="txtSaveEdit">Salva modifiche</string>
 
-    <string name ="hintUsername">Inserire il nuovo username</string>
-    <string name ="hintEmail">Inserire la nuova email</string>
-    <string name ="hintNome">Inserire il nuovo nome</string>
-    <string name ="hintCognome">Inserire il nuovo cognome</string>
+    <string name="hintUsername">Inserire il nuovo username</string>
+    <string name="hintEmail">Inserire la nuova email</string>
+    <string name="hintNome">Inserire il nuovo nome</string>
+    <string name="hintCognome">Inserire il nuovo cognome</string>
 
     <!-- Stringhe specifiche di "fragment_cookbook", "fragment_recipe_detail" e "fragment_recipe_post_detail" -->
-    <string name ="scrollviewDescription">Interfaccia scorrevole con i dettagli della ricetta</string>
-    <string name ="recipeImageDescription">Immagine di copertina della ricetta</string>
-    <string name ="recipeEditLogoDescription">Icona per la modifica della ricetta</string>
-    <string name ="numPersoneImageDescription">Immagine di copertina della ricetta</string>
-    <string name ="timeImageDescription">Immagine di copertina della ricetta</string>
-    <string name ="recipeTitle">Titolo della ricetta</string>
-    <string name ="recipeInfo">Creatore e/o data di creazione o di pubblicazione</string>
-    <string name ="recipeStatus">Stato ricetta (pubblicata, non pubblicata, privata)</string>
-    <string name ="recipeStatusPublished">Ricetta pubblicata</string>
-    <string name ="recipeStatusUnPublished">Ricetta non pubblicata</string>
-    <string name ="recipeStatusPublishedPrivate">Ricetta pubblicata (post privato)</string>
-    <string name ="recipeStats">Numero visualizzazioni: </string>
-    <string name ="recipeLikes">Mi Piace</string>
-    <string name ="recipeDownloads">Salva</string>
-    <string name ="recipeIngredientsTitle">INGREDIENTI</string>
-    <string name ="recipeIngredients">Lista degli ingredienti</string>
-    <string name ="recipePreparationTitle">PREPARAZIONE</string>
-    <string name ="recipePreparation">Procedura per preparare la ricetta</string>
-    <string name ="recipeComments">COMMENTI</string>
-    <string name ="recipeCommentEditTextPlaceholder">Scrivi un commento</string>
-    <string name ="recipeNumPeoplePlaceholder">4</string>
-    <string name ="recipePreparationTimePlaceholder">1h 20min</string>
+    <string name="scrollviewDescription">Interfaccia scorrevole con i dettagli della ricetta</string>
+    <string name="recipeImageDescription">Immagine di copertina della ricetta</string>
+    <string name="recipeEditLogoDescription">Icona per la modifica della ricetta</string>
+    <string name="numPersoneImageDescription">Immagine di copertina della ricetta</string>
+    <string name="timeImageDescription">Immagine di copertina della ricetta</string>
+    <string name="recipeTitle">Titolo della ricetta</string>
+    <string name="recipeInfo">Creatore e/o data di creazione o di pubblicazione</string>
+    <string name="recipeStatus">Stato ricetta (pubblicata, non pubblicata, privata)</string>
+    <string name="recipeStatusPublished">Ricetta pubblicata</string>
+    <string name="recipeStatusUnPublished">Ricetta non pubblicata</string>
+    <string name="recipeStatusPublishedPrivate">Ricetta pubblicata (post privato)</string>
+    <string name="recipeStats">Numero visualizzazioni: </string>
+    <string name="recipeLikes">Mi Piace</string>
+    <string name="recipeDownloads">Salva</string>
+    <string name="recipeIngredientsTitle">INGREDIENTI</string>
+    <string name="recipeIngredients">Lista degli ingredienti</string>
+    <string name="recipePreparationTitle">PREPARAZIONE</string>
+    <string name="recipePreparation">Procedura per preparare la ricetta</string>
+    <string name="recipeComments">COMMENTI</string>
+    <string name="recipeCommentEditTextPlaceholder">Scrivi un commento</string>
+    <string name="recipeNumPeoplePlaceholder">4</string>
+    <string name="recipePreparationTimePlaceholder">1h 20min</string>
     <string name="fab_add_recipe">Aggiungi una nuova ricetta</string>
     <string name="fab_edit_recipe">Modifica i dati della ricetta</string>
 
     <!-- Stringhe specifiche di "fragment_recipe_form" -->
-    <string name ="errorMessagePlaceholder">error_message </string>
-    <string name ="labelImage">Immagine di copertina:</string>
-    <string name ="labelTitle">Titolo della ricetta:</string>
-    <string name ="hintTitle">Inserire il titolo della ricetta</string>
-    <string name ="labelIngredients">Lista degli ingredienti:</string>
-    <string name ="hintIngredients">Elencare ingredienti separati da virgola</string>
-    <string name ="labelPreparation">Preparazione:</string>
-    <string name ="hintPreparation">Spiegare la procedura di preparazione</string>
-    <string name ="labelNumPeople">Porzione:</string>
-    <string name ="hintNumPeople">es. 2</string>
-    <string name ="unitNumPeople">persone</string>
-    <string name ="labelPreparationTime">Tempo di preparazione:</string>
-    <string name ="hintPreparationTime">es. 45</string>
-    <string name ="unitPreparationTime">minuti</string>
-    <string name ="labelIsPublished">Ricetta pubblicata:</string>
-    <string name ="labelIsPostPrivate">Post ricetta privato:</string>
-    <string name ="txtDeleteRecipe">Elimina ricetta</string>
-    <string name ="txtCreateRecipe">Crea ricetta</string>
+    <string name="errorMessagePlaceholder">error_message </string>
+    <string name="labelImage">Immagine di copertina:</string>
+    <string name="labelTitle">Titolo della ricetta:</string>
+    <string name="hintTitle">Inserire il titolo della ricetta</string>
+    <string name="labelIngredients">Lista degli ingredienti:</string>
+    <string name="hintIngredients">Elencare ingredienti separati da virgola</string>
+    <string name="labelPreparation">Preparazione:</string>
+    <string name="hintPreparation">Spiegare la procedura di preparazione</string>
+    <string name="labelNumPeople">Porzione:</string>
+    <string name="hintNumPeople">es. 2</string>
+    <string name="unitNumPeople">persone</string>
+    <string name="labelPreparationTime">Tempo di preparazione:</string>
+    <string name="hintPreparationTime">es. 45</string>
+    <string name="unitPreparationTime">minuti</string>
+    <string name="labelIsPublished">Ricetta pubblicata:</string>
+    <string name="labelIsPostPrivate">Post ricetta privato:</string>
+    <string name="txtDeleteRecipe">Elimina ricetta</string>
+    <string name="txtCreateRecipe">Crea ricetta</string>
 
     <!-- Stringhe specifiche di "fragment_collections" e "fragment_collection_form" -->
-    <string name ="collectionName">Nome della raccolta:</string>
-    <string name ="hintCollectionName">Inserire il nome della raccolta</string>
-    <string name ="labelListaRicette">Ricette:</string>
-    <string name ="collectionImageDescription">Immagine di copertina della raccolta</string>
+    <string name="collectionName">Nome della raccolta:</string>
+    <string name="hintCollectionName">Inserire il nome della raccolta</string>
+    <string name="labelListaRicette">Ricette:</string>
+    <string name="collectionImageDescription">Immagine di copertina della raccolta</string>
     <string name="fab_add_collection">Aggiungi una nuova raccolta</string>
     <string name="fab_edit_collection">Modifica la raccolta</string>
 
-    <string name ="txtDeleteCollection">Elimina raccolta</string>
-    <string name ="txtCreateCollection">Crea raccolta</string>
-    <string name ="txtAddRecipe">Aggiungi ricetta</string>
+    <string name="txtDeleteCollection">Elimina raccolta</string>
+    <string name="txtCreateCollection">Crea raccolta</string>
+    <string name="txtAddRecipe">Aggiungi ricetta</string>
 
-    <!-- Stringhe specifiche di ... -->
+    <!-- Stringhe specifiche della sezione Impostazioni -->
+    <string name="sectionTitleApplication">Applicazione</string>
+    <string name="sectionTitleAccount">Account</string>
+    <string name="sectionTitleDocuments">Documenti</string>
+    <string name="sectionTitleGeneric">Generiche</string>
+    <string name="itemTitleAbout">ABOUT</string>
+    <string name="itemTitleReleaseNotes">NOTE DI RILASCIO</string>
+    <string name="itemTitleTermsOfService">TERMINI DI UTILIZZO</string>
+    <string name="itemTitleAccountInfo">INFO ACCOUNT</string>
+    <string name="itemTitleProfile">PROFILO</string>
+    <string name="itemTitleLogout">LOGOUT</string>
+    <string name="itemTitleAccountReset">RESET ACCOUNT</string>
+    <string name="itemTitleAccountDeletion">ELIMINA ACCOUNT</string>
+    <string name="itemTitleStartSettings">IMPOSTAZIONI DI AVVIO</string>
+    <string name="itemTitlePrivacyPolicy">INFORMATIVA SULLA PRIVACY</string>
+    <string name="itemTitleNotificationsManagement">GESTIONE DELLE NOTIFICHE</string>
+    <string name="itemSubtitleAbout">Visualizza le informazioni sull\'applicazione</string>
+    <string name="itemSubtitleReleaseNotes">Visualizza le note di rilascio</string>
+    <string name="itemSubtitleTermsOfService">Visualizza i termini di utilizzo</string>
+    <string name="itemSubtitleAccountInfo">Visualizza informazioni sull\'account</string>
+    <string name="itemSubtitleProfile">Visualizza il profilo</string>
+    <string name="itemSubtitleLogout">Esci dall\'account</string>
+    <string name="itemSubtitleAccountReset">Elimina tutti i dati dell\'account</string>
+    <string name="itemSubtitleAccountDeletion">Elimina l\'account</string>
+    <string name="itemSubtitleStartSettings">Modifica la impostazioni di avvio</string>
+    <string name="itemSubtitlePrivacyPolicy">Visualizza l\'informativa sulla privacy</string>
+    <string name="itemSubtitleNotificationsManagement">Attiva o disattiva le notifiche</string>
+
+    <!-- Stringhe specifiche della sezione Impostazioni: Info Account -->
+    <string name="accountInfoText">Informazioni sull\'account attualmente in uso:</string>
+    <string name="accountInfoIdentifier"><b>- Identificatore account</b></string>
+    <string name="accountInfoIdentifierType"><b>- Tipo di identificatore</b></string>
+    <string name="accountInfoAuthenticationMode"><b>- Modalità di autenticazione</b></string>
+    <string name="accountInfoRestrictions"><b>- Restrizioni account</b></string>
+
+    <string name="accountInfoRestrictionList">
+        Sono presenti restrizioni alle seguenti funzionalità:\n
+        - Visualizzazione profilo\n
+        - Modifica profilo\n
+        - Pubblicazione ricette\n
+        - Pubblicazione commenti
+    </string>
+
+    <string name="accountInfoIdentifierTitle">Cos\'è l\'identificatore account?</string>
+    <string name="accountInfoIdentifierText">
+        L\'identificatore account è un codice alfanumerico utilizzato dall\'applicazione e dal
+        database per riconoscere in maniera univoca ciascun utente.
+        \nPer gli utenti che hanno creato un account tramite registrazione, l\'identificatore
+        viene generato automaticamente; per gli utenti che procedono senza effettuare il login,
+        invece, l\'autenticazione si basa sul riconoscimento del dispositivo tramite il suo codice
+        \"Android Id\".
+    </string>
+    <string name="accountInfoRestrictionTitle">In cosa consistono le restrizioni account?</string>
+
+    <string name="accountInfoRestrictionText">
+        Sono previste delle restrizioni per gli utenti che non sono registrati, ossia che sono
+        autenticati tramite riconoscimento del dispositivo, e che pertanto utilizzano l\'app senza
+        aver effettuato il login. Le restrizioni consistono in limitazioni all\'interazione con gli
+        altri utenti, poiché gli utenti non registrati non possiedono un profilo. In particolare,
+        tali utenti non possono pubblicare le ricette da loro create e non possono commentare le
+        ricette pubblicate da altri utenti.
+    </string>
+
+
+    <!-- Stringhe specifiche della sezione Impostazioni: Reset Account -->
+    <string name="resetAccountText">Esegui il reset dell\'account
+        \n\n<b>Nota:</b> il reset dell\'account comporta l\'eliminazione di tutte le ricette
+        (pubblicate e non), le raccolte e i prodotti creati dall\'utente.</string>
+    <string name="resetAccountButton">Esegui Reset Account</string>
+    <string name="resetAccountButtonNote"> Reset account in corso: attendere</string>
+
+    <!-- Stringhe specifiche della sezione Impostazioni: Elimina Account -->
+    <string name="deleteAccountText">Per poter eliminare l\'account, è necessario inserire la password
+        \n\n<b>Nota:</b> l\'eliminazione dell\'account comporta l\'eliminazione di tutti i dati: le
+        ricette (pubblicate e non), le raccolte e i prodotti creati dall\'utente, e i dati del
+        profilo.</string>
+    <string name="deleteAccountButton">Elimina Account</string>
+    <string name="deleteAccountButtonNote"> Eliminazione account in corso: attendere</string>
+
+    <!-- Stringhe specifiche della sezione Impostazioni: Gestione delle Notifiche -->
+    <string name="notificationManagementText">Consenti a House of Tasty di inviare notifiche per
+        avvisare che ci sono prodotti che sono scaduti o che stanno per scadere:</string>
+    <string name="notificationSwitchLabel">Abilita notifiche</string>
+
+    <!-- Stringhe specifiche della sezione Impostazioni: Impostazioni di Avvio -->
+    <string name="selectActivityText">Seleziona la schermata di avvio dell\'applicazione: </string>
+    <string name="selectWelcomeActivity">Schermata di benvenuto </string>
+    <string name="selectMainActivity">Home</string>
+    <string name="selectAccessActivity">Schermata di accesso</string>
+
+    <!-- About -->
+    <string name="aboutHouseOfTastyTitle">About: House of Tasty</string>
+    <string name="aboutHouseOfTastyText">
+        \"House of Tasty\" è un\'applicazione Android sviluppata dagli studenti Klea Turhani, Martino Marco
+        Pasquale, Nollino Ludovico e Sgariglia Joshua come parte del progetto per il corso di
+        Programmazione Mobile tenuto dal prof. Storti Emanuele all\'Università Politecnica delle Marche (UNIVPM).
+    </string>
+
+    <!-- Release Notes -->
+    <string name="technicalNotesTitle">Note tecniche</string>
+    <string name="technicalNotes"><b>Versione attuale:</b> 1.0
+        \n\n<b>Versione precedente:</b> -
+        \n\n<b>Compatibilità (versioni Android):</b> \nda Android 8 (Oreo) a Android 13 (Tiramisù)
+    </string>
+    <string name="releaseNotesTitle">House of Tasty v. 1.0 è qui!</string>
+    <string name="releaseNotes">
+        <b>Crea e condividi le tue ricette</b>
+        \nCon House of Tasty puoi creare le tue ricette personalizzate specificando, tra le altre cose,
+        gli ingredienti e indicando procedura e tempo di preparazione; scegliendo dalla galleria o usando
+        la fotocamera, è anche possibile inserire un\'immagine per ogni ricetta. In questo modo puoi avere
+        le tue ricette sempre a portata di mano! Puoi inoltre creare delle raccolte per
+        dividere e trovare più facilmente le tue ricette.
+        \n\n<b>Interagisci con altri utenti</b>
+        \nPubblica le tue ricette con House of Tasty per condividerle con altri utenti e ricevere
+        feedback da loro. Allo stesso modo, puoi visualizzare le ricette create da altre persone e interagire
+        con loro mettendo \"mi piace\" e\\o lasciando un commento; puoi anche aggiungerle ai preferiti:
+        in questo modo le troverai nella raccolta \"Salvati\".
+        \n\n<b>Tieni sotto controllo le scadenze dei tuoi prodotti</b>
+        \nHouse of Tasty ti consente di inserire i tuoi prodotti alimentari specificando anche la scadenza.
+        In questo modo puoi tenere d\'occhio i tuoi prodotti in qualsiasi momento per accertarti che non
+        vadano a male. Inoltre House of Tasty ti manderà delle notifiche se ci sono prodotti che stanno
+        per scadere.
+        \n\n<b>Inizia ad usare l\'app senza login</b>
+        \nNonostante sia possibile creare un account, per usare House of Tasty non è necessaria alcuna registrazione!
+        Puoi infatti scaricare l\'app e iniziare ad utilizzarla anche senza effettuare il login. Se invece
+        sceglierai di creare un account, sappi che i tuoi dati sono al sicuro: gli altri utenti possono
+        soltanto vedere il tuo username, la tua immagine di profilo e le ricette che sceglierai di
+        pubblicare. Finché non pubblicherai ricette il tuo profilo non sarà visibile a nessuno.
+    </string>
+
+    <!-- Terms Of Service -->
+    <string name="termsOfService"><b>I. Identificazione e informazioni di contatto</b>
+\nQuesta applicazione è gestita da HouseOfTastyProject INC. La nostra sede principale si trova in Via degli Androidi 129, Borgo Meleto (AN). Potete contattarci scrivendo all\'indirizzo commerciale sopra indicato, utilizzando il modulo di contatto del nostro sito web o inviando un\'e-mail a houseoftastyproject@mail.com.
+
+\n\n<b>II. Natura del servizio</b>
+\nL\'applicazione consente agli utenti di creare e modificare ricette, raccolte di ricette e prodotti per cucinare. L\'pplicazione prevede inoltre che l\'utente possa pubblicare le proprie ricette e interagire con altri utenti visualizzando le ricette altrui, commentandole, mettendo \"mi piace\" e salvandole nei preferiti.
+
+\n\n<b>III. Limitazione di responsabilità</b>
+\nIl Proprietario non sarà responsabile di alcun danno diretto, indiretto, incidentale, consequenziale o speciale derivante da o in connessione con l\'uso dei servizi o del contenuto dell\'applicazione.
+
+\n\n<b>IV. Account utente e restrizioni sui contenuti</b>
+\nAgli utenti è vietato pubblicare o trasmettere attraverso l\'applicazione qualsiasi materiale illegale, dannoso, minaccioso, molesto, diffamatorio, volgare, osceno, sessualmente esplicito, discriminatorio o altrimenti discutibile di qualsiasi tipo, compreso, ma non solo, qualsiasi materiale che incoraggi una condotta che costituirebbe un reato penale, darebbe luogo a responsabilità civile o violerebbe qualsiasi legge locale, statale, nazionale o internazionale.
+
+\n\n<b>V. Informazioni sulla sicurezza e istruzioni per l\'uso</b>
+\nNell\'applicazione è possibile inserire i propri dati, quali Username, Email, Nome, Cognome, Password. Non comunicare a nessuno le proprie credenziali e i dati personali, né tramite l\'applicazione né tramite altri mezzi, in quanto questi potrebbero essere utilizzati da terzi per accedere al vostro account.
+
+\n\n<b>VI. Conclusioni</b>
+\nLa nostra applicazione deve essere utilizzata in conformità alle istruzioni e alle linee guida fornite. In caso contrario, si possono verificare furti di dati personali di cui non ci riteniamo responsabili.
+Utilizzando l\'applicazione, accettate di rispettare i presenti Termini e Condizioni. L\'uso continuato dell\'applicazione dopo la pubblicazione delle modifiche implica l\'accettazione di essere legalmente vincolati da questi termini aggiornati e/o modificati.
+
+\n\n<b>Data dell\'ultimo aggiornamento:</b> 13/10/2023
+    </string>
+
+    <!-- Privacy Policy -->
+    <string name="privacyPolicy">Informativa per il trattamento dei dati personali ai sensi dell\'art. 13 del Regolamento UE N. 2016/679 e art. 13 D.lgs. 196/2003
+
+\n\nGentile Utente,
+\nLa informiamo, ai sensi dell’art. 13 Regolamento UE n. 2016/679 (in seguito, “GDPR”) e dell’art.13 del D.Lgs. 30 Giugno 2003 n. 196 (\"Codice in materia di protezione dei dati personali\"), di seguito \"Codice della Privacy\", che i dati personali da Lei forniti potranno essere oggetto di trattamento, nel rispetto delle normative sopra richiamate e degli obblighi di riservatezza, con le modalità e per le finalità di seguito riportate.
+
+\n\n<b>1. Titolare del trattamento</b>
+\nHouseOfTastyProject INC con sede in Via degli Androidi 129, Borgo Meleto (AN); e-mail: houseoftastyproject@mail.com nella persona del suo legale rappresentante pro tempore garantisce il rispetto della disciplina in materia della protezione dei dati personali fornendo le seguenti informazioni circa il trattamento dei dati comunicati o comunque raccolti.
+
+\n\n<b>2. Oggetto del trattamento</b>
+\nAi sensi dell\'art. 4 punto 2 del Regolamento, per trattamento di dati personali si intende \"qualsiasi operazione o insieme di operazioni, compiute con o senza l\'ausilio di processi automatizzati e applicate a dati personali o insiemi di dati personali, come la raccolta, la registrazione, l’organizzazione, la strutturazione, la conservazione, l\'adattamento o la modifica, l\'estrazione, la consultazione, l\'uso, la comunicazione mediante trasmissione, diffusione o qualsiasi altra forma di messa a disposizione, il raffronto o l\'interconnessione, la limitazione, la cancellazione o la distruzione\".
+\n\nL’applicazione raccoglie e utilizza dati sul dispositivo (Android ID), dati sugli utenti (Username, Nome, Cognome, Email, Password, Immagine di profilo) e sulle ricette e sui prodotti creati dagli utenti. Ciò include le raccolte di ricette e le forme di interazione tra gli utenti (visualizzazioni, commenti, mi piace, salvataggio di ricette altrui). Tutti i dati verranno salvati in una piattaforma cloud e non risulteranno accessibili da utenti senza autorizzazione. Inoltre, i dati raccolti non verranno utilizzati per scopi commerciali o pubblicitari, o venduti a terze parti.
+Utilizzando l\'app si considera fornito il proprio consenso al trattamento dei dati di cui sopra.
+
+\n\n<b>3. Destinatari dei Dati Personali</b>
+\nLa informiamo che i Suoi dati saranno conservati e saranno comunicati esclusivamente ai soggetti competenti per l\'espletamento dei servizi necessari ad una corretta gestione del rapporto, con garanzia di tutela dei diritti dell’interessato. I suoi dati saranno trattati, in particolare, dalle seguenti categorie di soggetti:
+ \n- dai dipendenti e dai collaboratori del Titolare, in qualità di persone autorizzate al trattamento;
+ \n- dalle Società terze o altri soggetti che svolgono alcune attività in outsourcing per conto del Titolare, nella loro qualità di responsabili esterni del trattamento, quali a titolo esemplificativo e non esaustivo, fornitori di servizi IT e cloud;
+ \n- dai soggetti cui la comunicazione sia obbligatoria per legge che tratteranno i suoi dati quali Titolari.
+
+\n\n<b>4. Utilizzo dei dati personali</b>
+\nI dati personali forniti dagli utenti comprendono:\n
+- Username\n
+- Nome\n
+- Cognome\n
+- Email\n
+- Password (crittografata)
+
+\n\nI dati personali raccolti vengono utilizzati per la creazione e la gestione degli account degli utenti. Username e Immagine di profilo sono gli unici dati personali mostrati agli altri utenti.
+Si ricorda agli utenti di non inviare e di non divulgare tramite l\'App altri dati personali sensibili (ad esempio: informazioni relative a origine razziale o etnica, opinioni politiche, religione o altre convinzioni, salute, biometria o caratteristiche genetiche, precedenti criminali o appartenenza sindacale).
+
+        \n\n<b>5. Utilizzo dei dati del dispositivo</b>
+\nI dati ottenuti dal dispositivo comprendono:\n
+- Android ID\n
+- Data e ora correnti
+\n\nL\'App necessita di connessione a Internet per funzionare, e può richiedere l\'autorizzazione dell\'utente ad accedere a funzionalità del telefono o ai sensori (ad es. fotocamera) o ad altri dati (ad es. immagini) sul dispositivo mobile dell\'utente. L\'App fa uso di notifiche push, le quali possono essere disattivate dalle Impostazioni dell\'applicazione.
+
+\n\n<b>6. Modalità di trattamento</b>
+\nIl trattamento dei suoi Dati Personali è realizzato per mezzo delle operazioni indicate all\'art. 4 punto 2 del GDPR e precisamente: raccolta, registrazione, organizzazione, conservazione, consultazione, elaborazione, estrazione, utilizzo, cancellazione e distruzione dei dati. Il trattamento dei dati avverrà mediante strumenti idonei a garantire la sicurezza e la riservatezza e potrà essere effettuato anche attraverso strumenti automatizzati atti a memorizzare, gestire e trasmettere i dati stessi. La informiamo, inoltre, che i dati personali a Lei riferibili saranno conservati in una forma che consenta l\'identificazione dell\'interessato per un periodo di tempo non superiore a quello necessario agli scopi per i quali essi sono stati raccolti o successivamente trattati.
+
+\n\n<b>7. Periodo di conservazione dei dati</b>
+\nI Dati Personali oggetto di trattamento per le finalità di cui sopra saranno conservati nel rispetto dei principi di proporzionalità e necessità, e comunque fino a che non siano state perseguite le finalità del trattamento, finché l\'account rimarrà attivo. I dati forniti verranno conservati fino a che l\'utente non revocherà il consenso eliminando il proprio account e disinstallando l\'applicazione; è possibile eliminare il proprio account nella sezione Impostazioni dell\'applicazione.
+
+\n\n<b>8. Diritti dell’interessato</b>
+\nIn relazione ai predetti trattamenti, Lei potrà esercitare i diritti di cui agli artt. 15-21 GDPR (Diritto di accesso, diritto di rettifica, diritto alla cancellazione, diritto di limitazione di trattamento, diritto alla portabilità dei dati, diritto di opposizione) nei confronti del Titolare mediante richiesta rivolta senza formalità anche per il tramite di un incaricato, alla quale sarà fornito idoneo riscontro senza ritardo; la richiesta rivolta può essere trasmessa anche mediante lettera raccomandata o posta elettronica ai recapiti sopra indicati.
+
+\n\n<b>Data dell\'ultimo aggiornamento:</b> 13/10/2023
+    </string>
 
     <!-- Stringhe specifiche del Navigation Drawer -->
 
@@ -167,6 +368,7 @@
     <string name="logout">Logout</string>
     <string name="products">Prodotti</string>
     <string name="collections">Raccolte</string>
+    <string name="settings">Impostazioni</string>
 
     <!-- Stringhe specifiche di "activity_home" -->
     <string name="raccolte">Raccolte</string>

@@ -70,15 +70,15 @@ class RegisterFragment : Fragment() {
                 EditTextValidator.Builder()
                     .setInputView(usernameView) // Username
                     .setErrorView(binding.errorUsername)
-                    .addRules(ValidationRule.MaxLength(20)),
+                    .addRules(ValidationRule.MinLength(4), ValidationRule.MaxLength(20)),
                 EditTextValidator.Builder()
                     .setInputView(nomeView) // Nome
                     .setErrorView(binding.errorNome)
-                    .addRules(ValidationRule.MaxLength(50)),
+                    .addRules(ValidationRule.MaxLength(30)),
                 EditTextValidator.Builder()
                     .setInputView(cognomeView) // Cognome
                     .setErrorView(binding.errorCognome)
-                    .addRules(ValidationRule.MaxLength(50)),
+                    .addRules(ValidationRule.MaxLength(30)),
                 EditTextValidator.Builder()
                     .setInputView(emailView) // Email
                     .setErrorView(binding.errorEmail)
@@ -116,8 +116,19 @@ class RegisterFragment : Fragment() {
 
             it?.let {
                 when(it.name) {
-                    "INSERTION" -> { navigateTo(RegisterFragmentDirections
-                        .actionRegisterFragmentToMainActivity())
+                    "INSERTION" -> {
+                        navigateTo(RegisterFragmentDirections
+                            .actionRegisterFragmentToMainActivity())
+                    }
+                    "FirebaseAuthUserCollisionException" -> {
+                        Toast.makeText(activity,
+                            "Email già in uso",
+                            Toast.LENGTH_SHORT).show()
+                    }
+                    "Exception" -> {
+                        Toast.makeText(activity,
+                            "Si è verificato un errore, per favore riprova più tardi",
+                            Toast.LENGTH_SHORT).show()
                     }
                     else -> { }
                 }

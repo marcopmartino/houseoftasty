@@ -1,21 +1,15 @@
-package it.project.houseoftasty
+package it.project.houseoftasty.worker
 
 import android.annotation.SuppressLint
-import android.app.Notification.VISIBILITY_PUBLIC
 import android.content.Context
-import android.app.PendingIntent
-import android.content.Intent
-import android.os.Build
-import android.os.Bundle
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.work.*
+import it.project.houseoftasty.R
 import it.project.houseoftasty.model.Product
 import it.project.houseoftasty.network.ProductNetwork
 import it.project.houseoftasty.view.MainActivity
-import it.project.houseoftasty.view.MyProductFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -38,7 +32,7 @@ class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
 
     override fun doWork(): Result {
 
-        runBlocking{
+        runBlocking {
             checkDate()
         }
         return Result.success()
@@ -58,7 +52,7 @@ class ExpireWorker(appContext: Context, workerParams: WorkerParameters):
         currentDate = sdf.parse(temp)!!
 
         withContext(Dispatchers.IO){
-            products = productNetwork.getProductByUser()
+            products = productNetwork.getProductsByCurrentUser()
         }
 
         for(product in products) {

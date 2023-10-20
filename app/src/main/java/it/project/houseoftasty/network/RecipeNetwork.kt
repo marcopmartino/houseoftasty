@@ -8,10 +8,9 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Source
 import it.project.houseoftasty.model.Comment
-import it.project.houseoftasty.model.Profile
 import it.project.houseoftasty.model.Recipe
+import it.project.houseoftasty.utility.getCurrentUserIdOrAndroidId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
@@ -19,9 +18,21 @@ import kotlinx.coroutines.withContext
 
 open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
 
-    val currentUserId: String = FirebaseAuth.getInstance().currentUser!!.uid
+    val currentUserId: String = FirebaseAuth.getInstance().getCurrentUserIdOrAndroidId()
     private val recipesReference: CollectionReference =
         FirebaseFirestore.getInstance().collection("recipes")
+
+    // Ritorna tutti i documenti sulle ricette di un dato utente
+    suspend fun getRecipeDocumentsByUser(userId: String = currentUserId): MutableList<DocumentSnapshot> {
+        lateinit var documents: MutableList<DocumentSnapshot>
+
+        // Recupera i dati sulle ricette (richiede la connessione a Firestore)
+        withContext(Dispatchers.IO) {
+            documents = recipesReference.whereEqualTo("idCreatore", userId).get().await().documents
+        }
+
+        return documents
+    }
 
     // Ritorna tutti i dati sulle ricette di un dato utente
     suspend fun getRecipesByUser(userId: String = currentUserId, getImageReferences: Boolean = true): MutableList<Recipe> {
@@ -196,7 +207,7 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
     open suspend fun deleteRecipeById(recipeId: String) {
         withContext(Dispatchers.IO) {
             val documentReference = recipesReference.document(recipeId)
-            if (documentReference.get().await().get("boolPubblicata") == true)
+            if (documentReference.get().await().get("boolImmagine") == true)
                 deleteFile(recipeId)
             documentReference.delete().await()
         }
@@ -264,7 +275,7 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
         withContext(Dispatchers.IO){
             val likes: List<String?> = recipesReference.document(recipeId).get().await().get("likes") as List<String?>
             for(user in likes){
-                if  (currentUserId == user) return@withContext
+                if (currentUserId == user) return@withContext
             }
             recipesReference.document(recipeId).update("likes", FieldValue.arrayUnion(currentUserId)).await()
             recipesReference.document(recipeId).update("likeCounter", FieldValue.increment(1)).await()
@@ -294,7 +305,7 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
                 recipesReference.document(recipeId).get().await().get("downloads") as List<String?>
             if (downloads.contains(currentUserId)) return@withContext
             val collectionNetwork = RecipeCollectionNetwork()
-            collectionNetwork.addRecipeById(recipeId)
+            collectionNetwork.addRecipeToSaveCollection(recipeId)
             recipesReference.document(recipeId)
                 .update("downloads", FieldValue.arrayUnion(currentUserId)).await()
             recipesReference.document(recipeId).update("downloadCounter", FieldValue.increment(1))
@@ -317,6 +328,48 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
                 }
             }
         }
+    }
+
+    // Aggiunge un commento ad una ricetta di cui è noto l'id
+    suspend fun addComment(recipeId: String, text: String): Comment{
+        val comment = Comment(null, currentUserId, text, Timestamp.now(), "Tu")
+
+        withContext(Dispatchers.IO){
+            comment.id = recipesReference.document(recipeId)
+                .collection("comments")
+                .add(comment).await().id
+            comment.imageReference = ProfileNetwork.getDataSource().getFileReference(currentUserId)
+            recipesReference.document(recipeId).update("commentCounter", FieldValue.increment(1)).await()
+        }
+
+        return comment
+    }
+
+    // Rimuove un commento di una ricetta di cui è noto l'id
+    suspend fun removeComment(recipeId: String, commentId: String) {
+        withContext(Dispatchers.IO){
+            recipesReference.document(recipeId)
+                .collection("comments").document(commentId).delete()
+            recipesReference.document(recipeId).update("commentCounter", FieldValue.increment(-1)).await()
+        }
+    }
+
+    // Rimuove tutti i commenti di una ricetta di cui è noto l'id
+    suspend fun removeComments(recipeId: String) {
+        var documents: MutableList<DocumentSnapshot>
+        val commentsReference: CollectionReference =
+            recipesReference.document(recipeId).collection("comments")
+
+        withContext(Dispatchers.IO){
+            documents = commentsReference.get().await().documents
+
+            for (document in documents) {
+                commentsReference.document(document.id).delete()
+            }
+
+            recipesReference.document(recipeId).update("commentCounter",0)
+        }
+
     }
 
     // Incrementa le visualizzazioni di una ricetta
@@ -551,21 +604,6 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
         return commentList
     }
 
-    //Aggiunge un commento ad una ricetta di cui è noto l'id
-    suspend fun addComment(recipeId: String, text: String): Comment{
-        val comment = Comment(null, currentUserId, text, Timestamp.now(), "Tu")
-
-        withContext(Dispatchers.IO){
-            comment.id = recipesReference.document(recipeId)
-                .collection("comments")
-                .add(comment).await().id
-            comment.imageReference = ProfileNetwork.getDataSource().getFileReference(currentUserId)
-            recipesReference.document(recipeId).update("commentCounter", FieldValue.increment(1)).await()
-        }
-
-        return comment
-    }
-
     fun isCreator(recipeId: String): Boolean{
         lateinit var documents: DocumentSnapshot
 
@@ -581,12 +619,16 @@ open class RecipeNetwork : StorageNetwork("immagini_ricette/") {
     /* Factory method */
     companion object {
         private var INSTANCE: RecipeNetwork? = null
+        private var NEW_INSTANCE = RecipeNetwork()
 
-        fun getDataSource(): RecipeNetwork {
+        fun getDataSource(newInstance: Boolean = true): RecipeNetwork {
             return synchronized(RecipeNetwork::class) {
-                val newInstance = INSTANCE ?: RecipeNetwork()
-                INSTANCE = newInstance
-                newInstance
+                if (newInstance) NEW_INSTANCE
+                else {
+                    val instance = INSTANCE ?: NEW_INSTANCE
+                    INSTANCE = instance
+                    instance
+                }
             }
         }
     }

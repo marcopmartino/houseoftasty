@@ -6,7 +6,6 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import it.project.houseoftasty.model.Recipe
 import it.project.houseoftasty.model.RecipeCollection
 import it.project.houseoftasty.utility.removeIfContains
@@ -19,8 +18,19 @@ class RecipeCollectionNetwork: RecipeNetwork() {
         FirebaseFirestore.getInstance().collection("users").document(currentUserId)
             .collection("collections")
 
+    // Ritorna tutti i documenti sulle raccolte dell'utente attuale
+    suspend fun getRecipeCollectionDocumentsByCurrentUser(): MutableList<DocumentSnapshot> {
+        lateinit var documents: MutableList<DocumentSnapshot>
 
-    // Ritorna tutti i dati sulle raccolte di un dato utente
+        // Recupera i dati sulle raccolte (richiede la connessione a Firestore)
+        withContext(Dispatchers.IO) {
+            documents = recipeCollectionsReference.get().await().documents
+        }
+
+        return documents
+    }
+
+    // Ritorna tutti i dati sulle raccolte dell'utente attuale
     @Suppress("UNCHECKED_CAST")
     suspend fun getRecipeCollectionsByCurrentUser(): MutableList<RecipeCollection> {
         lateinit var recipeCollectionList: MutableList<RecipeCollection>
@@ -74,7 +84,7 @@ class RecipeCollectionNetwork: RecipeNetwork() {
                     recipeCollection = it
                     val recipeIdList: List<String> = document.get("listaRicette") as List<String>
                     for(recipeId in recipeIdList)
-                        recipeCollection.listaRicette.add(getRecipeById(recipeId))
+                        recipeCollection.listaRicette.add(getRecipeById(recipeId, getCreatorName = true))
 
 
                 }
@@ -130,6 +140,12 @@ class RecipeCollectionNetwork: RecipeNetwork() {
         return newCollectionId
     }
 
+    private suspend fun createSaveCollection(collection: RecipeCollection) {
+        withContext(Dispatchers.IO) {
+            recipeCollectionsReference.document("saveCollection").set(collection).await()
+        }
+    }
+
     suspend fun updateCollectionName(collectionId: String, name: String) {
         withContext(Dispatchers.IO) {
             recipeCollectionsReference.document(collectionId)
@@ -166,9 +182,44 @@ class RecipeCollectionNetwork: RecipeNetwork() {
         }
     }
 
+    suspend fun removeRecipeFromSaveCollections(recipeId: String) {
+        lateinit var userDocuments: MutableList<DocumentSnapshot>
+        val usersReference = FirebaseFirestore.getInstance().collection("users")
+
+        withContext(Dispatchers.IO) {
+            userDocuments = usersReference.get().await().documents
+        }
+
+        for (userDocument in userDocuments) {
+
+            // Recupera i dati sulle raccolte (richiede la connessione a Firestore)
+            withContext(Dispatchers.IO) {
+                usersReference.document(userDocument.id).collection("collections")
+                    .document("saveCollection")
+                    .update("listaRicette", FieldValue.arrayRemove(recipeId))
+            }
+        }
+    }
+
     override suspend fun deleteRecipeById(recipeId: String) {
         super.deleteRecipeById(recipeId)
         removeRecipeFromCollections(recipeId)
+        removeRecipeFromSaveCollections(recipeId)
+    }
+
+    // Elimina tutte le ricette
+    suspend fun deleteAllRecipes() {
+        getRecipeDocumentsByUser().also {
+            for (document in it)
+                deleteRecipeById(document.id)
+        }
+    }
+
+    suspend fun deleteAllCollections() {
+        getRecipeCollectionDocumentsByCurrentUser().also {
+            for (document in it)
+                deleteCollectionById(document.id)
+        }
     }
 
     private suspend fun removeRecipeFromCollection(recipeId: String) {
@@ -182,54 +233,31 @@ class RecipeCollectionNetwork: RecipeNetwork() {
         removeRecipeFromCollection(recipeId)
     }
 
-    private suspend fun addRecipeIntoCollection(recipeId: String){
-        lateinit var documents: MutableList<DocumentSnapshot>
-        var collection = ""
+    suspend fun addRecipeToSaveCollection(recipeId: String){
+        val saveCollectionReference = recipeCollectionsReference.document("saveCollection")
 
-        withContext(Dispatchers.IO){
-            documents = recipeCollectionsReference.get().await().documents
-        }
-
-        for(document in documents){
-            val temp = document.toObject(RecipeCollection::class.java)
-            if(temp!!.id.equals("saveCollection")){
-                collection = temp.id!!
-                break
+        withContext(Dispatchers.IO) {
+            saveCollectionReference.get().await().exists().also {
+                if (!it)
+                    createSaveCollection(RecipeCollection(null, "Salvati", Timestamp.now()))
             }
-        }
-
-        if(collection.isEmpty()){
-            collection = addCollection(RecipeCollection(
-                "saveCollection",
-                "Salvati",
-                Timestamp.now()))
-        }
-
-        withContext(Dispatchers.IO){
-            recipeCollectionsReference.document(collection)
-                .update("listaRicette", FieldValue.arrayUnion(recipeId))
-        }
-
-        withContext(Dispatchers.IO){
-            recipeCollectionsReference.document(collection)
-                .update("listaRicette", FieldValue.arrayUnion(recipeId))
+            saveCollectionReference.update("listaRicette", FieldValue.arrayUnion(recipeId))
         }
     }
-
-    suspend fun addRecipeById(recipeId: String){
-        addRecipeIntoCollection(recipeId)
-    }
-
 
     /* Factory method */
     companion object {
         private var INSTANCE: RecipeCollectionNetwork? = null
+        private var NEW_INSTANCE = RecipeCollectionNetwork()
 
-        fun getDataSource(): RecipeCollectionNetwork {
+        fun getDataSource(newInstance: Boolean = true): RecipeCollectionNetwork {
             return synchronized(RecipeCollectionNetwork::class) {
-                val newInstance = INSTANCE ?: RecipeCollectionNetwork()
-                INSTANCE = newInstance
-                newInstance
+                if (newInstance) NEW_INSTANCE
+                else {
+                    val instance = INSTANCE ?: NEW_INSTANCE
+                    INSTANCE = instance
+                    instance
+                }
             }
         }
     }

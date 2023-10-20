@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import it.project.houseoftasty.R
 import it.project.houseoftasty.databinding.ActivityAccessBinding
+import it.project.houseoftasty.utility.isAuthenticated
 
 class AccessActivity : AppCompatActivity() {
 
@@ -29,7 +30,7 @@ class AccessActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         val firebaseUser = firebaseAuth.currentUser
 
-        if (firebaseUser != null) {
+        if (firebaseUser.isAuthenticated()) {
             firebaseAuth.signOut()
         }
 

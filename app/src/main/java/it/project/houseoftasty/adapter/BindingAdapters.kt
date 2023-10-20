@@ -13,11 +13,14 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.StorageReference
 import it.project.houseoftasty.R
+import it.project.houseoftasty.adapter.BindingAdapters.Companion.setSettingsDividerHeight
 import it.project.houseoftasty.model.Recipe
 import it.project.houseoftasty.utility.DateTimeFormatter
 import it.project.houseoftasty.utility.ImageLoader
+import it.project.houseoftasty.utility.isUserAuthenticated
 import java.util.*
 
 class BindingAdapters {
@@ -152,6 +155,18 @@ class BindingAdapters {
                 this.visibility = View.GONE
             else
                 this.visibility = View.VISIBLE
+        }
+
+        @BindingAdapter("setSettingsDividerHeight")
+        @JvmStatic
+        fun View.setSettingsDividerHeight(show: Boolean) {
+            if (!show) this.layoutParams.height = 0
+        }
+
+        @BindingAdapter("setSettingsItemHeight")
+        @JvmStatic
+        fun View.setSettingsItemHeight(show: Boolean) {
+            if (!show) this.layoutParams.height = 0
         }
 
 

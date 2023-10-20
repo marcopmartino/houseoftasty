@@ -17,7 +17,7 @@ class ProductViewModel : LoadingManagerViewModel(){
     override suspend fun initAsync() {
         // Ottiene dalla repository la lista dei prodotti e aggiorna il LiveData
         // Il metodo "postValue" imposta il nuovo valore e notifica eventuali osservatori
-        productLiveData.postValue(dataSource.getProductByUser())
+        productLiveData.postValue(dataSource.getProductsByCurrentUser())
     }
 
 

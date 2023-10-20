@@ -56,6 +56,17 @@ class RecipeFormFragment : Fragment() {
                 "Nuova Ricetta" else "Modifica Ricetta"
         )
 
+        // Modifiche da apportare alla vista se l'utente non è autenticato
+        if (!mainActivity.isUserAuthenticated) {
+            binding.switchPostPrivate.height = 0
+            binding.switchPostPrivate.visibility = View.INVISIBLE
+            binding.switchPostPrivate.isEnabled = false
+
+            binding.switchPublished.height = 0
+            binding.switchPublished.visibility = View.INVISIBLE
+            binding.switchPublished.isEnabled = false
+        }
+
         // Campi di input della form
         val dataTitleView = binding.dataTitle
         val dataIngredientsView = binding.dataIngredients

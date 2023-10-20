@@ -38,6 +38,7 @@ android {
 
     buildTypes {
         release {
+            shrinkResources false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -79,7 +80,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:31.2.3')
+    implementation platform('com.google.firebase:firebase-bom:32.3.1')
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
@@ -114,7 +115,9 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:1.9.10"
     androidTestImplementation "androidx.test.ext:junit:1.1.5"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation ("androidx.test.espresso:espresso-contrib:$espressoVersion") {
+        exclude module: "protobuf-lite"
+    }
     androidTestImplementation "androidx.test:runner:$androidXTestVersion"
     androidTestImplementation "androidx.test:rules:$androidXTestVersion"
     androidTestImplementation "androidx.navigation:navigation-testing:$navigation_version"

@@ -47,9 +47,13 @@ class CollectionAdapter(
                 .also { itemBinding.collectionName.text = it }
 
             // Binding del timestamp
-            val timestamp = recipeCollection.timestampCreazione as com.google.firebase.Timestamp
-            itemBinding.collectionTime.text = DateTimeFormatter.firebaseTimestampToTemplate(
-                resources, R.string.timestampTemplate_creation, timestamp)
+            itemBinding.collectionTime.text =
+                if (recipeCollection.id == "saveCollection")
+                    "Raccolta generata automaticamente"
+                else
+                    DateTimeFormatter.firebaseTimestampToTemplate(
+                        resources, R.string.timestampTemplate_creation,
+                        recipeCollection.timestampCreazione as com.google.firebase.Timestamp)
 
             // Binding dell'immagine
             var immagineCaricata = false

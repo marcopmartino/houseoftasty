@@ -1,43 +1,47 @@
 package it.project.houseoftasty.view
 
 import android.annotation.SuppressLint
-import android.content.Context
-import androidx.lifecycle.ViewModelProvider
+import android.app.AlertDialog
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.RectF
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.project.houseoftasty.R
 import it.project.houseoftasty.adapter.BindingAdapters.Companion.setFabVisibility
 import it.project.houseoftasty.adapter.CommentAdapter
-import it.project.houseoftasty.databinding.FragmentRecipeDetailsBinding
 import it.project.houseoftasty.databinding.FragmentRecipePostBinding
-import it.project.houseoftasty.model.RecipeCollection
 import it.project.houseoftasty.network.RecipeCollectionNetwork
 import it.project.houseoftasty.utility.DateTimeFormatter
 import it.project.houseoftasty.utility.dateToString
 import it.project.houseoftasty.utility.decrement
 import it.project.houseoftasty.utility.increment
-import it.project.houseoftasty.utility.textToInt
 import it.project.houseoftasty.utility.timeToString
 import it.project.houseoftasty.utility.toLocalDateTime
 import it.project.houseoftasty.viewModel.RecipePostViewModel
 import it.project.houseoftasty.viewModel.RecipePostViewModelFactory
-import kotlinx.coroutines.runBlocking
+
 
 class RecipePostFragment : Fragment() {
 
@@ -72,6 +76,13 @@ class RecipePostFragment : Fragment() {
         // Modifico il titolo della Action Bar
         val mainActivity = (activity as MainActivity)
         mainActivity.setActionBarTitle("Dettagli Ricetta")
+
+        // Modifiche da apportare alla vista se l'utente non è autenticato
+        if (!mainActivity.isUserAuthenticated) {
+            binding.commentEditText.height = 0
+            binding.commentEditText.visibility = View.INVISIBLE
+            binding.commentEditText.isEnabled = false
+        }
 
         // Ottiene un riferimento al sottotitolo
         val recipeSubtitle = binding.recipeInfo
@@ -223,11 +234,11 @@ class RecipePostFragment : Fragment() {
         recipePostViewModel.downloadButtonPressed.observe(viewLifecycleOwner) {
             if (recipePostViewModel.isRecipeCreatorNotCurrentUser()) {
                 if (it)
-                    downloadButton.setImageResource(R.drawable.icon_tick)
+                    downloadButton.setImageResource(R.drawable.icon_star_yellow)
                 else
-                    downloadButton.setImageResource(R.drawable.icon_download)
+                    downloadButton.setImageResource(R.drawable.icon_star_empty)
             } else
-                downloadButton.setImageResource(R.drawable.icon_download)
+                downloadButton.setImageResource(R.drawable.icon_star)
         }
 
         // Sezione commenti
@@ -237,6 +248,109 @@ class RecipePostFragment : Fragment() {
         }
         recyclerview.layoutManager = LinearLayoutManager(activity)
         recyclerview.adapter = commentAdapter
+
+
+        val simpleCallback: ItemTouchHelper.SimpleCallback =
+            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+                private val deleteIcon: Drawable? = ContextCompat.getDrawable(requireContext(), R.drawable.icon_delete_white)
+                private val intrinsicWidth: Int = deleteIcon?.intrinsicWidth ?: 0
+                private val intrinsicHeight: Int = deleteIcon?.intrinsicHeight ?: 0
+                private val background = ColorDrawable()
+                private val backgroundColor: Int = ContextCompat.getColor(requireContext(), R.color.dark_red)
+                private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
+
+                override fun getMovementFlags(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder
+                ): Int {
+                    // Disabilita lo swipe se l'utente che visualizza il commento non è quello che lo ha scritto
+                    if (recipePostViewModel.getCurrentUserId() != recipePostViewModel.getCommentCreatorId(viewHolder.adapterPosition))
+                        return 0
+                    return super.getMovementFlags(recyclerView, viewHolder)
+                }
+
+                // Disabilita lo spostamento reciproco tra elementi della recyclerview
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
+
+                // Elimina il commento
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val itemPosition = viewHolder.adapterPosition
+
+                    // Mostra un dialog di conferma
+                    if (direction == ItemTouchHelper.LEFT) {
+
+                        AlertDialog.Builder(context)
+                            .setMessage("Eliminare il commento?")
+                            .setCancelable(false)
+                            .setPositiveButton("Sì") { _, _ ->
+                                // Elimina il commento
+                                recipePostViewModel.removeComment(itemPosition)
+                                // Aggiorna la RecyclerView
+                                commentAdapter.notifyItemRemoved(itemPosition)
+                            }
+                            .setNegativeButton("No") { dialog, _ ->
+                                // Esegue il reset dell\'animazione
+                                commentAdapter.notifyItemChanged(itemPosition)
+                                // Rimuove il Dialog
+                                dialog.dismiss()
+                            }
+                            .create().show()
+                    }
+                }
+
+                override fun onChildDraw(
+                    canvas: Canvas,
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    dX: Float,
+                    dY: Float,
+                    actionState: Int,
+                    isCurrentlyActive: Boolean
+                ) {
+
+                    val itemView = viewHolder.itemView
+                    val itemHeight = itemView.bottom - itemView.top
+
+                    if (dX == 0f && !isCurrentlyActive) {
+                        clearCanvas(canvas, itemView.right + dX, itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
+                        super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, false)
+                        return
+                    }
+
+                    // Imposta lo sfondo rosso
+                    background.color = backgroundColor
+                    background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                    background.draw(canvas)
+
+                    // Calcola la posizione dell'icona di eliminazione
+                    val deleteIconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
+                    val deleteIconMargin = (itemHeight - intrinsicHeight) / 2
+                    val deleteIconLeft = itemView.right - deleteIconMargin - intrinsicWidth
+                    val deleteIconRight = itemView.right - deleteIconMargin
+                    val deleteIconBottom = deleteIconTop + intrinsicHeight
+
+                    // Mostra l'icona di eliminazione
+                    deleteIcon?.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
+                    deleteIcon?.draw(canvas)
+
+                    super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                }
+
+                private fun clearCanvas(canvas: Canvas?, left: Float, top: Float, right: Float, bottom: Float) {
+                    canvas?.drawRect(left, top, right, bottom, clearPaint)
+                }
+
+            }
+
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerview)
 
         // Osservatore sul LiveData dei commenti per aggiornare la lista
         recipePostViewModel.commentsLiveData.observe(viewLifecycleOwner) {

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.project.houseoftasty.adapter.BindingAdapters.Companion.setFabVisibility
 import it.project.houseoftasty.adapter.PrivateRecipeAdapter
+import it.project.houseoftasty.adapter.PublicRecipeAdapter
 import it.project.houseoftasty.databinding.FragmentCollectionDetailsBinding
 import it.project.houseoftasty.viewModel.CollectionDetailsViewModel
 import it.project.houseoftasty.viewModel.CollectionDetailsViewModelFactory
@@ -59,11 +60,15 @@ class CollectionDetailsFragment : Fragment() {
         /* Imposta il "layoutManager" e l'"adapter" per la RecyclerView;
         passa all'Adapter la funzione da eseguire al click sul singolo elemento della RecyclerView */
         val recyclerView: RecyclerView = binding.recyclerView
-        val privateRecipeAdapter = PrivateRecipeAdapter(requireContext(), resources) { recipeId -> adapterOnClick(recipeId) }
+        val recipeAdapter =
+            if (collectionDetailsViewModel.getIsSaveCollection())
+                PublicRecipeAdapter(requireContext(), resources) { recipeId -> adapterOnClick(recipeId) }
+            else
+                PrivateRecipeAdapter(requireContext(), resources) { recipeId -> adapterOnClick(recipeId) }
         val layoutManager = LinearLayoutManager(requireContext())
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = privateRecipeAdapter
+        recyclerView.adapter = recipeAdapter
 
         /* Imposta un clickListener sul F.A.B */
         val fab = binding.floatingActionButton
@@ -77,7 +82,7 @@ class CollectionDetailsFragment : Fragment() {
             it?.let {
 
                 /* Invia all'Adapter la lista di ricette da mostrare */
-                privateRecipeAdapter.submitList(it)
+                recipeAdapter.submitList(it)
             }
         }
     }
@@ -98,12 +103,12 @@ class CollectionDetailsFragment : Fragment() {
 
     /* Naviga verso RecipeDetailFragment al click su un elemento della RecyclerView. */
     private fun adapterOnClick(recipeId: String) {
-        if(collectionDetailsViewModel.isCreator(recipeId))
-            navigateTo(CollectionDetailsFragmentDirections
-                .actionCollectionDetailsFragmentToRecipeDetailFragment(recipeId))
-        else
+        if (collectionDetailsViewModel.getIsSaveCollection())
             navigateTo(CollectionDetailsFragmentDirections
                 .actionCollectionDetailsFragmentToRecipePostFragment(recipeId))
+        else
+            navigateTo(CollectionDetailsFragmentDirections
+                .actionCollectionDetailsFragmentToRecipeDetailFragment(recipeId))
     }
 
     // Funzione per navigare verso altri Fragment

@@ -291,4 +291,85 @@
             android:id="@+id/action_nav_profile_to_recipePublishFragment"
             app:destination="@id/recipePublishFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="it.project.houseoftasty.view.SettingsFragment"
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_nav_Settings_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_nav_Settings_to_nav_logout"
+            app:destination="@id/nav_logout" />
+        <action
+            android:id="@+id/action_nav_settings_to_accountDeleteFragment"
+            app:destination="@id/accountDeleteFragment" />
+        <action
+            android:id="@+id/action_nav_settings_to_accountResetFragment"
+            app:destination="@id/accountResetFragment" />
+        <action
+            android:id="@+id/action_nav_settings_to_privacyPolicyFragment"
+            app:destination="@id/privacyPolicyFragment" />
+        <action
+            android:id="@+id/action_nav_settings_to_termsOfServiceFragment"
+            app:destination="@id/termsOfServiceFragment" />
+        <action
+            android:id="@+id/action_nav_settings_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+        <action
+            android:id="@+id/action_nav_settings_to_releaseNotesFragment"
+            app:destination="@id/releaseNotesFragment" />
+        <action
+            android:id="@+id/action_nav_settings_to_startSettingsFragment"
+            app:destination="@id/startSettingsFragment" />
+        <action
+            android:id="@+id/action_nav_settings_to_accountInfoFragment"
+            app:destination="@id/accountInfoFragment" />
+        <action
+            android:id="@+id/action_nav_settings_to_notificationSettingsFragment"
+            app:destination="@id/notificationSettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountDeleteFragment"
+        android:name="it.project.houseoftasty.view.AccountDeleteFragment"
+        android:label="fragment_account_delete"
+        tools:layout="@layout/fragment_account_delete" >
+        <action
+            android:id="@+id/action_accountDeleteFragment_to_nav_logout"
+            app:destination="@id/nav_logout" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountResetFragment"
+        android:name="it.project.houseoftasty.view.AccountResetFragment"
+        android:label="fragment_account_reset" />
+    <fragment
+        android:id="@+id/privacyPolicyFragment"
+        android:name="it.project.houseoftasty.view.PrivacyPolicyFragment"
+        android:label="PrivacyPolicyFragment" />
+    <fragment
+        android:id="@+id/termsOfServiceFragment"
+        android:name="it.project.houseoftasty.view.TermsOfServiceFragment"
+        android:label="TermsOfServiceFragment" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="it.project.houseoftasty.view.AboutFragment"
+        android:label="AboutFragment" />
+    <fragment
+        android:id="@+id/releaseNotesFragment"
+        android:name="it.project.houseoftasty.view.ReleaseNotesFragment"
+        android:label="ReleaseNotesFragment" />
+    <fragment
+        android:id="@+id/startSettingsFragment"
+        android:name="it.project.houseoftasty.view.StartSettingsFragment"
+        android:label="fragment_start_settings"
+        tools:layout="@layout/fragment_start_settings" />
+    <fragment
+        android:id="@+id/accountInfoFragment"
+        android:name="it.project.houseoftasty.view.AccountInfoFragment"
+        android:label="fragment_account_info"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/notificationSettingsFragment"
+        android:name="it.project.houseoftasty.view.NotificationSettingsFragment"
+        android:label="NotificationSettingsFragment" />
 </navigation>

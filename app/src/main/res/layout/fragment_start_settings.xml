@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.StartSettingsFragment">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="it.project.houseoftasty.viewModel.StartSettingsViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/sand_brown">
+
+            <TextView
+                android:id="@+id/startSettingsIntroText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/baloo_bhai_2"
+                android:text="@string/selectActivityText"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupStartActivity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/startSettingsIntroText">
+
+                <RadioButton
+                    android:id="@+id/radioButtonHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/tawny_brown"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:padding="8dp"
+                    android:text="@string/selectMainActivity"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonAccess"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/tawny_brown"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:padding="8dp"
+                    android:text="@string/selectAccessActivity"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonWelcome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/tawny_brown"
+                    android:fontFamily="@font/baloo_bhai_2"
+                    android:padding="8dp"
+                    android:text="@string/selectWelcomeActivity"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/startActivityPreviewTemplate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="@font/baloo2semibold"
+                android:text="@string/startActivityPreviewTemplate"
+                android:textColor="@color/tawny_brown"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroupStartActivity" />
+
+            <View
+                android:id="@+id/preview_container"
+                android:layout_width="0dp"
+                android:layout_height="700dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/tawny_brown_border"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/startActivityPreviewTemplate" />
+
+            <FrameLayout
+                android:id="@+id/container_preview_access"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
+                android:visibility='@{viewModel.visiblePreview == "Access" ? View.VISIBLE : View.GONE}'
+                app:layout_constraintBottom_toBottomOf="@id/preview_container"
+                app:layout_constraintEnd_toEndOf="@+id/preview_container"
+                app:layout_constraintStart_toStartOf="@+id/preview_container"
+                app:layout_constraintTop_toTopOf="@+id/preview_container"
+                tools:visibility="invisible">
+
+                <include
+                    android:id="@+id/content_preview_access"
+                    layout="@layout/fragment_access"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/container_preview_welcome"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
+                android:visibility='@{viewModel.visiblePreview == "Welcome" ? View.VISIBLE : View.GONE}'
+                app:layout_constraintBottom_toBottomOf="@id/preview_container"
+                app:layout_constraintEnd_toEndOf="@+id/preview_container"
+                app:layout_constraintStart_toStartOf="@+id/preview_container"
+                app:layout_constraintTop_toTopOf="@+id/preview_container"
+                tools:visibility="invisible">
+
+                <include
+                    android:id="@+id/content_preview_welcome"
+                    layout="@layout/activity_welcome"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/container_preview_home"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
+                android:visibility='@{viewModel.visiblePreview == "Home" ? View.VISIBLE : View.GONE}'
+                app:layout_constraintBottom_toBottomOf="@id/preview_container"
+                app:layout_constraintEnd_toEndOf="@+id/preview_container"
+                app:layout_constraintStart_toStartOf="@+id/preview_container"
+                app:layout_constraintTop_toTopOf="@+id/preview_container"
+                tools:visibility="invisible">
+
+                <include
+                    android:id="@+id/content_preview_home"
+                    layout="@layout/fragment_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</layout>

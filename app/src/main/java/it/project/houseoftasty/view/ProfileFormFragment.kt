@@ -92,7 +92,7 @@ class ProfileFormFragment : Fragment() {
                     .setInputView(dataUsernameView) // Username
                     .setErrorView(binding.errorUsername)
                     .addRules(ValidationRule.Required(),
-                        ValidationRule.MinLength(6),
+                        ValidationRule.MinLength(4),
                         ValidationRule.MaxLength(20)),
                 EditTextValidator.Builder()
                     .setInputView(dataNomeView) // Nome
