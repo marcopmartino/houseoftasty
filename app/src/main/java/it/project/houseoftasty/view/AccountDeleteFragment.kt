@@ -71,7 +71,7 @@ class AccountDeleteFragment : Fragment() {
                 // Esegue la funzione di reset
                 lifecycleScope.launch {
                     accountDeleteViewModel.deleteAccount(passwordValidator.getInputData().toString()) {
-                        navigateTo(AccountDeleteFragmentDirections.actionAccountDeleteFragmentToNavLogout())
+                        navigateTo(AccountDeleteFragmentDirections.actionAccountDeleteFragmentToAccessActivity())
                     }
                 }
             }

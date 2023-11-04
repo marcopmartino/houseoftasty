@@ -10,8 +10,6 @@ import it.project.houseoftasty.network.RecipeNetwork
 class RecipeDetailsViewModel(val recipeId: String) : LoadingManagerViewModel() {
     private val dataSource: RecipeNetwork = RecipeNetwork.getDataSource()
     val recipeLiveData : MutableLiveData<Recipe> = MutableLiveData(Recipe())
-    val commentLiveData : MutableLiveData<MutableList<Comment>> = MutableLiveData(mutableListOf(Comment()))
-    val likeButtonPressed: MutableLiveData<Boolean> = MutableLiveData(false)
 
     // Inizializzazione
     init {
@@ -23,8 +21,6 @@ class RecipeDetailsViewModel(val recipeId: String) : LoadingManagerViewModel() {
         // Ottiene la ricetta dalla repository e aggiorna il LiveData
         // Il metodo "postValue" imposta il nuovo valore e notifica eventuali osservatori
         recipeLiveData.postValue(dataSource.getRecipeById(recipeId))
-        commentLiveData.postValue(dataSource.getCommentsByRecipeId(recipeId))
-
     }
 
 }

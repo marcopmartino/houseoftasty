@@ -1,6 +1,7 @@
 package it.project.houseoftasty.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
@@ -16,9 +17,9 @@ class AccessActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(
-            this, R.layout.activity_access
-        )
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_access)
+
+        Log.d("AccessActivity", "onCreate()")
 
         // Imposto la toolbar come ActionBar
         setSupportActionBar(binding.contentAccess.accessToolbar)

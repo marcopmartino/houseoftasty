@@ -36,7 +36,7 @@ class SettingsFragment : Fragment() {
 
         // Modifico il titolo della Action Bar
         val mainActivity = (activity as MainActivity)
-        mainActivity.setActionBarTitle("Reset Account")
+        mainActivity.setActionBarTitle("Impostazioni")
 
         // Naviga verso la schermata con le informazioni sull'applicazione
         binding.itemAbout.setOnClickListener {
@@ -65,7 +65,7 @@ class SettingsFragment : Fragment() {
 
         // Naviga verso la schermata di accesso
         binding.itemLogout.setOnClickListener {
-            navigateTo(SettingsFragmentDirections.actionNavSettingsToNavLogout())
+            navigateTo(SettingsFragmentDirections.actionNavSettingsToAccessActivity())
         }
 
         // Naviga verso la schermata per il reset dell'account

@@ -255,7 +255,7 @@
     </fragment>
     <!-- Logout -->
     <activity
-        android:id="@+id/nav_logout"
+        android:id="@+id/access_activity"
         android:name="it.project.houseoftasty.view.AccessActivity"
         android:label="AccessActivity" />
     <fragment
@@ -308,8 +308,8 @@
             android:id="@+id/action_nav_Settings_to_profileFragment"
             app:destination="@id/profileFragment" />
         <action
-            android:id="@+id/action_nav_Settings_to_nav_logout"
-            app:destination="@id/nav_logout" />
+            android:id="@+id/action_nav_Settings_to_access_activity"
+            app:destination="@id/access_activity" />
         <action
             android:id="@+id/action_nav_settings_to_accountDeleteFragment"
             app:destination="@id/accountDeleteFragment" />
@@ -344,8 +344,8 @@
         android:label="fragment_account_delete"
         tools:layout="@layout/fragment_account_delete" >
         <action
-            android:id="@+id/action_accountDeleteFragment_to_nav_logout"
-            app:destination="@id/nav_logout" />
+            android:id="@+id/action_accountDeleteFragment_to_access_activity"
+            app:destination="@id/access_activity" />
     </fragment>
     <fragment
         android:id="@+id/accountResetFragment"
@@ -381,4 +381,13 @@
         android:id="@+id/notificationSettingsFragment"
         android:name="it.project.houseoftasty.view.NotificationSettingsFragment"
         android:label="NotificationSettingsFragment" />
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="it.project.houseoftasty.view.LogoutFragment"
+        android:label="fragment_logout"
+        tools:layout="@layout/fragment_logout" >
+        <action
+            android:id="@+id/action_nav_logout_to_access_activity"
+            app:destination="@id/access_activity" />
+    </fragment>
 </navigation>

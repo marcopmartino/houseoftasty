@@ -6,27 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import it.project.houseoftasty.R
 
 class LogoutFragment : Fragment() {
 
-    private lateinit var firebaseAuth: FirebaseAuth
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as MainActivity).setActionBarTitle(String())
 
-        firebaseAuth = FirebaseAuth.getInstance()
-        firebaseAuth.signOut()
-        val navView = activity?.findViewById<NavigationView>(R.id.navView)
-        navView!!.menu.clear()
-        navView.inflateMenu(R.menu.menu_unauthenticated)
-        (activity as AppCompatActivity).supportActionBar?.title ="Login"
-        val fragment = activity?.supportFragmentManager?.beginTransaction()
-        fragment?.replace(R.id.fragment_container, LoginFragment())?.commit()
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        return inflater.inflate(R.layout.fragment_logout, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireView().findNavController().navigate(LogoutFragmentDirections.actionNavLogoutToAccessActivity())
     }
 }
