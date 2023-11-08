@@ -38,7 +38,7 @@
 
     <!-- Stringhe specifiche di "activity_access" -->
     <string name="access_text">Accedi o crea un account</string>
-    <string name="access_bottomText">Continua in modalità offline</string>
+    <string name="access_bottomText">Continua senza accedere</string>
     <string name="contentDescription_access_background">immagine di sfondo</string>
 
     <!-- Stringhe specifiche di "activity_login" -->
